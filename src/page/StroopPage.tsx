@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnswerRecord, AnswerStatus, answerStatusToString } from "../model/AnswerRecord";
 import ColorPair from "../model/ColorPair";
 import { Prompt, promptToString } from "../model/Prompt";
+import Countdown from "react-countdown";
 
 export default function StroopPage(): JSX.Element {
     const [pairs, setPairs] = useState<ColorPair[]>([
@@ -47,8 +48,8 @@ export default function StroopPage(): JSX.Element {
 
     const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
 
-    const chooseAnswer = (answer: ColorPair | undefined) => {
-        const newRecord: AnswerRecord = {status: AnswerStatus.Unanswered, time: 0};
+    const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
+        const newRecord: AnswerRecord = {status: AnswerStatus.Unanswered, time};
 
         if (!answer) {
             setAnswerRecords(oldRecord => [...oldRecord, newRecord]);
@@ -70,17 +71,42 @@ export default function StroopPage(): JSX.Element {
         setAnswerRecords(oldRecord => [...oldRecord, newRecord]);
         setStroopKey(pickRandomPair);
         setPrompt(randomPrompt);
+        setTimerId(Math.random());
+    }
+
+    // TODO: fix timer logic/or create from scratch (this logic is stupid)
+    const [timerId, setTimerId] = useState(Math.random());
+    const resetTimer = (time: number) => {
+        if (time < 0) {
+            chooseAnswer(undefined, 0);
+        }
     }
 
     return (
         <div style={{height: "100%", display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
             <h1 style={{ fontWeight: "bold", color: stroopKey.color }}>{stroopKey.text}</h1>
             {/* <h2 style={{ fontWeight: "bold", color: "white" }}>{promptToString(prompt)}</h2> */}
-            <div>
-            {pairs.map((pair) => (
-                <button style={{ backgroundColor: pair.color, margin: "2em", padding: "2em" }} onClick={() => chooseAnswer(pair)}></button>
-            ))}
-            </div>
+            
+            <Countdown 
+                key={timerId} 
+                intervalDelay={0} 
+                precision={3} 
+                date={Date.now() + 3000} 
+                onTick={({total}) => resetTimer(total)}
+                overtime
+                renderer={({total}) => {
+                    return (
+                    <div>
+                        <h2 style={{color: "white"}}>{total}</h2>
+                        <div>
+                        {pairs.map((pair) => (
+                            <button key={pair.text} style={{ backgroundColor: pair.color, margin: "2em", padding: "2em" }} onClick={() => chooseAnswer(pair, total)}/>
+                        ))}
+                        </div>
+                    </div> 
+                )}}
+            />
+
             <table style={{ color: "white", width: "100%" }}>
                 <thead>
                     <tr>
