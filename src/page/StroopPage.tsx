@@ -21,20 +21,18 @@ export default function StroopPage(): JSX.Element {
             text: "Yellow",
             color: "#ffff00",
         },
-        {
-            text: "Orange",
-            color: "#ff8000",
-        },
-        {
-            text: "Purple",
-            color: "#8000ff",
-        },
     ])
 
     const pickRandomPair = (): ColorPair => {
+        const text = pairs[Math.floor(Math.random() * pairs.length)];
+        let color = pairs[Math.floor(Math.random() * pairs.length)];
+        while (color === text) {
+            color = pairs[Math.floor(Math.random() * pairs.length)];
+        }
+
         return {
-            text: pairs[Math.floor(Math.random() * pairs.length)].text,
-            color: pairs[Math.floor(Math.random() * pairs.length)].color,
+            text: text.text,
+            color: color.color,
         }
     }
 
@@ -77,10 +75,10 @@ export default function StroopPage(): JSX.Element {
     return (
         <div style={{height: "100%", display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
             <h1 style={{ fontWeight: "bold", color: stroopKey.color }}>{stroopKey.text}</h1>
-            <h2 style={{ fontWeight: "bold", color: "white" }}>{promptToString(prompt)}</h2>
+            {/* <h2 style={{ fontWeight: "bold", color: "white" }}>{promptToString(prompt)}</h2> */}
             <div>
             {pairs.map((pair) => (
-                <button style={{ backgroundColor: pair.color, margin: "2em", padding: "2em" }} onClick={() => chooseAnswer(pair)}>{pair.text}</button>
+                <button style={{ backgroundColor: pair.color, margin: "2em", padding: "2em" }} onClick={() => chooseAnswer(pair)}></button>
             ))}
             </div>
             <table style={{ color: "white", width: "100%" }}>
