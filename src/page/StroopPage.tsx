@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AnswerRecord } from "../model/AnswerRecord";
+import { AnswerRecord, AnswerStatus, answerStatusToString } from "../model/AnswerRecord";
 import ColorPair from "../model/ColorPair";
 import { Prompt, promptToString } from "../model/Prompt";
 
@@ -39,7 +39,8 @@ export default function StroopPage(): JSX.Element {
     }
 
     const randomPrompt = (): Prompt => {
-        return Math.random() < 0.5 ? Prompt.Text : Prompt.Color;
+        // return Math.random() < 0.5 ? Prompt.Text : Prompt.Color;
+        return Prompt.Color;
     }
 
     const [stroopKey, setStroopKey] = useState<ColorPair>(pickRandomPair);
@@ -48,14 +49,22 @@ export default function StroopPage(): JSX.Element {
 
     const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
 
-    const chooseAnswer = (answer: ColorPair) => {
-        const newRecord: AnswerRecord = {isCorrect: true, time: 0};
+    const chooseAnswer = (answer: ColorPair | undefined) => {
+        const newRecord: AnswerRecord = {status: AnswerStatus.Unanswered, time: 0};
+
+        if (!answer) {
+            setAnswerRecords(oldRecord => [...oldRecord, newRecord]);
+            setStroopKey(pickRandomPair);
+            setPrompt(randomPrompt);
+            return;
+        }
+
         switch (prompt) {
-            case Prompt.Text:
-                newRecord.isCorrect = stroopKey.text === answer.text;
-                break;
             case Prompt.Color:
-                newRecord.isCorrect = stroopKey.color === answer.color;
+                newRecord.status = stroopKey.color === answer.color ? AnswerStatus.Correct : AnswerStatus.Wrong;
+                break;
+            case Prompt.Text:
+                newRecord.status = stroopKey.text === answer.text ? AnswerStatus.Correct : AnswerStatus.Wrong;
                 break;
             default:
                 break;
@@ -84,7 +93,7 @@ export default function StroopPage(): JSX.Element {
                 <tbody>
                 {answerRecords.map(answerRecord => (
                     <tr>
-                        <td>{answerRecord.isCorrect ? "Correct" : "Wrong"}</td>
+                        <td>{answerStatusToString(answerRecord.status)}</td>
                         <td>{answerRecord.time}</td>
                     </tr>
                 ))}
