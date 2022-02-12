@@ -3,6 +3,7 @@ import { AnswerRecord, AnswerStatus, answerStatusToString } from "../model/Answe
 import ColorPair from "../model/ColorPair";
 import { Prompt, promptToString } from "../model/Prompt";
 import Countdown from "react-countdown";
+import { Result } from "../model/Result";
 
 export default function StroopPage(): JSX.Element {
     const [pairs, setPairs] = useState<ColorPair[]>([
@@ -23,6 +24,10 @@ export default function StroopPage(): JSX.Element {
             color: "#ffff00",
         },
     ])
+
+    const [answerLimit, setAnswerLimit] = useState(50);
+
+    const [timeLimit, setTimeLimit] = useState(3 * 1000);
 
     const pickRandomPair = (): ColorPair => {
         const text = pairs[Math.floor(Math.random() * pairs.length)];
@@ -49,12 +54,17 @@ export default function StroopPage(): JSX.Element {
     const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
 
     const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
-        const newRecord: AnswerRecord = {status: AnswerStatus.Unanswered, time};
+        const newRecord: AnswerRecord = {status: AnswerStatus.Unanswered, time: (timeLimit - time)/1000};
+
+        if (answerRecords.length >= answerLimit) {
+            return;
+        }
 
         if (!answer) {
             setAnswerRecords(oldRecord => [...oldRecord, newRecord]);
             setStroopKey(pickRandomPair);
             setPrompt(randomPrompt);
+            setTimerId(Math.random());
             return;
         }
 
@@ -72,12 +82,13 @@ export default function StroopPage(): JSX.Element {
         setStroopKey(pickRandomPair);
         setPrompt(randomPrompt);
         setTimerId(Math.random());
+
     }
 
-    // TODO: fix timer logic/or create from scratch (this logic is stupid)
+    // TODO: fix timer logic or create from scratch (this logic is stupid)
     const [timerId, setTimerId] = useState(Math.random());
     const resetTimer = (time: number) => {
-        if (time < 0) {
+        if (time < 0 && answerRecords.length < answerLimit) {
             chooseAnswer(undefined, 0);
         }
     }
@@ -90,14 +101,17 @@ export default function StroopPage(): JSX.Element {
             <Countdown 
                 key={timerId} 
                 intervalDelay={0} 
-                precision={3} 
-                date={Date.now() + 3000} 
+                precision={2} 
+                date={Date.now() + timeLimit} 
                 onTick={({total}) => resetTimer(total)}
                 overtime
-                renderer={({total}) => {
+                renderer={({total, seconds, milliseconds, api}) => {
+                    if (answerRecords.length >= answerLimit && total <= 0) {
+                        api.stop();
+                    }
                     return (
                     <div>
-                        <h2 style={{color: "white"}}>{total}</h2>
+                        <h2 style={{color: "white"}}>{`${seconds}.${milliseconds}`}</h2>
                         <div>
                         {pairs.map((pair) => (
                             <button key={pair.text} style={{ backgroundColor: pair.color, margin: "2em", padding: "2em" }} onClick={() => chooseAnswer(pair, total)}/>
@@ -110,17 +124,21 @@ export default function StroopPage(): JSX.Element {
             <table style={{ color: "white", width: "100%" }}>
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Correct</th>
                         <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                {answerRecords.map(answerRecord => (
+                {answerRecords.map((answerRecord, i) => {
+                    return (
                     <tr>
+                        <td>{i + 1}</td>
                         <td>{answerStatusToString(answerRecord.status)}</td>
                         <td>{answerRecord.time}</td>
                     </tr>
-                ))}
+                    )
+                })}
                 </tbody>
             </table>
         </div>
