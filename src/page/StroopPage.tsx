@@ -53,10 +53,13 @@ export default function StroopPage(): JSX.Element {
 
     const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
 
+    const [result, setResult] = useState<Result>()
+
     const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
         const newRecord: AnswerRecord = {status: AnswerStatus.Unanswered, time: (timeLimit - time)/1000};
 
         if (answerRecords.length >= answerLimit) {
+            countResult();
             return;
         }
 
@@ -93,6 +96,36 @@ export default function StroopPage(): JSX.Element {
         }
     }
 
+    const countResult = () => {
+        let tempResult: Result = {
+            corrects: 0,
+            wrongs: 0,
+            unanswered: 0,
+            rtca: 0,
+        };
+
+        answerRecords.map((record) => {
+            switch (record.status) {
+                case AnswerStatus.Correct:
+                    ++tempResult.corrects;
+                    tempResult.rtca += record.time || 0;
+                    break;
+                case AnswerStatus.Wrong:
+                    ++tempResult.wrongs;
+                    break;
+                case AnswerStatus.Unanswered:
+                    ++tempResult.unanswered;
+                    break;
+            }
+        })
+
+        console.log(tempResult);
+
+        tempResult.rtca = tempResult.rtca / tempResult.corrects;
+        
+        setResult(tempResult);
+    }
+
     return (
         <div style={{height: "100%", display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
             <h1 style={{ fontWeight: "bold", color: stroopKey.color }}>{stroopKey.text}</h1>
@@ -101,7 +134,7 @@ export default function StroopPage(): JSX.Element {
             <Countdown 
                 key={timerId} 
                 intervalDelay={0} 
-                precision={2} 
+                precision={3} 
                 date={Date.now() + timeLimit} 
                 onTick={({total}) => resetTimer(total)}
                 overtime
@@ -121,6 +154,29 @@ export default function StroopPage(): JSX.Element {
                 )}}
             />
 
+            {result ? (
+                <div style={{color: "white"}}>
+                    <div style={{display: "flex", justifyContent: "space-between", alignContent: "space-between"}}>
+                        <div style={{padding: "1em"}}>
+                            <h2>Correct</h2>
+                            <h4>{result.corrects}</h4>
+                        </div>
+                        <div style={{padding: "1em"}}>
+                            <h2>Wrong</h2>
+                            <h4>{result.wrongs}</h4>
+                        </div>
+                        <div style={{padding: "1em"}}>
+                            <h2>Unanswered</h2>
+                            <h4>{result.unanswered}</h4>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>RTCA</h2>
+                        <h3>(Right Time for Correct Answer)</h3>
+                        <h4>{result.rtca.toPrecision(3)}</h4>
+                    </div>
+                </div>
+            ): ""}
             <table style={{ color: "white", width: "100%" }}>
                 <thead>
                     <tr>
