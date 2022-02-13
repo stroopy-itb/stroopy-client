@@ -1,12 +1,16 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { StroopPage } from './page';
+import {Routes, Route} from 'react-router-dom';
+import { SetupPage, StroopPage } from './page';
 
 function App() {
   return (
     <div className="App">
-      <StroopPage />
+      <Routes>
+        <Route path="setup" element={<SetupPage/>} />
+        <Route path="test" element={<StroopPage/>} />
+      </Routes>
     </div>
   );
 }

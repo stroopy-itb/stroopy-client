@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom"
 
 export default function SetupPage(): JSX.Element {
+    const navigate = useNavigate();
+
     return (
-        <p>Setup</p>
+        <div>
+            <button onClick={() => navigate("/test")}>START</button>
+        </div>
     )
 }
