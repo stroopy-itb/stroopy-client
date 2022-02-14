@@ -137,7 +137,7 @@ export default function StroopPage(): JSX.Element {
   };
 
   return (
-    <div className="min-h-screen grid grid-flow-row gap-16 justify-items-stretch content-center">
+    <div className="min-h-full grid grid-flow-row gap-16 justify-items-center content-center">
       <h1
         className="text-center text-5xl font-bold"
         style={{ color: stroopKey.color }}
@@ -175,8 +175,9 @@ export default function StroopPage(): JSX.Element {
         }}
       />
 
+      <div className="h-52 overflow-y-auto text-white text-center w-full md:w-1/3">
       {result ? (
-        <div className="h-52 text-white text-center grid grid-flow-row gap-2">
+        <div className="grid grid-flow-row gap-2">
           <div className="grid grid-cols-3">
             <div>
               <h2 className="text-xl font-bold">Correct</h2>
@@ -200,8 +201,7 @@ export default function StroopPage(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div className="h-52 overflow-y-auto">
-          <table className="text-white text-center w-full">
+          <table className="w-full">
             <thead className="font-bold">
               <tr>
                 <th>#</th>
@@ -221,8 +221,8 @@ export default function StroopPage(): JSX.Element {
               })}
             </tbody>
           </table>
-        </div>
       )}
+      </div>
     </div>
   );
 }
