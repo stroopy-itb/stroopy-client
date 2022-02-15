@@ -1,16 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import {Routes, Route} from 'react-router-dom';
 import { Header } from './component';
-import { SetupPage, StroopPage } from './page';
+import { Home, History, Setup, Stroop, Result} from './page';
 
 function App() {
   return (
-    <div className="bg-black px-10 min-h-screen">
+    <div className="bg-black px-10 min-h-screen flex flex-col justify-start items-stretch">
       <Header/>
       <Routes>
-        <Route path="setup" element={<SetupPage/>} />
-        <Route path="test" element={<StroopPage/>} />
+        <Route path="/" element={<Home/>} />
+        <Route path="history" element={<History/>} />
+        <Route path="setup" element={<Setup/>} />
+        <Route path="test" element={<Stroop/>} />
+        <Route path="result" element={<Result/>} />
       </Routes>
     </div>
   );

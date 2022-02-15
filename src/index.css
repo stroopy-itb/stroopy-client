@@ -27,6 +27,7 @@ code {
     padding-right: theme(padding.16);
     padding-top: theme(padding.6);
     padding-bottom: theme(padding.6);
+    width: theme(width.64);
   }
 
   .button-hover {

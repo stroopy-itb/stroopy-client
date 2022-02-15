@@ -1,2 +1,5 @@
-export { default as StroopPage } from "./StroopPage";
-export { default as SetupPage } from "./SetupPage";
+export { default as Home} from "./Home";
+export { default as History} from "./History";
+export { default as Stroop} from "./Stroop";
+export { default as Setup} from "./Setup";
+export { default as Result} from "./Result";

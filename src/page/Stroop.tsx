@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import {
-  AnswerRecord,
-  AnswerStatus,
-  Result,
-} from "../model";
+import { AnswerRecord, AnswerStatus, Result } from "../model";
 import ColorPair from "../model/ColorPair";
 import { Prompt } from "../model/Prompt";
 import Countdown from "react-countdown";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { updateResult } from "../redux/reducer/ExamReducer";
+import { useNavigate } from "react-router-dom";
 
-export default function StroopPage(): JSX.Element {
-
+export default function Stroop(): JSX.Element {
   const setup = useSelector((state: RootState) => state.exam.setup);
 
   const [pairs, setPairs] = useState<ColorPair[]>(setup.pairs);
@@ -43,8 +40,6 @@ export default function StroopPage(): JSX.Element {
   const [prompt, setPrompt] = useState<Prompt>(randomPrompt);
 
   const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
-
-  const [result, setResult] = useState<Result>();
 
   const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
     const newRecord: AnswerRecord = {
@@ -95,8 +90,10 @@ export default function StroopPage(): JSX.Element {
     }
   };
 
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const countResult = () => {
-    let tempResult: Result = {
+    let result: Result = {
       corrects: 0,
       wrongs: 0,
       unanswered: 0,
@@ -106,25 +103,26 @@ export default function StroopPage(): JSX.Element {
     answerRecords.map((record) => {
       switch (record.status) {
         case AnswerStatus.Correct:
-          ++tempResult.corrects;
-          tempResult.rtca += record.time || 0;
+          ++result.corrects;
+          result.rtca += record.time || 0;
           break;
         case AnswerStatus.Wrong:
-          ++tempResult.wrongs;
+          ++result.wrongs;
           break;
         case AnswerStatus.Unanswered:
-          ++tempResult.unanswered;
+          ++result.unanswered;
           break;
       }
     });
 
-    tempResult.rtca = tempResult.rtca / tempResult.corrects;
+    result.rtca = result.rtca / result.corrects;
 
-    setResult(tempResult);
+    dispatch(updateResult(result));
+    navigate("/result");
   };
 
   return (
-    <div className="min-h-full grid grid-flow-row gap-16 justify-items-center content-center">
+    <div className="flex-grow grid grid-flow-row gap-16 justify-items-center content-center">
       <h1
         className="text-center text-5xl font-bold"
         style={{ color: stroopKey.color }}
@@ -163,31 +161,7 @@ export default function StroopPage(): JSX.Element {
       />
 
       <div className="h-52 overflow-y-auto text-white text-center w-full md:w-1/3">
-      {result ? (
-        <div className="grid grid-flow-row gap-2">
-          <div className="grid grid-cols-3">
-            <div>
-              <h2 className="text-xl font-bold">Correct</h2>
-              <h4>{result.corrects}</h4>
-            </div>
-            <div>
-              <h2 className="text-xl font-bold">Wrong</h2>
-              <h4>{result.wrongs}</h4>
-            </div>
-            <div>
-              <h2 className="text-xl font-bold">Unanswered</h2>
-              <h4>{result.unanswered}</h4>
-            </div>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold">RTCA</h2>
-            <h3 className="text-md font-bold">
-              (Right Time for Correct Answer)
-            </h3>
-            <h4>{result.rtca.toPrecision(3)}</h4>
-          </div>
-        </div>
-      ) : (
+        {answerRecords.length > 0 ? (
           <table className="w-full">
             <thead className="font-bold">
               <tr>
@@ -208,7 +182,9 @@ export default function StroopPage(): JSX.Element {
               })}
             </tbody>
           </table>
-      )}
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

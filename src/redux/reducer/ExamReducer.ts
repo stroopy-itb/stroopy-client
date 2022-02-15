@@ -42,13 +42,14 @@ const initialState: ExamState = {
   },
 };
 
-const updateSetup = createAction<{
+export const updateSetup = createAction<{
   pairs: ColorPair[];
   timeLimit: number;
   answerLimit: number;
 }>("exam/update-setup");
-const updateResult = createAction<Result>("exam/update-result");
-const resetResult = createAction("exam/reset-result");
+
+export const updateResult = createAction<Result>("exam/update-result");
+export const resetResult = createAction("exam/reset-result");
 
 const ExamReducer = createReducer(initialState, (builder) => {
   builder
