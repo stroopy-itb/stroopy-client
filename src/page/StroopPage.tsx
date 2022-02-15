@@ -2,36 +2,23 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnswerRecord,
   AnswerStatus,
-  answerStatusToString,
-} from "../model/AnswerRecord";
+  Result,
+} from "../model";
 import ColorPair from "../model/ColorPair";
-import { Prompt, promptToString } from "../model/Prompt";
+import { Prompt } from "../model/Prompt";
 import Countdown from "react-countdown";
-import { Result } from "../model/Result";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export default function StroopPage(): JSX.Element {
-  const [pairs, setPairs] = useState<ColorPair[]>([
-    {
-      text: "Red",
-      color: "#FF5555",
-    },
-    {
-      text: "Green",
-      color: "#58D95D",
-    },
-    {
-      text: "Blue",
-      color: "#4D74FF",
-    },
-    {
-      text: "Yellow",
-      color: "#FFB800",
-    },
-  ]);
 
-  const [answerLimit, setAnswerLimit] = useState(50);
+  const setup = useSelector((state: RootState) => state.exam.setup);
 
-  const [timeLimit, setTimeLimit] = useState(3 * 1000);
+  const [pairs, setPairs] = useState<ColorPair[]>(setup.pairs);
+
+  const [answerLimit, setAnswerLimit] = useState(setup.answerLimit);
+
+  const [timeLimit, setTimeLimit] = useState(setup.timeLimit * 1000);
 
   const pickRandomPair = (): ColorPair => {
     const text = pairs[Math.floor(Math.random() * pairs.length)];
@@ -214,7 +201,7 @@ export default function StroopPage(): JSX.Element {
                 return (
                   <tr>
                     <td>{i + 1}</td>
-                    <td>{answerStatusToString(answerRecord.status)}</td>
+                    <td>{answerRecord.status}</td>
                     <td>{answerRecord.time}</td>
                   </tr>
                 );
