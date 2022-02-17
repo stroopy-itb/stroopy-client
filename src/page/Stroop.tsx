@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { AnswerRecord, AnswerStatus, Result } from "../model";
 import ColorPair from "../model/ColorPair";
 import { Prompt } from "../model/Prompt";
@@ -11,11 +11,11 @@ import { useNavigate } from "react-router-dom";
 export default function Stroop(): JSX.Element {
   const setup = useSelector((state: RootState) => state.exam.setup);
 
-  const [pairs, setPairs] = useState<ColorPair[]>(setup.pairs);
+  const [pairs] = useState<ColorPair[]>(setup.pairs);
 
-  const [answerLimit, setAnswerLimit] = useState(setup.answerLimit);
+  const [answerLimit] = useState(setup.answerLimit);
 
-  const [timeLimit, setTimeLimit] = useState(setup.timeLimit * 1000);
+  const [timeLimit] = useState(setup.timeLimit * 1000);
 
   const pickRandomPair = (): ColorPair => {
     const text = pairs[Math.floor(Math.random() * pairs.length)];

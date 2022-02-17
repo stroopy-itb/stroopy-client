@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import { Header } from './component';
-import { Home, History, Setup, Stroop, Result} from './page';
+import { Home, Login, Register, History, Setup, Stroop, Result} from './page';
 
 function App() {
   return (
@@ -9,6 +9,9 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={<Home/>} />
+        <Route path="login" element={<Login/>} />
+        <Route path="register" element={<Register/>} />
+        <Route path="history" element={<History/>} />
         <Route path="history" element={<History/>} />
         <Route path="setup" element={<Setup/>} />
         <Route path="test" element={<Stroop/>} />

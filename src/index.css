@@ -18,20 +18,38 @@ code {
 /*border-2 py-8 px-16 rounded-xl text-2xl text-white font-bold hover:bg-white hover:text-black*/
 @layer components {
   .button {
+    padding: theme(padding.4);
+    color: theme(colors.white);
+    border-radius: theme(borderRadius.2xl);
+  }
+
+  .button-nav {
     font-size: theme(fontSize.2xl);
     font-weight: theme(fontWeight.bold);
-    color: theme(colors.white);
     border-width: theme(borderWidth.2);
-    border-radius: theme(borderRadius.xl);
-    padding-left: theme(padding.16);
-    padding-right: theme(padding.16);
-    padding-top: theme(padding.6);
-    padding-bottom: theme(padding.6);
-    width: theme(width.64);
+  }
+
+  .button-action {
+    font-size: theme(fontSize.lg);
+    font-weight: theme(fontWeight.bold);
+    background-color: theme(colors.blue);
   }
 
   .button-hover {
     color: theme(colors.black);
     background-color: theme(colors.white);
   }
+
+  .form-control {
+    display: grid;
+    justify-items: stretch;
+    align-content: start;
+    gap: theme(gap.2);
+  }
+
+  .form-control input {
+    padding: theme(padding.3);
+    border-radius: theme(borderRadius.xl);
+  }
+
 }
