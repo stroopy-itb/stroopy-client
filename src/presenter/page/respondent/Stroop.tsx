@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { AnswerRecord, AnswerStatus, Result } from "../../domain/model";
-import ColorPair from "../../domain/model/ColorPair";
-import { Prompt } from "../../domain/model/Prompt";
+import { AnswerRecord, AnswerStatus, Result } from "../../../domain/model";
+import ColorPair from "../../../domain/model/ColorPair";
+import { Prompt } from "../../../domain/model/Prompt";
 import Countdown from "react-countdown";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
-import { updateResult } from "../redux/reducer/ExamReducer";
+import { AppDispatch, RootState } from "../../redux/store";
+import { updateResult } from "../../redux/reducer/ExamReducer";
 import { useNavigate } from "react-router-dom";
 
 export default function Stroop(): JSX.Element {

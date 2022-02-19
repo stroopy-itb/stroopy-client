@@ -4,6 +4,7 @@ import { UserType } from "../../../domain/model/UserRole";
 interface UserState {
   isAuthenticated: boolean;
   auth_token?: string;
+  userId?: string;
   name?: string;
   type?: UserType;
 }
@@ -11,6 +12,7 @@ interface UserState {
 const initialState: UserState = {
   isAuthenticated: false,
   auth_token: undefined,
+  userId: undefined,
   name: undefined,
   type: undefined,
 };
