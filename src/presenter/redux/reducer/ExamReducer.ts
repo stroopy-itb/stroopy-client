@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import ColorPair from "../../model/ColorPair";
-import { Result } from "../../model";
+import ColorPair from "../../../domain/model/ColorPair";
+import { Result } from "../../../domain/model";
 
 interface ExamState {
   setup: {

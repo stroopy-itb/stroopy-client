@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
-import { Header, ProtectedRoute } from './component';
-import { Home, Login, Register, History, Setup, Stroop, Result} from './page';
+import { Header, ProtectedRoute } from './presenter/component';
+import { Home, Login, Register, History, Setup, Stroop, Result} from './presenter/page';
 
 function App() {
   return (

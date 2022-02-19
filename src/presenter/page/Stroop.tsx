@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { AnswerRecord, AnswerStatus, Result } from "../model";
-import ColorPair from "../model/ColorPair";
-import { Prompt } from "../model/Prompt";
+import { AnswerRecord, AnswerStatus, Result } from "../../domain/model";
+import ColorPair from "../../domain/model/ColorPair";
+import { Prompt } from "../../domain/model/Prompt";
 import Countdown from "react-countdown";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../logo.svg";
+import logo from "../../logo.svg";
 
 interface RegisterRequest {
   token: string;

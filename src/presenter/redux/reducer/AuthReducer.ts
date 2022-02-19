@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { UserType } from "../../model/UserRole";
+import { UserType } from "../../../domain/model/UserRole";
 
 interface UserState {
   isAuthenticated: boolean;
