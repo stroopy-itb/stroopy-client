@@ -1,12 +1,26 @@
-import axios, { AxiosStatic, AxiosRequestHeaders } from 'axios';
-import { HttpExtraConfig, HttpHeader, Http, HttpRequestBody } from './interface/Http';
+import axios, { AxiosInstance } from 'axios';
+import { WebStorage } from '.';
+import { ACCESS_TOKEN_KEY } from '../repository/constants';
+import { HttpExtraConfig, HttpHeader, HttpClient, HttpRequestBody } from './interface/HttpClient';
 
-export default class AxiosHttp implements Required<Http> {
-  private readonly client: AxiosStatic;
+export default class AxiosHttp implements Required<HttpClient> {
+  private readonly client: AxiosInstance;
 
-  constructor() {
-    this.client = axios;
+  constructor(
+    private readonly storage: WebStorage
+  ) {
+    this.client = axios.create();
     this.client.defaults.baseURL = process.env.REACT_APP_API;
+    this.client.interceptors.request.use((config) => {
+      const accessToken = storage.getItem(ACCESS_TOKEN_KEY);
+      console.log(accessToken);
+      
+      config.headers = {
+        Authorization: `Bearer ${accessToken}`
+      }
+
+      return config;
+    });
   }
 
   async get<T>(

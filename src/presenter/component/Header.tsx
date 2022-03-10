@@ -1,10 +1,22 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../logo.svg";
+import { authMiddleware } from "../redux/middleware/AuthMiddleware";
+import { AppDispatch, RootState } from "../redux/store";
 
 export default function Header(): JSX.Element {
+  const username = useSelector((state: RootState) => state.auth.user?.username);
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const handleLogout = async () => {
+    await dispatch(authMiddleware.logout()).then(() => {
+      navigate("/login");
+    });
+  };
 
   if (location.pathname !== "/login" && location.pathname !== "/register") {
     return (
@@ -18,9 +30,14 @@ export default function Header(): JSX.Element {
           <span className="text-white text-lg font-bold">Stroopy</span>
         </button>
         {location.pathname !== "/test" ? (
-          <button>
-            <span className="text-white font-bold">Account</span>
-          </button>
+          <div>
+            <button>
+              <span className="text-white font-bold">{username}</span>
+            </button>
+            <button onClick={handleLogout}>
+              <span className="ml-3 text-red font-bold">Logout</span>
+            </button>
+          </div>
         ) : (
           ""
         )}

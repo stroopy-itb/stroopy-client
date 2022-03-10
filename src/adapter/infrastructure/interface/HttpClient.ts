@@ -1,4 +1,4 @@
-export interface Http {
+export interface HttpClient {
   /**
    * @brief Perform HTTP get request.
    *

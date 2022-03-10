@@ -26,10 +26,10 @@ interface CreateTestDataRequest {
 
 export default function Setup(): JSX.Element {
   const navigate = useNavigate();
-  const userId = useSelector((state: RootState) => state.auth.userId);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const initialValues: CreateTestDataRequest = {
-    user_id: userId || "",
+    user_id: user?.id || "",
     body_condition: BodyCondition.Healthy,
     body_temp: 0,
     device: DeviceType.PC,
