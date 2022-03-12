@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { AuthReducer, ExamReducer } from './reducer';
+import { AuthReducer, ExamReducer, UserReducer } from './reducer';
 
 const store = configureStore(
     {
         reducer: {
             auth: AuthReducer,
-            exam: ExamReducer
+            exam: ExamReducer,
+            user: UserReducer,
         }
     }
 )

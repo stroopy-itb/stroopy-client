@@ -6,7 +6,7 @@ import { authMiddleware } from "../redux/middleware/AuthMiddleware";
 import { AppDispatch, RootState } from "../redux/store";
 
 export default function Header(): JSX.Element {
-  const username = useSelector((state: RootState) => state.auth.user?.username);
+  const username = useSelector((state: RootState) => state.user.user?.username);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +35,7 @@ export default function Header(): JSX.Element {
               <span className="text-white font-bold">{username}</span>
             </button>
             <button onClick={handleLogout}>
-              <span className="ml-3 text-red font-bold">Logout</span>
+              <span className="ml-3 text-red font-bold">Keluar</span>
             </button>
           </div>
         ) : (

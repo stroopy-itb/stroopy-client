@@ -26,7 +26,7 @@ interface CreateTestDataRequest {
 
 export default function Setup(): JSX.Element {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const initialValues: CreateTestDataRequest = {
     user_id: user?.id || "",

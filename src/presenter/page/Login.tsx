@@ -21,14 +21,15 @@ export default function Login(): JSX.Element {
     values: loginRequest,
     { setSubmitting }: FormikHelpers<loginRequest>
   ) => {
-    await dispatch(
+    const request = await dispatch(
       authMiddleware.login({
         username: values.username,
         password: values.password,
       })
-    ).then(() => {
+    )
+    if (request.meta.requestStatus === "fulfilled") {
       navigate("/");
-    });
+    }
     setSubmitting(false);
   };
 
@@ -58,6 +59,7 @@ export default function Login(): JSX.Element {
                 placeholder="Username"
                 value={values.username}
                 onChange={handleChange}
+                autoFocus
               />
               {<p className="text-white">{errors.username}</p>}
             </div>

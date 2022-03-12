@@ -13,8 +13,6 @@ export default class AxiosHttp implements Required<HttpClient> {
     this.client.defaults.baseURL = process.env.REACT_APP_API;
     this.client.interceptors.request.use((config) => {
       const accessToken = storage.getItem(ACCESS_TOKEN_KEY);
-      console.log(accessToken);
-      
       config.headers = {
         Authorization: `Bearer ${accessToken}`
       }

@@ -8,10 +8,8 @@ export const authMiddleware = {
     try {
       await di.service.authService.login(loginDto);
       return await di.service.userService.findCurrentUser();
-    } catch (error) {
-      console.log(error);
-      
-      return thunkApi.rejectWithValue({ message: "error"});
+    } catch (error: any) {
+      return thunkApi.rejectWithValue({ message: error.message });
     }
   }),
   logout: createAsyncThunk('[Auth] Logout', async (_arg, thunkApi) => {
@@ -22,3 +20,5 @@ export const authMiddleware = {
     }
   }),
 };
+
+export default authMiddleware;
