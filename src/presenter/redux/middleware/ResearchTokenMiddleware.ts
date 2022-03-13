@@ -4,11 +4,14 @@ import { ResearchToken } from "../../../domain/model/ResearchToken";
 import di from "../../di";
 
 export const researchTokenMiddleware = {
-  getAll: createAsyncThunk<ResearchToken[]>
+  getAll: createAsyncThunk<ResearchToken[], (Partial<ResearchToken> & { full?: boolean })>
     ('[Research Token] Get all',
-      async (_arg, thunkApi) => {
+      async (arg, thunkApi) => {
         try {
-          return await di.service.researchTokenService.getAll();
+          const tokenRes = await di.service.researchTokenService.getAll({ token: arg.token, full: arg.full });
+          return tokenRes.map((token) => {
+            return serializeDate(token);
+          });
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -18,7 +21,8 @@ export const researchTokenMiddleware = {
     ('[Research Token] Get one',
       async (arg, thunkApi) => {
         try {
-          return await di.service.researchTokenService.getOne(arg.id);
+          const tokenRes = await di.service.researchTokenService.getOneById(arg.id);
+          return serializeDate(tokenRes);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -28,7 +32,8 @@ export const researchTokenMiddleware = {
     ('[Research Token] Get one by researcher id',
       async (arg, thunkApi) => {
         try {
-          return await di.service.researchTokenService.getOneByResearcherId(arg.researcherId);
+          const tokenRes = await di.service.researchTokenService.getOneByResearcherId(arg.researcherId);
+          return serializeDate(tokenRes);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -38,7 +43,8 @@ export const researchTokenMiddleware = {
     ('[Research Token] Create',
       async (arg, thunkApi) => {
         try {
-          return await di.service.researchTokenService.create(arg.dto);
+          const tokenRes = await di.service.researchTokenService.create(arg.dto);
+          return serializeDate(tokenRes);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -48,7 +54,8 @@ export const researchTokenMiddleware = {
     ('[Research Token] Update',
       async (arg, thunkApi) => {
         try {
-          return await di.service.researchTokenService.update(arg.dto);
+          const tokenRes = await di.service.researchTokenService.update(arg.dto);
+          return serializeDate(tokenRes);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -64,6 +71,15 @@ export const researchTokenMiddleware = {
         }
       }
     ),
+}
+
+const serializeDate = (token: ResearchToken) => {
+  return {
+    ...token,
+    expiredAt: token.expiredAt.toLocaleString(),
+    createdAt: token.createdAt.toLocaleString(),
+    updatedAt: token.updatedAt.toLocaleString(),
+  }
 }
 
 export default researchTokenMiddleware;

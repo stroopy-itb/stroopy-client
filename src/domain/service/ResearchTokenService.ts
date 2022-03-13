@@ -7,12 +7,14 @@ export default class ResearchTokenService implements IResearchTokenService {
   constructor(
     private readonly researchTokenRepository: IResearchTokenRepository
   ) { }
-
-  getAll(): Promise<ResearchToken[]> {
-    return this.researchTokenRepository.getAll();
+  getAll(filter?: Partial<ResearchToken> & { full?: boolean; }): Promise<ResearchToken[]> {
+    return this.researchTokenRepository.getAll(filter);
   }
-  getOne(id: string): Promise<ResearchToken> {
-    return this.researchTokenRepository.getOne(id);
+  getOne(filter?: Partial<ResearchToken> & { full?: boolean; }): Promise<ResearchToken> {
+    return this.researchTokenRepository.getOne(filter);
+  }
+  getOneById(id: string): Promise<ResearchToken> {
+    return this.researchTokenRepository.getOneById(id);
   }
   getOneByResearcherId(researcherId: string): Promise<ResearchToken> {
     return this.researchTokenRepository.getOneByResearcherId(researcherId);

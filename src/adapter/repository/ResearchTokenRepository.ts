@@ -8,10 +8,32 @@ export default class ResearchTokenRepository implements IResearchTokenRepository
     private readonly http: HttpClient
   ) { }
 
-  getAll(): Promise<ResearchToken[]> {
-    return this.http.get('research-token');
+  getAll(filter?: (Partial<ResearchToken> & { full?: boolean })): Promise<ResearchToken[]> {
+    let query: string = "";
+    if (filter) {
+      let i = 0;
+      Object.entries(filter).map((item, idx) => {
+        if (item[1]) {
+          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
+          query = `${query}${string}`;
+          i++;
+        }
+      });
+    }
+
+    return this.http.get(`research-token/list${query}`);
   }
-  getOne(id: string): Promise<ResearchToken> {
+  getOne(filter?: (Partial<ResearchToken> & { full?: boolean })): Promise<ResearchToken> {
+    let query: string = "";
+    if (filter) {
+      Object.entries(filter).map((item, idx) => {
+        const string = ((idx === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
+        query = `${query}${string}`;
+      });
+    }
+    return this.http.get(`research-token${query}`);
+  }
+  getOneById(id: string): Promise<ResearchToken> {
     return this.http.get(`research-token/${id}`);
   }
   getOneByResearcherId(researcherId: string): Promise<ResearchToken> {
@@ -21,9 +43,9 @@ export default class ResearchTokenRepository implements IResearchTokenRepository
     return this.http.post(`research-token/create`, createResearchTokenDto);
   }
   update(updateResearchTokenDto: UpdateResearchTokenDto): Promise<ResearchToken> {
-    return this.http.put(`research-token/${updateResearchTokenDto.id}`, updateResearchTokenDto);
+    return this.http.put(`research-token/update/${updateResearchTokenDto.id}`, updateResearchTokenDto);
   }
   delete(id: string): Promise<void> {
-    return this.http.delete(`research-token/${id}`);
+    return this.http.delete(`research-token/delete/${id}`);
   }
 }

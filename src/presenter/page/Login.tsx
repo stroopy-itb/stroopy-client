@@ -5,11 +5,8 @@ import logo from "../../logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { authMiddleware } from "../redux/middleware/AuthMiddleware";
+import { LoginDto } from "../../adapter/dto";
 
-interface loginRequest {
-  username: string;
-  password: string;
-}
 
 export default function Login(): JSX.Element {
   const authError = useSelector((state: RootState) => state.auth.error);
@@ -18,8 +15,8 @@ export default function Login(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   const handleSubmit = async (
-    values: loginRequest,
-    { setSubmitting }: FormikHelpers<loginRequest>
+    values: LoginDto,
+    { setSubmitting }: FormikHelpers<LoginDto>
   ) => {
     const request = await dispatch(
       authMiddleware.login({

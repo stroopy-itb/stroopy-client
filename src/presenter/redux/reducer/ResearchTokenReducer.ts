@@ -85,11 +85,13 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
       loading: true,
       error: undefined
     }))
-    .addCase(researchTokenMiddleware.update.fulfilled, (state, action) => ({
-      ...state,
-      loading: false,
-      selectedResearchToken: action.payload
-    }))
+    .addCase(researchTokenMiddleware.update.fulfilled, (state, action) => {
+      const updatedTokenIdx = state.researchTokens?.findIndex((t) => t.id === action.payload.id) as number;
+      if (state.researchTokens && updatedTokenIdx !== -1) {
+        state.researchTokens[updatedTokenIdx] = action.payload;
+      }
+      state.loading = false;
+    })
     .addCase(researchTokenMiddleware.update.rejected, (state, action) => ({
       ...state,
       loading: false,
@@ -100,10 +102,13 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
       loading: true,
       error: undefined
     }))
-    .addCase(researchTokenMiddleware.delete.fulfilled, (state, action) => ({
-      ...state,
-      loading: false,
-    }))
+    .addCase(researchTokenMiddleware.delete.fulfilled, (state, action) => {
+      const deletedTokenIdx = state.researchTokens?.findIndex((t) => t.id === action.meta.arg.id) as number;
+      if (deletedTokenIdx !== -1) {
+        state.researchTokens?.splice(deletedTokenIdx, 1);
+      }
+      state.loading = false;
+    })
     .addCase(researchTokenMiddleware.delete.rejected, (state, action) => ({
       ...state,
       loading: false,

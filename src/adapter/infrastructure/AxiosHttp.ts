@@ -46,7 +46,8 @@ export default class AxiosHttp implements Required<HttpClient> {
     headers?: HttpHeader,
     extraConfig?: HttpExtraConfig
   ): Promise<T> {
-    return this.client.put(url, body, { headers, ...extraConfig })
+    const res = await this.client.put(url, body, { headers, ...extraConfig });
+    return res.data as T;
   }
 
   async delete<T>(
