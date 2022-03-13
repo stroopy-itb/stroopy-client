@@ -15,10 +15,17 @@ export const authMiddleware = {
   logout: createAsyncThunk('[Auth] Logout', async (_arg, thunkApi) => {
     try {
       return di.service.authService.logout();
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
+    } catch (error: any) {
+      return thunkApi.rejectWithValue({ message: error.message });
     }
   }),
+  reauth: createAsyncThunk('[Auth] Re-auth', async (_arg, thunkApi) => {
+    try {
+      return await di.service.userService.findCurrentUser();
+    } catch (error: any) {
+      return thunkApi.rejectWithValue({ message: error.message });
+    }
+  })
 };
 
 export default authMiddleware;

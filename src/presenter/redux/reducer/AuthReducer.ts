@@ -48,6 +48,12 @@ export const AuthReducer = createReducer(initialState, (builder) => {
     loading: false,
     error: action.error,
   }))
+  .addCase(authMiddleware.reauth.fulfilled, (state) => ({
+    ...state,
+    loading: false,
+    isAuthenticated: true,
+    error: undefined,
+  }))
 });
 
 export default AuthReducer;

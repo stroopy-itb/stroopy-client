@@ -1,5 +1,5 @@
 export default class CreateUserDto {
-  token?: string;
-  username: string;
-  password: string;
+  public readonly token?: string;
+  public readonly username: string;
+  public readonly password: string;
 }

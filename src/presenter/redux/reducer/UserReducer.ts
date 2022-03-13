@@ -37,6 +37,11 @@ export const UserReducer = createReducer(initialState, (builder) => {
       loading: false,
       user: action.payload
     }))
+    .addCase(authMiddleware.reauth.fulfilled, (state, action) => ({
+      ...state,
+      loading: false,
+      user: action.payload
+    }))
 })
 
 export default UserReducer;
