@@ -1,4 +1,4 @@
-import { ResearchToken } from "../../domain/model/ResearchToken";
+import { ResearchToken } from "../../domain/model";
 import { CreateResearchTokenDto, UpdateResearchTokenDto } from "../dto";
 import { HttpClient } from "../infrastructure";
 import { IResearchTokenRepository } from "./interface";

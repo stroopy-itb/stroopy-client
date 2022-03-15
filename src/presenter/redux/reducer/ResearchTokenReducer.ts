@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { ResearchToken } from "../../../domain/model/ResearchToken";
+import { ResearchToken } from "../../../domain/model";
 import researchTokenMiddleware from "../middleware/ResearchTokenMiddleware";
 
 export interface ResearchTokenState {

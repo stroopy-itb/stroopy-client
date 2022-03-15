@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ResearchToken } from "../../../domain/model/ResearchToken";
+import { ResearchToken } from "../../../domain/model";
 import researchTokenMiddleware from "../../redux/middleware/ResearchTokenMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 import { TokenForm } from "../../component";

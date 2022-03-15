@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateResearchTokenDto, UpdateResearchTokenDto } from "../../../adapter/dto";
-import { ResearchToken } from "../../../domain/model/ResearchToken";
+import { ResearchToken } from "../../../domain/model";
 import di from "../../di";
 
 export const researchTokenMiddleware = {

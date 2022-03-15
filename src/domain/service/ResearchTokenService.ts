@@ -1,6 +1,6 @@
 import { CreateResearchTokenDto, UpdateResearchTokenDto } from "../../adapter/dto";
 import { IResearchTokenRepository } from "../../adapter/repository/interface";
-import { ResearchToken } from "../model/ResearchToken";
+import { ResearchToken } from "../model";
 import { IResearchTokenService } from "./interface";
 
 export default class ResearchTokenService implements IResearchTokenService {

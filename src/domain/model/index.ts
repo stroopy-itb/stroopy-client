@@ -10,3 +10,5 @@ export type { default as ColorPair } from './ColorPair';
 export type { default as Result } from './Result';
 export type { default as User } from './User';
 export type { default as JwtTokens } from './JwtTokens';
+export type { default as ResearchToken } from './ResearchToken';
+export type { default as Research } from './Research';

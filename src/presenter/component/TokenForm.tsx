@@ -1,8 +1,8 @@
-import { Formik, FormikErrors } from "formik";
 import React from "react";
+import { Formik, FormikErrors } from "formik";
 import { useDispatch } from "react-redux";
-import { CreateResearchTokenDto, LoginDto } from "../../adapter/dto";
-import { ResearchToken } from "../../domain/model/ResearchToken";
+import { CreateResearchTokenDto } from "../../adapter/dto";
+import { ResearchToken } from "../../domain/model";
 import di from "../di";
 import researchTokenMiddleware from "../redux/middleware/ResearchTokenMiddleware";
 import { AppDispatch } from "../redux/store";
