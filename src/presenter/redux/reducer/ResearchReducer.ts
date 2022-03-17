@@ -33,6 +33,21 @@ const ResearchReducer = createReducer(initialState, (builder) => {
       loading: false,
       error: action.error
     }))
+    .addCase(researchMiddleware.getAllByTickets.pending, (state) => ({
+      ...state,
+      loading: true,
+      error: undefined
+    }))
+    .addCase(researchMiddleware.getAllByTickets.fulfilled, (state, action) => ({
+      ...state,
+      loading: false,
+      researches: action.payload
+    }))
+    .addCase(researchMiddleware.getAllByTickets.rejected, (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.error
+    }))
     .addCase(researchMiddleware.getOneById.pending, (state) => ({
       ...state,
       loading: true,

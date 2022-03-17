@@ -12,3 +12,5 @@ export type { default as User } from './User';
 export type { default as JwtTokens } from './JwtTokens';
 export type { default as ResearchToken } from './ResearchToken';
 export type { default as Research } from './Research';
+export type { default as ResearchSetup } from './ResearchSetup';
+export type { default as ResearchTicket } from './ResearchTicket';

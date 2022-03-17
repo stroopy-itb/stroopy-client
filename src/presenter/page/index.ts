@@ -10,3 +10,5 @@ export { default as ResearcherRoot } from "./researcher/ResearcherRoot";
 export { default as ResearcherHome } from "./researcher/ResearcherHome";
 export { default as ResearchList } from "./researcher/ResearchList";
 export { default as ResearchDetail } from "./researcher/ResearchDetail";
+export { default as RespondentResearchList } from "./respondent/RespondentResearchList";
+export { default as RespondentResearchDetail } from "./respondent/RespondentResearchDetail";

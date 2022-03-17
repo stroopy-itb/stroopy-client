@@ -1,4 +1,4 @@
-import { BaseModel, ResearchToken, User } from ".";
+import { BaseModel, ResearchSetup, ResearchToken, User } from ".";
 
 export default interface Research extends BaseModel {
   groupToken: string;
@@ -9,4 +9,5 @@ export default interface Research extends BaseModel {
   researcherId?: string;
   researcher?: User;
   researchToken?: ResearchToken;
+  researchSetup: ResearchSetup;
 }

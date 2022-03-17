@@ -21,7 +21,7 @@ export default function Home(): JSX.Element {
         <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-center">
           <button
             className="w-64 button button-nav hover:button-hover"
-            onClick={() => navigate("/setup")}
+            onClick={() => navigate("/research")}
           >
             Mulai Tes!
           </button>

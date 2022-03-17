@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateResearchDto, UpdateResearchDto } from "../../../adapter/dto";
-import { Research } from "../../../domain/model";
+import { Research, ResearchTicket } from "../../../domain/model";
 import di from "../../di";
 
 const researchMiddleware = {
@@ -8,10 +8,28 @@ const researchMiddleware = {
     ('[Research] Get all',
       async (arg, thunkApi) => {
         try {
-          const tokenRes = await di.service.researchService.getAll({ ...arg });
-          return tokenRes.map((token) => {
-            return serializeDate(token);
+          const res = await di.service.researchService.getAll({ ...arg });
+          return res.map((item) => {
+            return serializeDate(item);
           });
+        } catch (error: any) {
+          return thunkApi.rejectWithValue({ message: error.message });
+        }
+      }
+    ),
+  getAllByTickets: createAsyncThunk<Research[], Partial<ResearchTicket> | undefined>
+    ('[Research] Get all by Tickets',
+      async (arg, thunkApi) => {
+        try {
+          const res = await di.service.researchTicketService.getAll({ ...arg });
+          const extractedResearch: Research[] = [];
+          res.map((item) => {
+            if (item.research) {
+              extractedResearch.push(serializeDate(item.research));
+            }
+          });
+
+          return extractedResearch;
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -21,8 +39,8 @@ const researchMiddleware = {
     ('[Research] Get one',
       async (arg, thunkApi) => {
         try {
-          const tokenRes = await di.service.researchService.getOneById(arg.id);
-          return serializeDate(tokenRes);
+          const res = await di.service.researchService.getOneById(arg.id);
+          return serializeDate(res);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -32,8 +50,8 @@ const researchMiddleware = {
     ('[Research] Create',
       async (arg, thunkApi) => {
         try {
-          const tokenRes = await di.service.researchService.create(arg.dto);
-          return serializeDate(tokenRes);
+          const res = await di.service.researchService.create(arg.dto);
+          return serializeDate(res);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -43,8 +61,8 @@ const researchMiddleware = {
     ('[Research] Update',
       async (arg, thunkApi) => {
         try {
-          const tokenRes = await di.service.researchService.update(arg.dto);
-          return serializeDate(tokenRes);
+          const res = await di.service.researchService.update(arg.dto);
+          return serializeDate(res);
         } catch (error: any) {
           return thunkApi.rejectWithValue({ message: error.message });
         }
@@ -62,11 +80,11 @@ const researchMiddleware = {
     ),
 }
 
-const serializeDate = (token: Research) => {
+const serializeDate = (item: Research) => {
   return {
-    ...token,
-    createdAt: token.createdAt.toLocaleString(),
-    updatedAt: token.updatedAt.toLocaleString(),
+    ...item,
+    createdAt: item.createdAt.toLocaleString(),
+    updatedAt: item.updatedAt.toLocaleString(),
   }
 }
 

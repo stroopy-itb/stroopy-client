@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { UserRole } from "./domain/model/UserRole";
 import { Header, ProtectedRoute } from "./presenter/component";
-import { Home, Login, Register, AdminRoot, TokenList, AdminResearchList, ResearcherRoot, ResearchList, ResearchDetail, AdminResearchDetail } from "./presenter/page";
+import { Home, Login, Register, AdminRoot, TokenList, AdminResearchList, ResearcherRoot, ResearchList, ResearchDetail, AdminResearchDetail, RespondentResearchList, RespondentResearchDetail } from "./presenter/page";
 import { History, Setup, Stroop, Result } from "./presenter/page/respondent";
 import { authMiddleware, researchTokenMiddleware } from "./presenter/redux/middleware";
 import { AppDispatch, RootState } from "./presenter/redux/store";
@@ -51,6 +51,8 @@ function App() {
           path="result"
           element={<ProtectedRoute children={<Result />} />}
         />
+          <Route path="research" element={<ProtectedRoute children={<RespondentResearchList />} />} />
+          <Route path="research/:id" element={<ProtectedRoute children={<RespondentResearchDetail />} />} />
         <Route
           path="admin"
           element={<ProtectedRoute children={<AdminRoot />} />}
