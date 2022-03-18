@@ -11,6 +11,9 @@ export default class ResearchTicketService implements IResearchTicketService {
   public async getAll(filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
     return this.researchTicketRepository.getAll(filter);
   }
+  public async getOne(filter?: Partial<ResearchTicket>): Promise<ResearchTicket> {
+    return this.researchTicketRepository.getOne(filter);
+  }
   public async getOneById(id: string): Promise<ResearchTicket> {
     return this.researchTicketRepository.getOneById(id);
   }
