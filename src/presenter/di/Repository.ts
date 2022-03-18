@@ -1,4 +1,11 @@
-import { AuthRepository, ResearchRepository, ResearchTicketRepository, ResearchTokenRepository, UserRepository } from "../../adapter/repository";
+import { 
+  AuthRepository, 
+  ResearchRepository, 
+  ResearchSetupRepository, 
+  ResearchTicketRepository, 
+  ResearchTokenRepository, 
+  UserRepository 
+} from "../../adapter/repository";
 import { Infrastructure, Repository } from "./interface";
 
 export default (infrastructure: Infrastructure): Repository => ({
@@ -6,5 +13,6 @@ export default (infrastructure: Infrastructure): Repository => ({
   userRepository: new UserRepository(infrastructure.http),
   researchTokenRepository: new ResearchTokenRepository(infrastructure.http),
   researchRepository: new ResearchRepository(infrastructure.http),
+  researchSetupRepository: new ResearchSetupRepository(infrastructure.http),
   researchTicketRepository: new ResearchTicketRepository(infrastructure.http)
 });

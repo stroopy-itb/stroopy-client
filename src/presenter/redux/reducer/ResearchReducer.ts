@@ -112,6 +112,44 @@ const ResearchReducer = createReducer(initialState, (builder) => {
       loading: false,
       error: action.error
     }))
+    .addCase(researchMiddleware.createResearchSetup.pending, (state) => ({
+      ...state,
+      loading: true,
+      error: undefined
+    }))
+    .addCase(researchMiddleware.createResearchSetup.fulfilled, (state, action) => {
+      state.loading = false;
+      if (state.selectedResearch) {
+        state.selectedResearch = {
+          ...state.selectedResearch,
+          researchSetup: action.payload
+        };
+      }
+    })
+    .addCase(researchMiddleware.createResearchSetup.rejected, (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.error
+    }))
+    .addCase(researchMiddleware.updateResearchSetup.pending, (state) => ({
+      ...state,
+      loading: true,
+      error: undefined
+    }))
+    .addCase(researchMiddleware.updateResearchSetup.fulfilled, (state, action) => {
+      state.loading = false;
+      if (state.selectedResearch) {
+        state.selectedResearch = {
+          ...state.selectedResearch,
+          researchSetup: action.payload
+        };
+      }
+    })
+    .addCase(researchMiddleware.updateResearchSetup.rejected, (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.error
+    }))
 });
 
 export default ResearchReducer;

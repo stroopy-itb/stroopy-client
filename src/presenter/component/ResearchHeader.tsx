@@ -1,5 +1,6 @@
 import { Research, User } from "../../domain/model";
 import { UserRole } from "../../domain/model/UserRole";
+import { ResearchSetupInfo } from ".";
 
 export default function ResearchHeader(props: {
   research?: Research;
@@ -88,6 +89,8 @@ export default function ResearchHeader(props: {
           ""
         )}
       </div>
+      <h3 className="text-lg font-bold text-white">Pengaturan Penelitian</h3>
+      <ResearchSetupInfo research={research} user={user} />
     </div>
   );
 }

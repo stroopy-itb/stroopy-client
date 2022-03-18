@@ -5,3 +5,4 @@ export { default as ResearchForm } from "./ResearchForm";
 export { default as ResearchTicketForm } from "./ResearchTicketForm";
 export { default as ResearchTable } from "./ResearchTable";
 export { default as ResearchHeader } from "./ResearchHeader";
+export { default as ResearchSetupInfo } from "./ResearchSetupInfo";

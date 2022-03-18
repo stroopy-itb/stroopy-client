@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateResearchDto, UpdateResearchDto } from "../../../adapter/dto";
-import { Research, ResearchTicket } from "../../../domain/model";
+import { CreateResearchDto, CreateResearchSetupDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
+import { Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
 import di from "../../di";
 
 const researchMiddleware = {
@@ -78,9 +78,39 @@ const researchMiddleware = {
         }
       }
     ),
+  createResearchSetup: createAsyncThunk<ResearchSetup, { dto: CreateResearchSetupDto }>
+    ('[Research] Create Setup',
+      async (arg, thunkApi) => {
+        try {
+          const res = await di.service.researchSetupService.create(arg.dto);
+          return {
+            ...res,
+            createdAt: res.createdAt.toLocaleString(),
+            updatedAt: res.updatedAt.toLocaleString(),
+          }
+        } catch (error: any) {
+          return thunkApi.rejectWithValue({ message: error.message });
+        }
+      }
+    ),
+  updateResearchSetup: createAsyncThunk<ResearchSetup, { dto: UpdateResearchSetupDto }>
+    ('[Research] Update Setup',
+      async (arg, thunkApi) => {
+        try {
+          const res = await di.service.researchSetupService.update(arg.dto);
+          return {
+            ...res,
+            createdAt: res.createdAt.toLocaleString(),
+            updatedAt: res.updatedAt.toLocaleString(),
+          }
+        } catch (error: any) {
+          return thunkApi.rejectWithValue({ message: error.message });
+        }
+      }
+    ),
 }
 
-const serializeDate = (item: Research) => {
+const serializeDate = (item: Research): Research => {
   return {
     ...item,
     createdAt: item.createdAt.toLocaleString(),

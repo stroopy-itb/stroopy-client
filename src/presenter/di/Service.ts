@@ -1,4 +1,11 @@
-import { AuthService, ResearchService, ResearchTicketService, ResearchTokenService, UserService } from "../../domain/service";
+import { 
+  AuthService, 
+  ResearchService, 
+  ResearchSetupService, 
+  ResearchTicketService, 
+  ResearchTokenService, 
+  UserService 
+} from "../../domain/service";
 import { Repository, Service } from "./interface";
 
 export default (repository: Repository): Service => ({
@@ -6,5 +13,6 @@ export default (repository: Repository): Service => ({
   userService: new UserService(repository.userRepository),
   researchTokenService: new ResearchTokenService(repository.researchTokenRepository),
   researchService: new ResearchService(repository.researchRepository),
+  researchSetupService: new ResearchSetupService(repository.researchSetupRepository),
   researchTicketService: new ResearchTicketService(repository.researchTicketRepository)
 });

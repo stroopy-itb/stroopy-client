@@ -1,4 +1,4 @@
 export default class CreateResearchTokenDto {
-  public readonly token: string;
-  public readonly expiredAt: Date | string;
+  public token: string;
+  public expiredAt: Date | string;
 }
