@@ -11,6 +11,7 @@ interface CreateResearchRequest {
   city: string;
   location: string;
   address: string;
+  rounds: number;
 }
 
 export default function ResearchForm(props: {
@@ -48,7 +49,13 @@ export default function ResearchForm(props: {
       await dispatch(
         researchMiddleware.create({
           dto: {
-            ...values,
+            groupToken: values.groupToken,
+            city: values.city,
+            location: values.location,
+            address: values.address,
+            researchSetup: {
+              rounds: values.rounds,
+            },
             researcherId: researcherId || "",
             researchTokenId: researchTokenId || "",
           },
@@ -73,6 +80,7 @@ export default function ResearchForm(props: {
           city: data?.city || "",
           location: data?.location || "",
           address: data?.address || "",
+          rounds: 50,
         }}
         onSubmit={handleSubmit}
         validate={async (values) => {
@@ -158,6 +166,23 @@ export default function ResearchForm(props: {
                 autoFocus
               />
               {<p className="text-white">{errors.address}</p>}
+            </div>
+            <div className="form-control">
+              <label htmlFor="rounds" className="text-black">
+                Pengulangan
+              </label>
+              <input
+                type="number"
+                min={30}
+                max={200}
+                name="rounds"
+                id="rounds"
+                placeholder="Pengulangan"
+                value={values.rounds}
+                onChange={handleChange}
+                autoFocus
+              />
+              {<p className="text-white">{errors.rounds}</p>}
             </div>
             <button
               type="submit"

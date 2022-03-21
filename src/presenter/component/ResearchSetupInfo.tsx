@@ -34,17 +34,21 @@ export default function ResearchSetupInfo(props: {
               <tr>
                 <td className="py-1 px-2">{research.researchSetup.rounds}</td>
                 <td className="py-1 px-2 text-right">
-                  <button
-                    className="button button-action p-3"
-                    onClick={() =>
-                      setSetupForm({
-                        isOpen: true,
-                        data: research?.researchSetup,
-                      })
-                    }
-                  >
-                    Update
-                  </button>
+                  {user?.role === UserRole.Researcher ? (
+                    <button
+                      className="button button-action p-3"
+                      onClick={() =>
+                        setSetupForm({
+                          isOpen: true,
+                          data: research?.researchSetup,
+                        })
+                      }
+                    >
+                      Update
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </td>
               </tr>
             </tbody>
