@@ -9,6 +9,6 @@ export default interface Research extends BaseModel {
   researcherId?: string;
   researcher?: User;
   researchToken?: ResearchToken;
-  researchSetup?: ResearchSetup;
+  researchSetup: ResearchSetup;
   researchTickets: ResearchTicket[];
 }

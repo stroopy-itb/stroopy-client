@@ -1,6 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateResearchDto, CreateResearchSetupDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
-import { Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
+import { ColorPair, Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
 import di from "../../di";
 
 const researchMiddleware = {
@@ -108,6 +108,11 @@ const researchMiddleware = {
         }
       }
     ),
+  updateLocalSetup: createAction<{
+    pairs: ColorPair[];
+    timeLimit: number;
+    answerLimit: number;
+  }>('[Research] Update Local Setup')
 }
 
 const serializeDate = (item: Research): Research => {

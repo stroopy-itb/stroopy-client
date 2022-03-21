@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ResearchHeader } from "../../component";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -20,11 +20,19 @@ export default function RespodentResearchDetail(): JSX.Element {
     if (id && research?.id !== id) {
       dispatch(researchMiddleware.getOneById({ id }));
     }
-  }, [id, research]);
+  }, [id, research, dispatch]);
+
+  const navigate = useNavigate();
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
       <ResearchHeader research={research} user={user} />
+      {research?.researchSetup ?
+          <button
+            className="w-64 button button-nav hover:button-hover"
+            onClick={() => navigate(`/setup/${id}`)}
+          >Mulai Tes!</button>
+      : ""}
     </div>
   );
 }

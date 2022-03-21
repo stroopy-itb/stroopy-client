@@ -1,11 +1,15 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { Research } from "../../../domain/model";
+import { ColorPair, Research } from "../../../domain/model";
 import researchMiddleware from "../middleware/ResearchMiddleware";
 
 export interface ResearchState {
   loading: boolean;
   researches?: Research[];
   selectedResearch?: Research;
+  localSetup: {
+    pairs: ColorPair[];
+    timeLimit: number;
+  };
   error?: any;
 }
 
@@ -13,6 +17,27 @@ const initialState: ResearchState = {
   loading: false,
   researches: undefined,
   selectedResearch: undefined,
+  localSetup: {
+    pairs: [
+      {
+        text: "Merah",
+        color: "#FF5555",
+      },
+      {
+        text: "Hijau",
+        color: "#58D95D",
+      },
+      {
+        text: "Biru",
+        color: "#4D74FF",
+      },
+      {
+        text: "Kuning",
+        color: "#FFB800",
+      },
+    ],
+    timeLimit: 3,
+  },
   error: undefined
 }
 
@@ -149,6 +174,10 @@ const ResearchReducer = createReducer(initialState, (builder) => {
       ...state,
       loading: false,
       error: action.error
+    }))
+    .addCase(researchMiddleware.updateLocalSetup, (state, action) => ({
+      ...state,
+      localSetup: action.payload,
     }))
 });
 

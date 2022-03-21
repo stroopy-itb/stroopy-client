@@ -1,98 +1,134 @@
 import { Formik, FormikHelpers } from "formik";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ActivityBurden,
   BodyCondition,
   DeviceType,
   RoomCondition,
 } from "../../../domain/model";
-import { RootState } from "../../redux/store";
+import { testResultMiddleware } from "../../redux/middleware";
+import { AppDispatch, RootState } from "../../redux/store";
 
 interface CreateTestDataRequest {
-  user_id: string;
-  body_condition: BodyCondition;
-  body_temp: number;
+  bodyCondition: BodyCondition;
+  bodyTemp: number;
   device: DeviceType;
-  room_condition: RoomCondition;
-  pre_activity: string;
-  pre_activity_physical_burden: ActivityBurden;
-  pre_activity_mental_burden: ActivityBurden;
-  post_activity: string;
-  post_activity_physical_burden: ActivityBurden;
-  post_activity_mental_burden: ActivityBurden;
-  exam_no: number;
+  roomCondition: RoomCondition;
+  preActivity: string;
+  preActivityPhysicalBurden: ActivityBurden;
+  preActivityMentalBurden: ActivityBurden;
+  postActivity: string;
+  postActivityPhysicalBurden: ActivityBurden;
+  postActivityMentalBurden: ActivityBurden;
+  testNo: number;
 }
 
 export default function Setup(): JSX.Element {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
+  const testResults = useSelector((state: RootState) => state.testResult.testResults);
+  const testData = useSelector((state: RootState) => state.testResult.testData);
+  
+  const { researchId } = useParams();
+
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    if (!testResults) {
+      dispatch(testResultMiddleware.getAll({ researchId: researchId }));
+    }
+  }, [testResults, researchId, dispatch]);
+
+  const countLatestTest = () => {
+    if (testResults && testResults.length !== 0) {
+      const sortedResults = testResults?.slice().sort((a, b) => b.testNo - a.testNo);
+      console.log(sortedResults);
+      
+      return sortedResults[0].testNo + 1;
+    } else {
+      console.log("empty");
+      return 1;
+    }
+  }
 
   const initialValues: CreateTestDataRequest = {
-    user_id: user?.id || "",
-    body_condition: BodyCondition.Healthy,
-    body_temp: 0,
-    device: DeviceType.PC,
-    room_condition: RoomCondition.Indoor,
-    pre_activity: "",
-    pre_activity_physical_burden: ActivityBurden.Light,
-    pre_activity_mental_burden: ActivityBurden.Light,
-    post_activity: "",
-    post_activity_physical_burden: ActivityBurden.Light,
-    post_activity_mental_burden: ActivityBurden.Light,
-    exam_no: 0,
+    bodyCondition: testData?.bodyCondition || BodyCondition.Healthy,
+    bodyTemp: testData?.bodyTemp || 0,
+    device: testData?.device || DeviceType.PC,
+    roomCondition: testData?.roomCondition || RoomCondition.Indoor,
+    preActivity: testData?.preActivity || "",
+    preActivityPhysicalBurden: testData?.preActivityPhysicalBurden || ActivityBurden.Light,
+    preActivityMentalBurden: testData?.preActivityMentalBurden || ActivityBurden.Light,
+    postActivity: testData?.postActivity || "",
+    postActivityPhysicalBurden: testData?.postActivityPhysicalBurden || ActivityBurden.Light,
+    postActivityMentalBurden: testData?.postActivityMentalBurden || ActivityBurden.Light,
+    testNo: countLatestTest(),
   };
 
   const handleSubmit = (
     values: CreateTestDataRequest,
     { setSubmitting }: FormikHelpers<CreateTestDataRequest>
   ) => {
-    console.log(values);
+    dispatch(testResultMiddleware.setTestData({ 
+      ...values,  
+      correct: 0,
+      wrong: 0,
+      unanswered: 0,
+      rtca: 0,
+      id: '',
+      researchId: '',
+      respondentId: '',
+      createdAt: new Date().toLocaleString(),
+      updatedAt: new Date().toLocaleString(),
+    }));
     setSubmitting(false);
-    // navigate("/test");
+    navigate(`/test/${researchId}`);
   };
 
   return (
     <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-center">
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ handleChange, handleSubmit, isSubmitting }) => (
+        {({ values, isSubmitting, handleChange, handleSubmit }) => (
           <form onSubmit={handleSubmit} className="md:w-1/2">
-            <input type="hidden" name="user_id" />
             <div className="grid gap-7">
                 <div className="form-control">
-                  <label htmlFor="exam_no">Pengujian ke</label>
+                  <label htmlFor="testNo">Pengujian ke</label>
                   <input
                     required
                     type="number"
-                    name="exam_no"
-                    id="exam_no"
+                    name="testNo"
+                    id="testNo"
                     placeholder="Pengujian ke"
+                    value={values.testNo}
                     onChange={handleChange}
                   />
                 </div>
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="form-control">
-                  <label htmlFor="body_condition">Kondisi Tubuh</label>
+                  <label htmlFor="bodyCondition">Kondisi Tubuh</label>
                   <select
                     required
-                    name="body_condition"
-                    id="body_condition"
+                    name="bodyCondition"
+                    id="bodyCondition"
                     placeholder="Kondisi Tubuh"
+                    value={values.bodyCondition}
                     onChange={handleChange}
                   >
                     {Object.entries(BodyCondition).map((item) => (
-                      <option value={item[0]}>{item[1]}</option>
+                      <option key={item[0]} value={item[0]}>{item[1]}</option>
                     ))}
                   </select>
                 </div>
                 <div className="form-control">
-                  <label htmlFor="body_temp">Temperatur Tubuh</label>
+                  <label htmlFor="bodyTemp">Temperatur Tubuh</label>
                   <input
                     required
                     type="number"
-                    name="body_temp"
-                    id="body_temp"
+                    name="bodyTemp"
+                    id="bodyTemp"
                     placeholder="Suhu Tubuh"
+                    value={values.bodyTemp}
                     onChange={handleChange}
                   />
                 </div>
@@ -105,23 +141,25 @@ export default function Setup(): JSX.Element {
                     name="device"
                     id="device"
                     placeholder="Tipe Device"
+                    value={values.device}
                     onChange={handleChange}
                   >
                     {Object.entries(DeviceType).map((item) => (
-                      <option value={item[0]}>{item[1]}</option>
+                      <option key={item[0]} value={item[0]}>{item[1]}</option>
                     ))}
                   </select>
                 </div>
                 <div className="form-control">
-                  <label htmlFor="room_condition">Kondisi Ruangan</label>
+                  <label htmlFor="roomCondition">Kondisi Ruangan</label>
                   <select
                     required
-                    name="room_condition"
-                    id="room_condition"
+                    name="roomCondition"
+                    id="roomCondition"
+                    value={values.roomCondition}
                     onChange={handleChange}
                   >
                     {Object.entries(RoomCondition).map((item) => (
-                      <option value={item[0]}>{item[1]}</option>
+                      <option key={item[0]} value={item[0]}>{item[1]}</option>
                     ))}
                   </select>
                 </div>
@@ -129,86 +167,92 @@ export default function Setup(): JSX.Element {
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="grid gap-5">
                   <div className="form-control">
-                    <label htmlFor="pre_activity">Aktivitas Sebelum</label>
+                    <label htmlFor="preActivity">Aktivitas Sebelum</label>
                     <input
                       required
                       type="text"
-                      name="pre_activity"
-                      id="pre_activity"
+                      name="preActivity"
+                      id="preActivity"
                       placeholder="Aktivitas Sebelum"
+                    value={values.preActivity}
                       onChange={handleChange}
                     />
                   </div>
                   <div className="form-control">
-                    <label htmlFor="pre_activity_physical_burden">
+                    <label htmlFor="preActivityPhysicalBurden">
                       Beban Fisik
                     </label>
                     <select
                       required
-                      name="pre_activity_physical_burden"
-                      id="pre_activity_physical_burden"
+                      name="preActivityPhysicalBurden"
+                      id="preActivityPhysicalBurden"
+                    value={values.preActivityPhysicalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
                       ))}
                     </select>
                   </div>
                   <div className="form-control">
-                    <label htmlFor="pre_activity_mental_burden">
+                    <label htmlFor="preActivityMentalBurden">
                       Beban Mental
                     </label>
                     <select
                       required
-                      name="pre_activity_mental_burden"
-                      id="pre_activity_mental_burden"
+                      name="preActivityMentalBurden"
+                      id="preActivityMentalBurden"
+                    value={values.preActivityMentalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
                       ))}
                     </select>
                   </div>
                 </div>
                 <div className="grid gap-5">
                   <div className="form-control">
-                    <label htmlFor="post_activity">Aktivitas Sesudah</label>
+                    <label htmlFor="postActivity">Aktivitas Sesudah</label>
                     <input
                       required
                       type="text"
-                      name="post_activity"
-                      id="post_activity"
+                      name="postActivity"
+                      id="postActivity"
                       placeholder="Aktivitas Sesudah"
+                    value={values.postActivity}
                       onChange={handleChange}
                     />
                   </div>
                   <div className="form-control">
-                    <label htmlFor="post_activity_physical_burden">
+                    <label htmlFor="postActivityPhysicalBurden">
                       Beban Fisik
                     </label>
                     <select
                       required
-                      name="post_activity_physical_burden"
-                      id="post_activity_physical_burden"
+                      name="postActivityPhysicalBurden"
+                      id="postActivityPhysicalBurden"
+                    value={values.postActivityPhysicalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
                       ))}
                     </select>
                   </div>
                   <div className="form-control">
-                    <label htmlFor="post_activity_mental_burden">
+                    <label htmlFor="postActivityMentalBurden">
                       Beban Mental
                     </label>
                     <select
                       required
-                      name="post_activity_mental_burden"
-                      id="post_activity_mental_burden"
+                      name="postActivityMentalBurden"
+                      id="postActivityMentalBurden"
+                    value={values.postActivityMentalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
                       ))}
                     </select>
                   </div>

@@ -4,6 +4,7 @@ import {
   IResearchSetupService, 
   IResearchTicketService, 
   IResearchTokenService, 
+  ITestResultService, 
   IUserService 
 } from "../../../domain/service/interface";
 
@@ -14,4 +15,5 @@ export default interface Service {
   researchService: IResearchService;
   researchSetupService: IResearchSetupService;
   researchTicketService: IResearchTicketService;
+  testResultService: ITestResultService;
 }

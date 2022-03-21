@@ -7,3 +7,4 @@ export { default as UpdateResearchDto } from './UpdateResearchDto';
 export { default as CreateResearchSetupDto } from './CreateResearchSetupDto';
 export { default as UpdateResearchSetupDto } from './UpdateResearchSetupDto';
 export { default as CreateResearchTicketDto } from './CreateResearchTicketDto';
+export { default as CreateTestResultDto } from './CreateTestResultDto';

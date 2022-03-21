@@ -12,7 +12,7 @@ export default class ResearchRepository implements IResearchRepository {
     let query: string = "";
     if (filter) {
       let i = 0;
-      Object.entries(filter).map((item, idx) => {
+      Object.entries(filter).map((item) => {
         if (item[1]) {
           const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
           query = `${query}${string}`;
@@ -26,11 +26,16 @@ export default class ResearchRepository implements IResearchRepository {
   getOne(filter?: (Partial<Research> & { full?: boolean })): Promise<Research> {
     let query: string = "";
     if (filter) {
-      Object.entries(filter).map((item, idx) => {
-        const string = ((idx === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-        query = `${query}${string}`;
+      let i = 0;
+      Object.entries(filter).map((item) => {
+        if (item[1]) {
+          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
+          query = `${query}${string}`;
+          i++;
+        }
       });
     }
+
     return this.http.get(`research${query}`);
   }
   getOneById(id: string): Promise<Research> {

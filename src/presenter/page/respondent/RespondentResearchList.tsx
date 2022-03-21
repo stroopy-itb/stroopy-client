@@ -12,10 +12,12 @@ export default function RespondentResearchList(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(researchMiddleware.getAllByTickets());
+    if (!researches) {
+      dispatch(researchMiddleware.getAllByTickets());
+    }
   }, [researches, dispatch]);
 
-  const [modal, setModal] = useState<{isOpen: boolean;}>({isOpen: false});
+  const [modal, setModal] = useState<{ isOpen: boolean }>({ isOpen: false });
 
   Modal.setAppElement("#root");
   return (

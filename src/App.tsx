@@ -3,18 +3,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { UserRole } from "./domain/model/UserRole";
 import { Header, ProtectedRoute } from "./presenter/component";
-import { Home, Login, Register, AdminRoot, TokenList, AdminResearchList, ResearcherRoot, ResearchList, ResearchDetail, AdminResearchDetail, RespondentResearchList, RespondentResearchDetail } from "./presenter/page";
+import {
+  Home,
+  Login,
+  Register,
+  AdminRoot,
+  TokenList,
+  AdminResearchList,
+  ResearcherRoot,
+  ResearchList,
+  ResearchDetail,
+  AdminResearchDetail,
+  RespondentResearchList,
+  RespondentResearchDetail,
+} from "./presenter/page";
 import { History, Setup, Stroop, Result } from "./presenter/page/respondent";
-import { authMiddleware, researchTokenMiddleware } from "./presenter/redux/middleware";
+import {
+  authMiddleware,
+  researchTokenMiddleware,
+} from "./presenter/redux/middleware";
 import { AppDispatch, RootState } from "./presenter/redux/store";
 
 function App() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const user = useSelector(
-    (state: RootState) => state.user.user
-  );
+  const user = useSelector((state: RootState) => state.user.user);
   const researchersToken = useSelector(
     (state: RootState) => state.researchToken.researchersToken
   );
@@ -30,7 +44,9 @@ function App() {
       });
     }
     if (user?.role === UserRole.Researcher && !researchersToken) {
-      dispatch(researchTokenMiddleware.getOneByResearcherId({ researcherId: user.id }))
+      dispatch(
+        researchTokenMiddleware.getOneByResearcherId({ researcherId: user.id })
+      );
     }
   }, [isAuthenticated]);
 
@@ -45,14 +61,20 @@ function App() {
           path="history"
           element={<ProtectedRoute children={<History />} />}
         />
-        <Route path="setup" element={<Setup />} />
-        <Route path="test" element={<ProtectedRoute children={<Stroop />} />} />
         <Route
-          path="result"
+          path="research"
+          element={<ProtectedRoute children={<RespondentResearchList />} />}
+        />
+        <Route
+          path="research/:id"
+          element={<ProtectedRoute children={<RespondentResearchDetail />} />}
+        ></Route>
+        <Route path="setup/:researchId" element={<Setup />} />
+        <Route path="test/:researchId" element={<ProtectedRoute children={<Stroop />} />} />
+        <Route
+          path="result/:researchId"
           element={<ProtectedRoute children={<Result />} />}
         />
-          <Route path="research" element={<ProtectedRoute children={<RespondentResearchList />} />} />
-          <Route path="research/:id" element={<ProtectedRoute children={<RespondentResearchDetail />} />} />
         <Route
           path="admin"
           element={<ProtectedRoute children={<AdminRoot />} />}

@@ -4,3 +4,4 @@ export type { default as IResearchTokenRepository } from './IResearchTokenReposi
 export type { default as IResearchRepository } from './IResearchRepository';
 export type { default as IResearchSetupRepository } from './IResearchSetupRepository';
 export type { default as IResearchTicketRepository } from './IResearchTicketRepository';
+export type { default as ITestResultRepository } from './ITestResultRepository';

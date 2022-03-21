@@ -14,3 +14,4 @@ export type { default as ResearchToken } from './ResearchToken';
 export type { default as Research } from './Research';
 export type { default as ResearchSetup } from './ResearchSetup';
 export type { default as ResearchTicket } from './ResearchTicket';
+export type { default as TestResult } from './TestResult';
