@@ -24,7 +24,6 @@ function App() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const authLoading = useSelector((state: RootState) => state.auth.loading);
 
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
@@ -42,11 +41,6 @@ function App() {
   return (
     <div className="bg-black px-10 min-h-screen flex flex-col justify-start items-stretch">
       <Header />
-      {authLoading ? (
-        <h1 className="flex-grow text-4xl font-bold text-white text-center">
-          Memuat...
-        </h1>
-      ) : (
         <Routes>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -88,7 +82,6 @@ function App() {
             <Route path="research/:id" element={<ResearchDetail />} />
           </Route>
         </Routes>
-      )}
     </div>
   );
 }
