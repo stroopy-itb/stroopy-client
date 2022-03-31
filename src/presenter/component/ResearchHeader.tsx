@@ -9,8 +9,6 @@ export default function ResearchHeader(props: {
 }): JSX.Element {
   const { research, user, tokenExpired } = props;
 
-  console.log(tokenExpired);
-
   return (
     <div className="grid grid-flow-row gap-5 justify-items-center content-start">
       <h1 className="text-4xl font-bold text-white">Detail Penelitian</h1>
@@ -93,7 +91,7 @@ export default function ResearchHeader(props: {
         )}
       </div>
       <h3 className="text-lg font-bold text-white">Pengaturan Penelitian</h3>
-      <ResearchSetupInfo research={research} user={user} />
+      <ResearchSetupInfo research={research} user={user} tokenExpired={tokenExpired} />
     </div>
   );
 }

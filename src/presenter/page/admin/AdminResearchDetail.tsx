@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ResearchHeader } from "../../component";
@@ -22,13 +22,12 @@ export default function AdminResearchDetail(): JSX.Element {
     }
   }, [id, research, dispatch]);
 
-  const [currentDate] = useState(new Date());
   const tokenExpired = useCallback(() => {
     if (research?.researchToken) {
-      return currentDate > research.researchToken.expiredAt;
+      return Date.now() > new Date(research.researchToken.expiredAt).valueOf();
     }
     return true;
-  }, [research, currentDate]);
+  }, [research]);
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">

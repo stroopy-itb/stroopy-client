@@ -1,20 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Research } from "../../../domain/model";
+import { UserRole } from "../../../domain/model/UserRole";
 import { ResearchForm, ResearchTable } from "../../component";
+import { researchTokenMiddleware } from "../../redux/middleware";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
 export default function ResearchList(): JSX.Element {
+  const user = useSelector((state: RootState) => state.user.user);
   const researches = useSelector(
     (state: RootState) => state.research.researches
+  );
+  const researchersToken = useSelector(
+    (state: RootState) => state.researchToken.researchersToken
   );
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
+    if (user && user.role === UserRole.Researcher && !researchersToken) {
+      dispatch(
+        researchTokenMiddleware.getOneByResearcherId({ researcherId: user.id })
+      );
+    }
     if (!researches) dispatch(researchMiddleware.getAll());
-  }, [researches]);
+  }, [user, researchersToken, researches, dispatch]);
 
   const [researchForm, setTokenForm] = useState<{
     isOpen: boolean;
@@ -29,17 +40,29 @@ export default function ResearchList(): JSX.Element {
   };
 
   Modal.setAppElement("#root");
+
+  const tokenExpired = useCallback(() => {
+    if (researchersToken) {
+      return Date.now() > new Date(researchersToken.expiredAt).valueOf();
+    }
+    return true;
+  }, [researchersToken]);
+
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
       <h1 className="text-4xl font-bold text-white">Penelitian</h1>
       <ResearchTable researches={researches} />
       <div className="justify-self-stretch flex justify-between">
-        <button
-          onClick={() => showModal(undefined)}
-          className="button button-action py-3 bg-green"
-        >
-          Buat Penelitian Baru
-        </button>
+        {!tokenExpired() ? (
+          <button
+            onClick={() => showModal(undefined)}
+            className="button button-action py-3 bg-green"
+          >
+            Buat Penelitian Baru
+          </button>
+        ) : (
+          ""
+        )}
         {/* <div className="rounded-2xl bg-white flex">
           <button className="py-2 px-4 text-gray-400">Prev</button>
           <button className="py-2 px-4 bg-blue text-white">1</button>

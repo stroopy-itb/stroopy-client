@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResearchHeader } from "../../component";
@@ -30,8 +30,6 @@ export default function RespodentResearchDetail(): JSX.Element {
     }
     return true;
   }, [research]);
-
-  console.log(tokenExpired());
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">

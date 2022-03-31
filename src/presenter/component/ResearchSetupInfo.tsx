@@ -9,8 +9,9 @@ import { AppDispatch } from "../redux/store";
 export default function ResearchSetupInfo(props: {
   research?: Research;
   user?: User;
+  tokenExpired: boolean;
 }): JSX.Element {
-  const { research, user } = props;
+  const { research, user, tokenExpired } = props;
 
   const [setupForm, setSetupForm] = useState({
     isOpen: false,
@@ -34,7 +35,7 @@ export default function ResearchSetupInfo(props: {
               <tr>
                 <td className="py-1 px-2">{research.researchSetup.rounds}</td>
                 <td className="py-1 px-2 text-right">
-                  {user?.role === UserRole.Researcher ? (
+                  {user?.role === UserRole.Researcher && !tokenExpired ? (
                     <button
                       className="button button-action p-3"
                       onClick={() =>
@@ -53,7 +54,7 @@ export default function ResearchSetupInfo(props: {
               </tr>
             </tbody>
           </table>
-        ) : user?.role === UserRole.Researcher ? (
+        ) : user?.role === UserRole.Researcher && !tokenExpired ? (
           <button
             className="button bg-red w-full"
             onClick={() =>
