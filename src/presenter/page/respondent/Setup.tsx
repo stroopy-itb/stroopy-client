@@ -27,10 +27,11 @@ interface CreateTestDataRequest {
 
 export default function Setup(): JSX.Element {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user.user);
-  const testResults = useSelector((state: RootState) => state.testResult.testResults);
+  const testResults = useSelector(
+    (state: RootState) => state.testResult.testResults
+  );
   const testData = useSelector((state: RootState) => state.testResult.testData);
-  
+
   const { researchId } = useParams();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -42,15 +43,16 @@ export default function Setup(): JSX.Element {
 
   const countLatestTest = () => {
     if (testResults && testResults.length !== 0) {
-      const sortedResults = testResults?.slice().sort((a, b) => b.testNo - a.testNo);
-      console.log(sortedResults);
-      
+      const sortedResults = testResults
+        ?.slice()
+        .sort((a, b) => b.testNo - a.testNo);
+
       return sortedResults[0].testNo + 1;
     } else {
       console.log("empty");
       return 1;
     }
-  }
+  };
 
   const initialValues: CreateTestDataRequest = {
     bodyCondition: testData?.bodyCondition || BodyCondition.Healthy,
@@ -58,11 +60,15 @@ export default function Setup(): JSX.Element {
     device: testData?.device || DeviceType.PC,
     roomCondition: testData?.roomCondition || RoomCondition.Indoor,
     preActivity: testData?.preActivity || "",
-    preActivityPhysicalBurden: testData?.preActivityPhysicalBurden || ActivityBurden.Light,
-    preActivityMentalBurden: testData?.preActivityMentalBurden || ActivityBurden.Light,
+    preActivityPhysicalBurden:
+      testData?.preActivityPhysicalBurden || ActivityBurden.Light,
+    preActivityMentalBurden:
+      testData?.preActivityMentalBurden || ActivityBurden.Light,
     postActivity: testData?.postActivity || "",
-    postActivityPhysicalBurden: testData?.postActivityPhysicalBurden || ActivityBurden.Light,
-    postActivityMentalBurden: testData?.postActivityMentalBurden || ActivityBurden.Light,
+    postActivityPhysicalBurden:
+      testData?.postActivityPhysicalBurden || ActivityBurden.Light,
+    postActivityMentalBurden:
+      testData?.postActivityMentalBurden || ActivityBurden.Light,
     testNo: countLatestTest(),
   };
 
@@ -70,18 +76,20 @@ export default function Setup(): JSX.Element {
     values: CreateTestDataRequest,
     { setSubmitting }: FormikHelpers<CreateTestDataRequest>
   ) => {
-    dispatch(testResultMiddleware.setTestData({ 
-      ...values,  
-      correct: 0,
-      wrong: 0,
-      unanswered: 0,
-      rtca: 0,
-      id: '',
-      researchId: '',
-      respondentId: '',
-      createdAt: new Date().toLocaleString(),
-      updatedAt: new Date().toLocaleString(),
-    }));
+    dispatch(
+      testResultMiddleware.setTestData({
+        ...values,
+        correct: 0,
+        wrong: 0,
+        unanswered: 0,
+        rtca: 0,
+        id: "",
+        researchId: "",
+        respondentId: "",
+        createdAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
+      })
+    );
     setSubmitting(false);
     navigate(`/test/${researchId}`);
   };
@@ -92,18 +100,18 @@ export default function Setup(): JSX.Element {
         {({ values, isSubmitting, handleChange, handleSubmit }) => (
           <form onSubmit={handleSubmit} className="md:w-1/2">
             <div className="grid gap-7">
-                <div className="form-control">
-                  <label htmlFor="testNo">Pengujian ke</label>
-                  <input
-                    required
-                    type="number"
-                    name="testNo"
-                    id="testNo"
-                    placeholder="Pengujian ke"
-                    value={values.testNo}
-                    onChange={handleChange}
-                  />
-                </div>
+              <div className="form-control">
+                <label htmlFor="testNo">Pengujian ke</label>
+                <input
+                  required
+                  type="number"
+                  name="testNo"
+                  id="testNo"
+                  placeholder="Pengujian ke"
+                  value={values.testNo}
+                  onChange={handleChange}
+                />
+              </div>
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="form-control">
                   <label htmlFor="bodyCondition">Kondisi Tubuh</label>
@@ -116,7 +124,9 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(BodyCondition).map((item) => (
-                      <option key={item[0]} value={item[0]}>{item[1]}</option>
+                      <option key={item[0]} value={item[0]}>
+                        {item[1]}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -145,7 +155,9 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(DeviceType).map((item) => (
-                      <option key={item[0]} value={item[0]}>{item[1]}</option>
+                      <option key={item[0]} value={item[0]}>
+                        {item[1]}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -159,7 +171,9 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(RoomCondition).map((item) => (
-                      <option key={item[0]} value={item[0]}>{item[1]}</option>
+                      <option key={item[0]} value={item[0]}>
+                        {item[1]}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -174,7 +188,7 @@ export default function Setup(): JSX.Element {
                       name="preActivity"
                       id="preActivity"
                       placeholder="Aktivitas Sebelum"
-                    value={values.preActivity}
+                      value={values.preActivity}
                       onChange={handleChange}
                     />
                   </div>
@@ -186,11 +200,13 @@ export default function Setup(): JSX.Element {
                       required
                       name="preActivityPhysicalBurden"
                       id="preActivityPhysicalBurden"
-                    value={values.preActivityPhysicalBurden}
+                      value={values.preActivityPhysicalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                          {item[1]}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -202,11 +218,13 @@ export default function Setup(): JSX.Element {
                       required
                       name="preActivityMentalBurden"
                       id="preActivityMentalBurden"
-                    value={values.preActivityMentalBurden}
+                      value={values.preActivityMentalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                          {item[1]}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -220,7 +238,7 @@ export default function Setup(): JSX.Element {
                       name="postActivity"
                       id="postActivity"
                       placeholder="Aktivitas Sesudah"
-                    value={values.postActivity}
+                      value={values.postActivity}
                       onChange={handleChange}
                     />
                   </div>
@@ -232,11 +250,13 @@ export default function Setup(): JSX.Element {
                       required
                       name="postActivityPhysicalBurden"
                       id="postActivityPhysicalBurden"
-                    value={values.postActivityPhysicalBurden}
+                      value={values.postActivityPhysicalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                          {item[1]}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -248,11 +268,13 @@ export default function Setup(): JSX.Element {
                       required
                       name="postActivityMentalBurden"
                       id="postActivityMentalBurden"
-                    value={values.postActivityMentalBurden}
+                      value={values.postActivityMentalBurden}
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>{item[1]}</option>
+                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                          {item[1]}
+                        </option>
                       ))}
                     </select>
                   </div>

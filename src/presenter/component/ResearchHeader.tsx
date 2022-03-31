@@ -5,8 +5,11 @@ import { ResearchSetupInfo } from ".";
 export default function ResearchHeader(props: {
   research?: Research;
   user?: User;
+  tokenExpired: boolean;
 }): JSX.Element {
-  const { research, user } = props;
+  const { research, user, tokenExpired } = props;
+
+  console.log(tokenExpired);
 
   return (
     <div className="grid grid-flow-row gap-5 justify-items-center content-start">
@@ -53,7 +56,7 @@ export default function ResearchHeader(props: {
                   <td className="py-1 px-2">
                     {research?.researchToken?.token}
                   </td>
-                  <td className="py-1 px-2">
+                  <td className={`py-1 px-2 ${tokenExpired ? "text-red" : ""}`}>
                     {new Date(
                       research?.researchToken?.expiredAt || ""
                     ).toLocaleString()}
