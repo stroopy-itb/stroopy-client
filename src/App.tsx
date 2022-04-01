@@ -36,7 +36,7 @@ function App() {
         navigate(prevPath);
       });
     }
-  }, [isAuthenticated, dispatch, navigate, prevPath]);
+  }, [isAuthenticated]);
 
   return (
     <div className="bg-black px-10 min-h-screen flex flex-col justify-start items-stretch">
