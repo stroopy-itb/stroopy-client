@@ -1,28 +1,63 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { UserType } from "../../../domain/model/UserRole";
+import { createReducer } from "@reduxjs/toolkit";
+import { authMiddleware } from "../middleware";
 
-interface UserState {
+interface AuthState {
   isAuthenticated: boolean;
-  auth_token?: string;
-  userId?: string;
-  name?: string;
-  type?: UserType;
+  loading: boolean;
+  error?: any;
 }
 
-const initialState: UserState = {
+const initialState: AuthState = {
   isAuthenticated: false,
-  auth_token: undefined,
-  userId: undefined,
-  name: undefined,
-  type: undefined,
+  loading: false,
+  error: undefined
 };
 
-export const setAuth = createAction<UserState>("auth/set-auth");
-
 export const AuthReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setAuth, (state, action) => {
-    state = action.payload;
-  });
+  builder
+  .addCase(authMiddleware.login.pending, (state) => ({
+    ...state,
+    loading: true,
+    user: undefined,
+    error: undefined,
+  }))
+  .addCase(authMiddleware.login.fulfilled, (state) => ({
+    ...state,
+    loading: false,
+    isAuthenticated: true,
+    error: undefined,
+  }))
+  .addCase(authMiddleware.login.rejected, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.error,
+  }))
+  .addCase(authMiddleware.logout.pending, (state) => ({
+    ...state,
+    loading: true,
+    error: undefined,
+  }))
+  .addCase(authMiddleware.logout.fulfilled, (state) => ({
+    ...state,
+    loading: false,
+    isAuthenticated: false,
+    error: undefined,
+  }))
+  .addCase(authMiddleware.logout.rejected, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.error,
+  }))
+  .addCase(authMiddleware.reauth.pending, (state) => ({
+    ...state,
+    loading: true,
+  }))
+  .addCase(authMiddleware.reauth.fulfilled, (state) => ({
+    ...state,
+    loading: false,
+    isAuthenticated: true,
+    error: undefined,
+  }))
 });
 
 export default AuthReducer;

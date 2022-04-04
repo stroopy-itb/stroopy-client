@@ -1,11 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { AuthReducer, ExamReducer } from './reducer';
+import {
+    AuthReducer,
+    ResearchReducer,
+    ResearchTokenReducer,
+    TestResultReducer,
+    UserReducer
+} from './reducer';
 
 const store = configureStore(
     {
         reducer: {
             auth: AuthReducer,
-            exam: ExamReducer
+            user: UserReducer,
+            research: ResearchReducer,
+            researchToken: ResearchTokenReducer,
+            testResult: TestResultReducer,
         }
     }
 )

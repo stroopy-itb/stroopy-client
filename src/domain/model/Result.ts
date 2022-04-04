@@ -1,6 +1,6 @@
 export default interface Result {
-    corrects: number;
-    wrongs: number;
+    correct: number;
+    wrong: number;
     unanswered: number;
     rtca: number;
 }

@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnswerRecord, AnswerStatus, Result } from "../../../domain/model";
 import ColorPair from "../../../domain/model/ColorPair";
 import { Prompt } from "../../../domain/model/Prompt";
 import Countdown from "react-countdown";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { updateResult } from "../../redux/reducer/ExamReducer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
+import { testResultMiddleware } from "../../redux/middleware";
 
 export default function Stroop(): JSX.Element {
-  const setup = useSelector((state: RootState) => state.exam.setup);
+  const setup = useSelector((state: RootState) => state.research.localSetup);
+  const research = useSelector((state: RootState) => state.research.selectedResearch);
+
+  const { researchId } = useParams();
 
   const [pairs] = useState<ColorPair[]>(setup.pairs);
 
-  const [answerLimit] = useState(setup.answerLimit);
-
   const [timeLimit] = useState(setup.timeLimit * 1000);
+
+  const [rounds, setRounds] = useState(research?.researchSetup.rounds || 50);
+
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    if (!research || !research.researchSetup || research.id !== researchId)
+    {
+      dispatch(researchMiddleware.getOneById({ id: researchId || "" }));
+    }
+
+    if (research) {
+      setRounds(research.researchSetup.rounds)
+    }
+  }, [researchId, research, dispatch] );
 
   const pickRandomPair = (): ColorPair => {
     const text = pairs[Math.floor(Math.random() * pairs.length)];
@@ -47,7 +63,7 @@ export default function Stroop(): JSX.Element {
       time: (timeLimit - time) / 1000,
     };
 
-    if (answerRecords.length >= answerLimit) {
+    if (answerRecords.length >= rounds) {
       countResult();
       return;
     }
@@ -85,17 +101,16 @@ export default function Stroop(): JSX.Element {
   // TODO: fix timer logic or create from scratch (this logic is stupid)
   const [timerId, setTimerId] = useState(Math.random());
   const resetTimer = (time: number) => {
-    if (time < 0 && answerRecords.length < answerLimit) {
+    if (time < 0 && answerRecords.length < rounds) {
       chooseAnswer(undefined, 0);
     }
   };
 
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const countResult = () => {
     let result: Result = {
-      corrects: 0,
-      wrongs: 0,
+      correct: 0,
+      wrong: 0,
       unanswered: 0,
       rtca: 0,
     };
@@ -103,11 +118,11 @@ export default function Stroop(): JSX.Element {
     answerRecords.map((record) => {
       switch (record.status) {
         case AnswerStatus.Correct:
-          ++result.corrects;
+          ++result.correct;
           result.rtca += record.time || 0;
           break;
         case AnswerStatus.Wrong:
-          ++result.wrongs;
+          ++result.wrong;
           break;
         case AnswerStatus.Unanswered:
           ++result.unanswered;
@@ -115,10 +130,10 @@ export default function Stroop(): JSX.Element {
       }
     });
 
-    result.rtca = result.rtca / result.corrects;
+    result.rtca = result.rtca / result.correct;
 
-    dispatch(updateResult(result));
-    navigate("/result");
+    dispatch(testResultMiddleware.setResultData({...result, answerRecords}));
+    navigate(`/result/${researchId}`);
   };
 
   return (
@@ -138,8 +153,12 @@ export default function Stroop(): JSX.Element {
         date={Date.now() + timeLimit}
         onTick={({ total }) => resetTimer(total)}
         overtime
+        autoStart={false}
         renderer={({ total, seconds, milliseconds, api }) => {
-          if (answerRecords.length >= answerLimit && total <= 0) {
+          if (research) {
+            api.start();
+          }
+          if (answerRecords.length >= rounds && total <= 0) {
             api.stop();
           }
           return (
@@ -159,33 +178,6 @@ export default function Stroop(): JSX.Element {
           );
         }}
       />
-
-      <div className="h-52 overflow-y-auto text-white text-center w-full md:w-1/3">
-        {answerRecords.length > 0 ? (
-          <table className="w-full">
-            <thead className="font-bold">
-              <tr>
-                <th>#</th>
-                <th>Correct</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {answerRecords.map((answerRecord, i) => {
-                return (
-                  <tr>
-                    <td>{i + 1}</td>
-                    <td>{answerRecord.status}</td>
-                    <td>{answerRecord.time}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
-          ""
-        )}
-      </div>
     </div>
   );
 }

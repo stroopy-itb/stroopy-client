@@ -2,20 +2,31 @@ import React from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../logo.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { authMiddleware } from "../redux/middleware/AuthMiddleware";
+import { LoginDto } from "../../adapter/dto";
 
-interface loginRequest {
-  username: string;
-  password: string;
-}
 
 export default function Login(): JSX.Element {
+  const authError = useSelector((state: RootState) => state.auth.error);
+
   const navigate = useNavigate();
 
-  const handleSubmit = (
-    values: loginRequest,
-    { setSubmitting }: FormikHelpers<loginRequest>
+  const dispatch = useDispatch<AppDispatch>();
+  const handleSubmit = async (
+    values: LoginDto,
+    { setSubmitting }: FormikHelpers<LoginDto>
   ) => {
-    console.log(values);
+    const request = await dispatch(
+      authMiddleware.login({
+        username: values.username,
+        password: values.password,
+      })
+    )
+    if (request.meta.requestStatus === "fulfilled") {
+      navigate("/");
+    }
     setSubmitting(false);
   };
 
@@ -25,6 +36,7 @@ export default function Login(): JSX.Element {
         <img className="w-16" src={logo} alt="logo" />
         <span className="text-white text-5xl font-bold">Stroopy</span>
       </h1>
+      {authError ? <p className="text-md text-red">{authError.message}</p> : ""}
       <Formik
         initialValues={{
           username: "",
@@ -44,6 +56,7 @@ export default function Login(): JSX.Element {
                 placeholder="Username"
                 value={values.username}
                 onChange={handleChange}
+                autoFocus
               />
               {<p className="text-white">{errors.username}</p>}
             </div>
