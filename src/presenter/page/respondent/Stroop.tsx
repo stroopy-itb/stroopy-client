@@ -1,37 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AnswerRecord, AnswerStatus, Result } from "../../../domain/model";
 import ColorPair from "../../../domain/model/ColorPair";
 import { Prompt } from "../../../domain/model/Prompt";
-import Countdown from "react-countdown";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useNavigate, useParams } from "react-router-dom";
-import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
-import { testResultMiddleware } from "../../redux/middleware";
+import {
+  researchMiddleware,
+  testResultMiddleware,
+} from "../../redux/middleware";
+import useCountDown from "react-countdown-hook";
+
+enum GameState {
+  Pending,
+  Countdown,
+  Started,
+  Ended,
+}
 
 export default function Stroop(): JSX.Element {
   const setup = useSelector((state: RootState) => state.research.localSetup);
-  const research = useSelector((state: RootState) => state.research.selectedResearch);
+  const research = useSelector(
+    (state: RootState) => state.research.selectedResearch
+  );
 
   const { researchId } = useParams();
 
   const [pairs] = useState<ColorPair[]>(setup.pairs);
 
-  const [timeLimit] = useState(setup.timeLimit * 1000);
+  const [roundTime] = useState(setup.timeLimit * 1000);
 
-  const [rounds, setRounds] = useState(research?.researchSetup.rounds || 50);
+  const rounds = useCallback(() => {
+    return research?.researchSetup.rounds || 50;
+  }, [research]);
+
+  const [started, setStarted] = useState<GameState>(GameState.Pending);
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (!research || !research.researchSetup || research.id !== researchId)
-    {
+    if (!research || !research.researchSetup || research.id !== researchId) {
       dispatch(researchMiddleware.getOneById({ id: researchId || "" }));
     }
-
-    if (research) {
-      setRounds(research.researchSetup.rounds)
-    }
-  }, [researchId, research, dispatch] );
+  }, [researchId, research, dispatch]);
 
   const pickRandomPair = (): ColorPair => {
     const text = pairs[Math.floor(Math.random() * pairs.length)];
@@ -57,22 +67,41 @@ export default function Stroop(): JSX.Element {
 
   const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
 
-  const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
-    const newRecord: AnswerRecord = {
-      status: AnswerStatus.Unanswered,
-      time: (timeLimit - time) / 1000,
-    };
+  const [timeleft, actions] = useCountDown(roundTime, 100);
 
-    if (answerRecords.length >= rounds) {
-      countResult();
+  useEffect(() => {
+    if (timeleft <= 0) {
+      switch (started) {
+        case GameState.Started:
+        case GameState.Countdown:
+          chooseAnswer(undefined, 0);
+          break;
+        case GameState.Ended:
+          countResult();
+          break;
+        default:
+          break;
+      }
+    }
+  }, [timeleft, started]);
+
+  const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
+    if (started < GameState.Started) {
+      actions.start();
+      setStarted(GameState.Started);
       return;
     }
+
+    const newRecord: AnswerRecord = {
+      status: AnswerStatus.Unanswered,
+      time: (roundTime - time) / 1000,
+    };
 
     if (!answer) {
       setAnswerRecords((oldRecord) => [...oldRecord, newRecord]);
       setStroopKey(pickRandomPair);
       setPrompt(randomPrompt);
-      setTimerId(Math.random());
+      actions.start();
       return;
     }
 
@@ -92,18 +121,18 @@ export default function Stroop(): JSX.Element {
       default:
         break;
     }
+
     setAnswerRecords((oldRecord) => [...oldRecord, newRecord]);
+
+    if (answerRecords.length >= rounds()) {
+      actions.start(5000);
+      setStarted(GameState.Ended);
+      return;
+    }
+
     setStroopKey(pickRandomPair);
     setPrompt(randomPrompt);
-    setTimerId(Math.random());
-  };
-
-  // TODO: fix timer logic or create from scratch (this logic is stupid)
-  const [timerId, setTimerId] = useState(Math.random());
-  const resetTimer = (time: number) => {
-    if (time < 0 && answerRecords.length < rounds) {
-      chooseAnswer(undefined, 0);
-    }
+    actions.start();
   };
 
   const navigate = useNavigate();
@@ -132,12 +161,12 @@ export default function Stroop(): JSX.Element {
 
     result.rtca = result.rtca / result.correct;
 
-    dispatch(testResultMiddleware.setResultData({...result, answerRecords}));
+    dispatch(testResultMiddleware.setResultData({ ...result, answerRecords }));
     navigate(`/result/${researchId}`);
   };
 
   return (
-    <div className="flex-grow grid grid-flow-row gap-16 justify-items-center content-center">
+    <div className="flex-grow grid grid-flow-row gap-12 justify-items-center content-center">
       <h1
         className="text-center text-5xl font-bold"
         style={{ color: stroopKey.color }}
@@ -145,39 +174,69 @@ export default function Stroop(): JSX.Element {
         {stroopKey.text}
       </h1>
       {/* <h2 style={{ fontWeight: "bold", color: "white" }}>{promptToString(prompt)}</h2> */}
-
-      <Countdown
-        key={timerId}
-        intervalDelay={0}
-        precision={3}
-        date={Date.now() + timeLimit}
-        onTick={({ total }) => resetTimer(total)}
-        overtime
-        autoStart={false}
-        renderer={({ total, seconds, milliseconds, api }) => {
-          if (research) {
-            api.start();
-          }
-          if (answerRecords.length >= rounds && total <= 0) {
-            api.stop();
-          }
-          return (
-            <div className="grid grid-flow-row gap-16">
-              <h2 className="text-center text-2xl font-bold text-white">{`${seconds}.${milliseconds}`}</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-10">
-                {pairs.map((pair) => (
-                  <button
-                    key={pair.text}
-                    className="p-16 rounded-lg"
-                    style={{ backgroundColor: pair.color }}
-                    onClick={() => chooseAnswer(pair, total)}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        }}
-      />
+      <h2
+        className={`text-center font-bold text-white ${
+          started === GameState.Started ? "text-2xl" : "text-4xl"
+        }`}
+      >
+        {started === GameState.Started
+          ? (timeleft / 1000).toFixed(2)
+          : (timeleft / 1000).toFixed()}
+      </h2>
+      {started < GameState.Started ? (
+        <div>
+          <p className="text-center text-xl text-white">
+            {`${rounds()} pengulangan`}
+          </p>
+          <p className="text-center text-xl text-white">
+            Pilih jawaban sesuai warna
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+      {started === GameState.Ended ? (
+        <div>
+          <p className="text-center text-xl text-white">Pengujian Selesai</p>
+        </div>
+      ) : (
+        ""
+      )}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-10">
+        {pairs.map((pair) => (
+          <div key={pair.text}>
+            <button
+              className="w-full p-16 rounded-lg"
+              style={{ backgroundColor: pair.color }}
+              onClick={() => chooseAnswer(pair, timeleft)}
+              disabled={started !== GameState.Started}
+            ></button>
+            {started < GameState.Started ? (
+              <h2
+                className="text-xl font-bold text-center"
+                style={{ color: pair.color }}
+              >
+                {pair.text}
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+        ))}
+      </div>
+      {started < GameState.Countdown ? (
+        <button
+          className="button button-nav"
+          onClick={() => {
+            actions.start(5000);
+            setStarted(GameState.Countdown);
+          }}
+        >
+          Mulai!
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

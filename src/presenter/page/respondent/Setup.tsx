@@ -10,6 +10,7 @@ import {
 } from "../../../domain/model";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
+import { translateActivityBurden, translateBodyCondition, translateRoomCondition } from "../../utils";
 
 interface CreateTestDataRequest {
   bodyCondition: BodyCondition;
@@ -125,7 +126,7 @@ export default function Setup(): JSX.Element {
                   >
                     {Object.entries(BodyCondition).map((item) => (
                       <option key={item[0]} value={item[0]}>
-                        {item[1]}
+                        {translateBodyCondition(item[1])}
                       </option>
                     ))}
                   </select>
@@ -172,7 +173,7 @@ export default function Setup(): JSX.Element {
                   >
                     {Object.entries(RoomCondition).map((item) => (
                       <option key={item[0]} value={item[0]}>
-                        {item[1]}
+                        {translateRoomCondition(item[1])}
                       </option>
                     ))}
                   </select>
@@ -205,7 +206,7 @@ export default function Setup(): JSX.Element {
                     >
                       {Object.entries(ActivityBurden).map((item) => (
                         <option key={`post-phys-${item[0]}`} value={item[0]}>
-                          {item[1]}
+                          {translateActivityBurden(item[1])}
                         </option>
                       ))}
                     </select>
@@ -223,7 +224,7 @@ export default function Setup(): JSX.Element {
                     >
                       {Object.entries(ActivityBurden).map((item) => (
                         <option key={`post-phys-${item[0]}`} value={item[0]}>
-                          {item[1]}
+                          {translateActivityBurden(item[1])}
                         </option>
                       ))}
                     </select>
@@ -255,7 +256,7 @@ export default function Setup(): JSX.Element {
                     >
                       {Object.entries(ActivityBurden).map((item) => (
                         <option key={`post-phys-${item[0]}`} value={item[0]}>
-                          {item[1]}
+                          {translateActivityBurden(item[1])}
                         </option>
                       ))}
                     </select>
@@ -273,7 +274,7 @@ export default function Setup(): JSX.Element {
                     >
                       {Object.entries(ActivityBurden).map((item) => (
                         <option key={`post-phys-${item[0]}`} value={item[0]}>
-                          {item[1]}
+                          {translateActivityBurden(item[1])}
                         </option>
                       ))}
                     </select>
