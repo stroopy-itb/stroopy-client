@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
@@ -40,6 +41,7 @@ export default function Result(): JSX.Element {
         })
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Hasil Tes Berhasil Disimpan!");
           setUploadStatus(true);
         }
       });
@@ -90,7 +92,7 @@ export default function Result(): JSX.Element {
             <tbody>
               {result.answerRecords.map((answerRecord, i) => {
                 return (
-                  <tr>
+                  <tr key={i}>
                     <td>{i + 1}</td>
                     <td>{answerRecord.status}</td>
                     <td>{answerRecord.time}</td>

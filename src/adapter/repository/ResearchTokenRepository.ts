@@ -12,7 +12,7 @@ export default class ResearchTokenRepository implements IResearchTokenRepository
     let query: string = "";
     if (filter) {
       let i = 0;
-      Object.entries(filter).map((item) => {
+      Object.entries(filter).forEach((item) => {
         if (item[1]) {
           const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
           query = `${query}${string}`;
@@ -27,7 +27,7 @@ export default class ResearchTokenRepository implements IResearchTokenRepository
     let query: string = "";
     if (filter) {
       let i = 0;
-      Object.entries(filter).map((item) => {
+      Object.entries(filter).forEach((item) => {
         if (item[1]) {
           const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
           query = `${query}${string}`;

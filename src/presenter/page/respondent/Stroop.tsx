@@ -43,7 +43,7 @@ export default function Stroop(): JSX.Element {
     }
   }, [researchId, research, dispatch]);
 
-  const pickRandomPair = (): ColorPair => {
+  const pickRandomPair = useCallback((): ColorPair => {
     const text = pairs[Math.floor(Math.random() * pairs.length)];
     let color = pairs[Math.floor(Math.random() * pairs.length)];
     while (color === text) {
@@ -54,7 +54,7 @@ export default function Stroop(): JSX.Element {
       text: text.text,
       color: color.color,
     };
-  };
+  }, [pairs]);
 
   const randomPrompt = (): Prompt => {
     // return Math.random() < 0.5 ? Prompt.Text : Prompt.Color;
@@ -69,74 +69,71 @@ export default function Stroop(): JSX.Element {
 
   const [timeleft, actions] = useCountDown(roundTime, 100);
 
-  useEffect(() => {
-    if (timeleft <= 0) {
-      switch (started) {
-        case GameState.Started:
-        case GameState.Countdown:
-          chooseAnswer(undefined, 0);
+  const chooseAnswer = useCallback(
+    (answer: ColorPair | undefined, time: number) => {
+      if (started < GameState.Started) {
+        actions.start();
+        setStarted(GameState.Started);
+        return;
+      }
+
+      const newRecord: AnswerRecord = {
+        status: AnswerStatus.Unanswered,
+        time: (roundTime - time) / 1000,
+      };
+
+      if (!answer) {
+        setAnswerRecords((oldRecord) => [...oldRecord, newRecord]);
+        setStroopKey(pickRandomPair);
+        setPrompt(randomPrompt);
+        actions.start();
+        return;
+      }
+
+      switch (prompt) {
+        case Prompt.Color:
+          newRecord.status =
+            stroopKey.color === answer.color
+              ? AnswerStatus.Correct
+              : AnswerStatus.Wrong;
           break;
-        case GameState.Ended:
-          countResult();
+        case Prompt.Text:
+          newRecord.status =
+            stroopKey.text === answer.text
+              ? AnswerStatus.Correct
+              : AnswerStatus.Wrong;
           break;
         default:
           break;
       }
-    }
-  }, [timeleft, started]);
 
-  const chooseAnswer = (answer: ColorPair | undefined, time: number) => {
-    if (started < GameState.Started) {
-      actions.start();
-      setStarted(GameState.Started);
-      return;
-    }
-
-    const newRecord: AnswerRecord = {
-      status: AnswerStatus.Unanswered,
-      time: (roundTime - time) / 1000,
-    };
-
-    if (!answer) {
       setAnswerRecords((oldRecord) => [...oldRecord, newRecord]);
+
+      if (answerRecords.length >= rounds()) {
+        actions.start(5000);
+        setStarted(GameState.Ended);
+        return;
+      }
+
       setStroopKey(pickRandomPair);
       setPrompt(randomPrompt);
       actions.start();
-      return;
-    }
-
-    switch (prompt) {
-      case Prompt.Color:
-        newRecord.status =
-          stroopKey.color === answer.color
-            ? AnswerStatus.Correct
-            : AnswerStatus.Wrong;
-        break;
-      case Prompt.Text:
-        newRecord.status =
-          stroopKey.text === answer.text
-            ? AnswerStatus.Correct
-            : AnswerStatus.Wrong;
-        break;
-      default:
-        break;
-    }
-
-    setAnswerRecords((oldRecord) => [...oldRecord, newRecord]);
-
-    if (answerRecords.length >= rounds()) {
-      actions.start(5000);
-      setStarted(GameState.Ended);
-      return;
-    }
-
-    setStroopKey(pickRandomPair);
-    setPrompt(randomPrompt);
-    actions.start();
-  };
+    },
+    [
+      actions,
+      answerRecords.length,
+      pickRandomPair,
+      prompt,
+      roundTime,
+      rounds,
+      started,
+      stroopKey.color,
+      stroopKey.text,
+    ]
+  );
 
   const navigate = useNavigate();
-  const countResult = () => {
+  const countResult = useCallback(() => {
     let result: Result = {
       correct: 0,
       wrong: 0,
@@ -144,7 +141,7 @@ export default function Stroop(): JSX.Element {
       rtca: 0,
     };
 
-    answerRecords.map((record) => {
+    answerRecords.forEach((record) => {
       switch (record.status) {
         case AnswerStatus.Correct:
           ++result.correct;
@@ -163,7 +160,23 @@ export default function Stroop(): JSX.Element {
 
     dispatch(testResultMiddleware.setResultData({ ...result, answerRecords }));
     navigate(`/result/${researchId}`);
-  };
+  }, [answerRecords, researchId, dispatch, navigate]);
+
+  useEffect(() => {
+    if (timeleft <= 0) {
+      switch (started) {
+        case GameState.Started:
+        case GameState.Countdown:
+          chooseAnswer(undefined, 0);
+          break;
+        case GameState.Ended:
+          countResult();
+          break;
+        default:
+          break;
+      }
+    }
+  }, [timeleft, started, chooseAnswer, countResult]);
 
   return (
     <div className="flex-grow grid grid-flow-row gap-12 justify-items-center content-center">

@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { Research, User } from "../../domain/model";
 import { UserRole } from "../../domain/model/UserRole";
 import researchMiddleware from "../redux/middleware/ResearchMiddleware";
@@ -96,6 +97,7 @@ function SetupForm(props: {
         })
       ).then(async (res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Pengaturan Penelitian berhasil diperbarui!");
           if (afterSubmit) afterSubmit();
         }
       });
@@ -109,6 +111,7 @@ function SetupForm(props: {
         })
       ).then(async (res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Pengaturan Penelitian berhasil dibuat!");
           if (afterSubmit) afterSubmit();
         }
       });

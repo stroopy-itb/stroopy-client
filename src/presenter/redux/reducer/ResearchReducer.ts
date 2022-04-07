@@ -175,6 +175,20 @@ const ResearchReducer = createReducer(initialState, (builder) => {
       loading: false,
       error: action.error
     }))
+    .addCase(researchMiddleware.createResearchTicket.pending, (state) => ({
+      ...state,
+      loading: true,
+      error: undefined
+    }))
+    .addCase(researchMiddleware.createResearchTicket.fulfilled, (state, action) => ({
+      ...state,
+      loading: false,
+    }))
+    .addCase(researchMiddleware.createResearchTicket.rejected, (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.error
+    }))
     .addCase(researchMiddleware.updateLocalSetup, (state, action) => ({
       ...state,
       localSetup: action.payload,

@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Research } from "../../../domain/model";
-import { ResearchForm, ResearchTable } from "../../component";
+import { ResearchTable } from "../../component";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
@@ -14,7 +12,7 @@ export default function AdminResearchList(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!researches) dispatch(researchMiddleware.getAll());
-  }, [researches]);
+  }, [researches, dispatch]);
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">

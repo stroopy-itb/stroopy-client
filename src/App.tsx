@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { Header, ProtectedRoute } from "./presenter/component";
 import {
   Home,
@@ -82,6 +83,7 @@ function App() {
             <Route path="research/:id" element={<ResearchDetail />} />
           </Route>
         </Routes>
+        <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 }

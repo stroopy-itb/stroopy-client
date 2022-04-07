@@ -13,10 +13,10 @@ export default function TestResultTable(props: {
   const { testResults } = props;
 
   return (
-    <div className="justify-self-stretch">
-      <div className="w-full bg-white rounded-2xl overflow-auto md:p-5">
+    <div className="justify-self-stretch overflow-hidden">
+    <div className="bg-white rounded-2xl overflow-auto md:p-5">
         {testResults ? (
-          <table className="table-auto w-full">
+        <table className="table-auto w-full">
             <thead>
               <tr className="font-bold">
                 <td className="py-2 px-5 border-b-2 border-black">NO.</td>

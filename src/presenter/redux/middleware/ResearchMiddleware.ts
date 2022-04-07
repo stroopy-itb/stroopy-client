@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateResearchDto, CreateResearchSetupDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
+import { CreateResearchDto, CreateResearchSetupDto, CreateResearchTicketDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
 import { ColorPair, Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
 import di from "../../di";
 
@@ -23,7 +23,7 @@ const researchMiddleware = {
         try {
           const res = await di.service.researchTicketService.getAll({ ...arg });
           const extractedResearch: Research[] = [];
-          res.map((item) => {
+          res.forEach((item) => {
             if (item.research) {
               extractedResearch.push(serializeDate(item.research));
             }
@@ -112,7 +112,22 @@ const researchMiddleware = {
     pairs: ColorPair[];
     timeLimit: number;
     answerLimit: number;
-  }>('[Research] Update Local Setup')
+  }>('[Research] Update Local Setup'),
+  createResearchTicket: createAsyncThunk<ResearchTicket, { dto: CreateResearchTicketDto }>
+    ('[Research] Create Research Ticket',
+      async (arg, thunkApi) => {
+        try {
+          const res = await di.service.researchTicketService.create(arg.dto);
+          return {
+            ...res,
+            createdAt: res.createdAt.toLocaleString(),
+            updatedAt: res.updatedAt.toLocaleString(),
+          }
+        } catch (error: any) {
+          return thunkApi.rejectWithValue({ message: error.message });
+        }
+      }
+    ),
 }
 
 const serializeDate = (item: Research): Research => {

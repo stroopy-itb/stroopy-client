@@ -1,9 +1,11 @@
 import React from "react";
 import { Formik, FormikErrors } from "formik";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import di from "../di";
-import { RootState } from "../redux/store";
+import { AppDispatch, RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { researchMiddleware } from "../redux/middleware";
+import { toast } from "react-toastify";
 
 interface CreateResearchTicketRequest {
   groupToken: string;
@@ -12,18 +14,24 @@ interface CreateResearchTicketRequest {
 export default function ResearchTicketForm(): JSX.Element {
   const respondentId = useSelector((state: RootState) => state.user.user?.id);
 
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const handleSubmit = async (values: CreateResearchTicketRequest) => {
-    await di.service.researchTicketService
-      .create({
-        groupToken: values.groupToken,
-        respondentId: respondentId || "",
-      })
-      .then(async (res) => {
+    if (respondentId) {
+      await dispatch(
+        researchMiddleware.createResearchTicket({
+          dto: {
+            groupToken: values.groupToken,
+            respondentId: respondentId,
+          },
+        })
+      ).then((res: any) => {
         if (res) {
-          navigate(`./${res.researchId}`);
+          toast.success('Berhasil Mendaftar ke Penelitian!');
+          navigate(`./${res.payload.id}`);
         }
       });
+    }
   };
 
   return (

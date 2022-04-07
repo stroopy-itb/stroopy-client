@@ -5,6 +5,7 @@ import { Research } from "../../domain/model";
 import di from "../di";
 import researchMiddleware from "../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../redux/store";
+import { toast } from "react-toastify";
 
 interface CreateResearchRequest {
   groupToken: string;
@@ -42,6 +43,7 @@ export default function ResearchForm(props: {
         })
       ).then(async (res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Penelitian berhasil diperbarui!");
           if (afterSubmit) afterSubmit();
         }
       });
@@ -62,6 +64,7 @@ export default function ResearchForm(props: {
         })
       ).then(async (res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Penelitian baru berhasil dibuat!");
           await dispatch(researchMiddleware.getAll({ full: true }));
           if (afterSubmit) afterSubmit();
         }

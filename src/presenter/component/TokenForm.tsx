@@ -6,6 +6,7 @@ import { ResearchToken } from "../../domain/model";
 import di from "../di";
 import researchTokenMiddleware from "../redux/middleware/ResearchTokenMiddleware";
 import { AppDispatch } from "../redux/store";
+import { toast } from "react-toastify";
 
 interface CreateTokenRequest extends CreateResearchTokenDto {
   token: string;
@@ -45,6 +46,7 @@ export default function TokenForm(props: {
         })
       ).then(async (res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Token berhasil diperbarui!");
           if (afterSubmit) afterSubmit();
         }
       });
@@ -52,6 +54,7 @@ export default function TokenForm(props: {
       await dispatch(researchTokenMiddleware.create({ dto: values })).then(
         async (res) => {
           if (res.meta.requestStatus === "fulfilled") {
+            toast.success("Token baru berhasil dibuat!");
             await dispatch(researchTokenMiddleware.getAll({ full: true }));
             if (afterSubmit) afterSubmit();
           }
