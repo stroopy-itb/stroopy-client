@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { ColorPair, Research } from "../../../domain/model";
+import { ColorPair, ErrorResponse, Research } from "../../../domain/model";
 import researchMiddleware from "../middleware/ResearchMiddleware";
 
 export interface ResearchState {
@@ -10,7 +10,7 @@ export interface ResearchState {
     pairs: ColorPair[];
     timeLimit: number;
   };
-  error?: any;
+  error?: ErrorResponse;
 }
 
 const initialState: ResearchState = {
@@ -56,7 +56,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.getAll.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.getAllByTickets.pending, (state) => ({
       ...state,
@@ -71,7 +71,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.getAllByTickets.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.getOneById.pending, (state) => ({
       ...state,
@@ -86,7 +86,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.getOneById.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.create.pending, (state) => ({
       ...state,
@@ -101,7 +101,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.create.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.update.pending, (state) => ({
       ...state,
@@ -118,7 +118,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.update.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.delete.pending, (state) => ({
       ...state,
@@ -135,7 +135,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.delete.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.createResearchSetup.pending, (state) => ({
       ...state,
@@ -154,7 +154,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.createResearchSetup.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.updateResearchSetup.pending, (state) => ({
       ...state,
@@ -173,7 +173,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.updateResearchSetup.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.createResearchTicket.pending, (state) => ({
       ...state,
@@ -187,7 +187,7 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.createResearchTicket.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchMiddleware.updateLocalSetup, (state, action) => ({
       ...state,

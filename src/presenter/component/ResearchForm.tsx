@@ -123,7 +123,7 @@ export default function ResearchForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.groupToken}</p>}
+              {<p className="text-red">{errors.groupToken}</p>}
             </div>
             <div className="form-control">
               <label htmlFor="city" className="text-black">
@@ -138,7 +138,7 @@ export default function ResearchForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.city}</p>}
+              {<p className="text-red">{errors.city}</p>}
             </div>
             <div className="form-control">
               <label htmlFor="location" className="text-black">
@@ -153,7 +153,7 @@ export default function ResearchForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.location}</p>}
+              {<p className="text-red">{errors.location}</p>}
             </div>
             <div className="form-control">
               <label htmlFor="address" className="text-black">
@@ -168,7 +168,7 @@ export default function ResearchForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.address}</p>}
+              {<p className="text-red">{errors.address}</p>}
             </div>
             <div className="form-control">
               <label htmlFor="rounds" className="text-black">
@@ -185,7 +185,7 @@ export default function ResearchForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.rounds}</p>}
+              {<p className="text-red">{errors.rounds}</p>}
             </div>
             <button
               type="submit"

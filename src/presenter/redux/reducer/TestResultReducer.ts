@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { AnswerRecord, Result, TestResult } from "../../../domain/model";
+import { AnswerRecord, ErrorResponse, Result, TestResult } from "../../../domain/model";
 import testResultMiddleware from "../middleware/TestResultMiddleware";
 
 export interface TestResultState {
@@ -10,7 +10,7 @@ export interface TestResultState {
   resultData?: (Result & {
     answerRecords: AnswerRecord[]
   });
-  error?: any;
+  error?: ErrorResponse;
 }
 
 const initialState: TestResultState = {
@@ -37,7 +37,7 @@ const TestResultReducer = createReducer(initialState, (builder) => {
     .addCase(testResultMiddleware.getAll.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(testResultMiddleware.getOne.pending, (state) => ({
       ...state,
@@ -52,7 +52,7 @@ const TestResultReducer = createReducer(initialState, (builder) => {
     .addCase(testResultMiddleware.getOne.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(testResultMiddleware.getOneById.pending, (state) => ({
       ...state,
@@ -67,7 +67,7 @@ const TestResultReducer = createReducer(initialState, (builder) => {
     .addCase(testResultMiddleware.getOneById.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(testResultMiddleware.create.pending, (state) => ({
       ...state,
@@ -82,7 +82,7 @@ const TestResultReducer = createReducer(initialState, (builder) => {
     .addCase(testResultMiddleware.create.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(testResultMiddleware.delete.pending, (state) => ({
       ...state,
@@ -99,7 +99,7 @@ const TestResultReducer = createReducer(initialState, (builder) => {
     .addCase(testResultMiddleware.delete.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(testResultMiddleware.setTestData, (state, action) => ({
       ...state,

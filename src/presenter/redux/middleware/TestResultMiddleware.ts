@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateTestResultDto } from "../../../adapter/dto";
-import { AnswerRecord, Result, TestResult } from "../../../domain/model";
+import { AnswerRecord, ErrorResponse, Result, TestResult } from "../../../domain/model";
 import di from "../../di";
 
 const testResultMiddleware = {
@@ -13,7 +13,7 @@ const testResultMiddleware = {
             return serializeDate(item);
           });
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -24,7 +24,7 @@ const testResultMiddleware = {
           const res = await di.service.testResultService.getOne({ ...arg });
           return serializeDate(res);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -35,7 +35,7 @@ const testResultMiddleware = {
           const res = await di.service.testResultService.getOneById(arg.id);
           return serializeDate(res);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -46,7 +46,7 @@ const testResultMiddleware = {
           const res = await di.service.testResultService.create(arg.dto);
           return serializeDate(res);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -56,7 +56,7 @@ const testResultMiddleware = {
         try {
           return await di.service.testResultService.delete(arg.id);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),

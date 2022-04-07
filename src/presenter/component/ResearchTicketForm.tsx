@@ -78,7 +78,7 @@ export default function ResearchTicketForm(): JSX.Element {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.groupToken}</p>}
+              {<p className="text-red">{errors.groupToken}</p>}
             </div>
             <button
               type="submit"

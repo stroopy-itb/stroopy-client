@@ -81,7 +81,7 @@ export default function Login(): JSX.Element {
                 required
                 autoFocus
               />
-              {<p className="text-white">{errors.username}</p>}
+              {<p className="text-red">{errors.username}</p>}
             </div>
             <div className="form-control">
               <input
@@ -92,7 +92,7 @@ export default function Login(): JSX.Element {
                 required
                 onChange={handleChange}
               />
-              {<p className="text-white">{errors.password}</p>}
+              {<p className="text-red">{errors.password}</p>}
             </div>
             <div className="form-control">
               <input
@@ -103,7 +103,7 @@ export default function Login(): JSX.Element {
                 required
                 onChange={handleChange}
               />
-              {<p className="text-white">{errors.password_confirm}</p>}
+              {<p className="text-red">{errors.password_confirm}</p>}
             </div>
             <div className="form-control">
               <input
@@ -113,7 +113,7 @@ export default function Login(): JSX.Element {
                 value={values.token}
                 onChange={handleChange}
               />
-              {<p className="text-white">{errors.token}</p>}
+              {<p className="text-red">{errors.token}</p>}
             </div>
             <button
               type="submit"

@@ -1,10 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { ErrorResponse } from "../../../domain/model";
 import { authMiddleware } from "../middleware";
 
 interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
-  error?: any;
+  error?: ErrorResponse;
 }
 
 const initialState: AuthState = {
@@ -30,7 +31,7 @@ export const AuthReducer = createReducer(initialState, (builder) => {
   .addCase(authMiddleware.login.rejected, (state, action) => ({
     ...state,
     loading: false,
-    error: action.error,
+    error: action.payload as ErrorResponse,
   }))
   .addCase(authMiddleware.logout.pending, (state) => ({
     ...state,
@@ -46,7 +47,7 @@ export const AuthReducer = createReducer(initialState, (builder) => {
   .addCase(authMiddleware.logout.rejected, (state, action) => ({
     ...state,
     loading: false,
-    error: action.error,
+    error: action.payload as ErrorResponse,
   }))
   .addCase(authMiddleware.reauth.pending, (state) => ({
     ...state,

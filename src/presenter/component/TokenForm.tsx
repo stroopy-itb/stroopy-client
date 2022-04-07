@@ -109,7 +109,7 @@ export default function TokenForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.token}</p>}
+              {<p className="text-red">{errors.token}</p>}
             </div>
             <div className="form-control">
               <label htmlFor="expiredAt" className="text-black">
@@ -124,7 +124,7 @@ export default function TokenForm(props: {
                 onChange={handleChange}
                 autoFocus
               />
-              {<p className="text-white">{errors.expiredAt}</p>}
+              {<p className="text-red">{errors.expiredAt}</p>}
             </div>
             <button
               type="submit"

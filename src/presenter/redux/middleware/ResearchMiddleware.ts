@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateResearchDto, CreateResearchSetupDto, CreateResearchTicketDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
-import { ColorPair, Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
+import { ColorPair, ErrorResponse, Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
 import di from "../../di";
 
 const researchMiddleware = {
@@ -13,7 +13,7 @@ const researchMiddleware = {
             return serializeDate(item);
           });
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -31,7 +31,7 @@ const researchMiddleware = {
 
           return extractedResearch;
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -42,7 +42,7 @@ const researchMiddleware = {
           const res = await di.service.researchService.getOneById(arg.id);
           return serializeDate(res);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -53,7 +53,7 @@ const researchMiddleware = {
           const res = await di.service.researchService.create(arg.dto);
           return serializeDate(res);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -64,7 +64,7 @@ const researchMiddleware = {
           const res = await di.service.researchService.update(arg.dto);
           return serializeDate(res);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -74,7 +74,7 @@ const researchMiddleware = {
         try {
           return await di.service.researchService.delete(arg.id);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -89,7 +89,7 @@ const researchMiddleware = {
             updatedAt: res.updatedAt.toLocaleString(),
           }
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -104,7 +104,7 @@ const researchMiddleware = {
             updatedAt: res.updatedAt.toLocaleString(),
           }
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -124,7 +124,7 @@ const researchMiddleware = {
             updatedAt: res.updatedAt.toLocaleString(),
           }
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),

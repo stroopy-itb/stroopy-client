@@ -2,15 +2,13 @@ import React from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../logo.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 import { authMiddleware } from "../redux/middleware/AuthMiddleware";
 import { LoginDto } from "../../adapter/dto";
 
 
 export default function Login(): JSX.Element {
-  const authError = useSelector((state: RootState) => state.auth.error);
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +34,6 @@ export default function Login(): JSX.Element {
         <img className="w-16" src={logo} alt="logo" />
         <span className="text-white text-5xl font-bold">Stroopy</span>
       </h1>
-      {authError ? <p className="text-md text-red">{authError.message}</p> : ""}
       <Formik
         initialValues={{
           username: "",
@@ -57,8 +54,9 @@ export default function Login(): JSX.Element {
                 value={values.username}
                 onChange={handleChange}
                 autoFocus
+                required
               />
-              {<p className="text-white">{errors.username}</p>}
+              {<p className="text-red">{errors.username}</p>}
             </div>
             <div className="form-control">
               <input
@@ -67,8 +65,9 @@ export default function Login(): JSX.Element {
                 placeholder="Password"
                 value={values.password}
                 onChange={handleChange}
+                required
               />
-              {<p className="text-white">{errors.password}</p>}
+              {<p className="text-red">{errors.password}</p>}
             </div>
             <button
               type="submit"

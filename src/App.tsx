@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Header, ProtectedRoute } from "./presenter/component";
 import {
   Home,
@@ -25,6 +25,21 @@ function App() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+  const authError = useSelector(
+    (state: RootState) => state.auth.error
+  );
+  const userError = useSelector(
+    (state: RootState) => state.user.error
+  );
+  const researchTokenError = useSelector(
+    (state: RootState) => state.researchToken.error
+  );
+  const researchError = useSelector(
+    (state: RootState) => state.research.error
+  );
+  const testResultError = useSelector(
+    (state: RootState) => state.testResult.error
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
@@ -38,6 +53,11 @@ function App() {
       });
     }
   }, [isAuthenticated]);
+  useEffect(() => {
+    if (authError) {
+      toast.error(`${authError.message}`);
+    }
+  }, [authError]);
 
   return (
     <div className="bg-black px-10 min-h-screen flex flex-col justify-start items-stretch">

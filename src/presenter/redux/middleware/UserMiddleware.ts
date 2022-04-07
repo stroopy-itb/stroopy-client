@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateUserDto } from "../../../adapter/dto";
-import { User } from "../../../domain/model";
+import { ErrorResponse, User } from "../../../domain/model";
 import di from "../../di";
 
 export const userMiddleware = {
@@ -8,7 +8,7 @@ export const userMiddleware = {
     try {
       return await di.service.userService.register(createUserDto);
     } catch (error: any) {
-      return thunkApi.rejectWithValue({ message: error.message });
+      return thunkApi.rejectWithValue(error as ErrorResponse);
     }
   }),
 }

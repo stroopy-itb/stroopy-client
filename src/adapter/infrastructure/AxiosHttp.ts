@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { WebStorage } from '.';
+import { ErrorResponse } from '../../domain/model';
 import { ACCESS_TOKEN_KEY } from '../repository/constants';
 import { HttpExtraConfig, HttpHeader, HttpClient, HttpRequestBody } from './interface/HttpClient';
 
@@ -22,12 +23,23 @@ export default class AxiosHttp implements Required<HttpClient> {
   }
 
   async get<T>(
-    url: string, 
-    headers?: HttpHeader, 
+    url: string,
+    headers?: HttpHeader,
     extraConfig?: HttpExtraConfig
   ): Promise<T> {
-    const r = await this.client.get(url, { headers, ...extraConfig });
-    return r.data as T;
+    return this.client.get(url, { headers, ...extraConfig })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          throw error.response.data as ErrorResponse;
+        } else if (error.request) {
+          throw { message: "Request Error" };
+        } else {
+          throw { message: "Error" };
+        }
+      });
   }
 
   async post<T>(
@@ -36,8 +48,19 @@ export default class AxiosHttp implements Required<HttpClient> {
     headers?: HttpHeader,
     extraConfig?: HttpExtraConfig
   ): Promise<T> {
-    const res = await this.client.post(url, body, { headers, ...extraConfig });
-    return res.data as T;
+    return this.client.post(url, body, { headers, ...extraConfig })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          throw error.response.data as ErrorResponse;
+        } else if (error.request) {
+          throw { message: "Request Error" };
+        } else {
+          throw { message: "Error" };
+        }
+      });
   }
 
   async put<T>(
@@ -46,8 +69,19 @@ export default class AxiosHttp implements Required<HttpClient> {
     headers?: HttpHeader,
     extraConfig?: HttpExtraConfig
   ): Promise<T> {
-    const res = await this.client.put(url, body, { headers, ...extraConfig });
-    return res.data as T;
+    return this.client.put(url, body, { headers, ...extraConfig })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          throw error.response.data as ErrorResponse;
+        } else if (error.request) {
+          throw { message: "Request Error" };
+        } else {
+          throw { message: "Error" };
+        }
+      });
   }
 
   async delete<T>(
@@ -55,8 +89,18 @@ export default class AxiosHttp implements Required<HttpClient> {
     headers?: HttpHeader,
     extraConfig?: HttpExtraConfig
   ): Promise<T> {
-    return this.client.delete(url, { headers, ...extraConfig }).then((response) => {
-      return response.data;
-    })
+    return this.client.delete(url, { headers, ...extraConfig })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          throw error.response.data as ErrorResponse;
+        } else if (error.request) {
+          throw { message: "Request Error" };
+        } else {
+          throw { message: "Error" };
+        }
+      });
   }
 }

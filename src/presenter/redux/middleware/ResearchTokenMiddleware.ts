@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CreateResearchTokenDto, UpdateResearchTokenDto } from "../../../adapter/dto";
-import { ResearchToken } from "../../../domain/model";
+import { ErrorResponse, ResearchToken } from "../../../domain/model";
 import di from "../../di";
 
 export const researchTokenMiddleware = {
@@ -13,7 +13,7 @@ export const researchTokenMiddleware = {
             return serializeDate(token);
           });
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -24,7 +24,7 @@ export const researchTokenMiddleware = {
           const tokenRes = await di.service.researchTokenService.getOneById(arg.id);
           return serializeDate(tokenRes);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -35,7 +35,7 @@ export const researchTokenMiddleware = {
           const tokenRes = await di.service.researchTokenService.getOneByResearcherId(arg.researcherId);
           return serializeDate(tokenRes);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -46,7 +46,7 @@ export const researchTokenMiddleware = {
           const tokenRes = await di.service.researchTokenService.create(arg.dto);
           return serializeDate(tokenRes);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -57,7 +57,7 @@ export const researchTokenMiddleware = {
           const tokenRes = await di.service.researchTokenService.update(arg.dto);
           return serializeDate(tokenRes);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
@@ -67,7 +67,7 @@ export const researchTokenMiddleware = {
         try {
           return await di.service.researchTokenService.delete(arg.id);
         } catch (error: any) {
-          return thunkApi.rejectWithValue({ message: error.message });
+          return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),

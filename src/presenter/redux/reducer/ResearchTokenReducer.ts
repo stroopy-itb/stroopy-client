@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { ResearchToken } from "../../../domain/model";
+import { ErrorResponse, ResearchToken } from "../../../domain/model";
 import researchTokenMiddleware from "../middleware/ResearchTokenMiddleware";
 
 export interface ResearchTokenState {
@@ -7,7 +7,7 @@ export interface ResearchTokenState {
   researchTokens?: ResearchToken[];
   researchersToken?: ResearchToken;
   selectedResearchToken?: ResearchToken;
-  error?: any;
+  error?: ErrorResponse;
 }
 
 const initialState: ResearchTokenState = {
@@ -33,7 +33,7 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.getAll.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchTokenMiddleware.getOne.pending, (state) => ({
       ...state,
@@ -48,7 +48,7 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.getOne.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchTokenMiddleware.getOneByResearcherId.pending, (state) => ({
       ...state,
@@ -63,7 +63,7 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.getOneByResearcherId.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchTokenMiddleware.create.pending, (state) => ({
       ...state,
@@ -78,7 +78,7 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.create.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchTokenMiddleware.update.pending, (state) => ({
       ...state,
@@ -95,7 +95,7 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.update.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(researchTokenMiddleware.delete.pending, (state) => ({
       ...state,
@@ -112,7 +112,7 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.delete.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
 });
 

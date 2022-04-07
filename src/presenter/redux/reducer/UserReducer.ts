@@ -1,12 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { User } from "../../../domain/model";
+import { ErrorResponse, User } from "../../../domain/model";
 import { authMiddleware } from "../middleware";
 import { userMiddleware } from "../middleware/UserMiddleware";
 
 interface UserState {
   loading: boolean;
   user?: User;
-  error?: any;
+  error?: ErrorResponse;
 }
 
 const initialState: UserState = {
@@ -30,7 +30,7 @@ export const UserReducer = createReducer(initialState, (builder) => {
     .addCase(userMiddleware.register.rejected, (state, action) => ({
       ...state,
       loading: false,
-      error: action.error
+      error: action.payload as ErrorResponse
     }))
     .addCase(authMiddleware.login.fulfilled, (state, action) => ({
       ...state,
