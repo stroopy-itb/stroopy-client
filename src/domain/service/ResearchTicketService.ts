@@ -8,8 +8,8 @@ export default class ResearchTicketService implements IResearchTicketService {
     private readonly researchTicketRepository: IResearchTicketRepository
   ) { }
 
-  public async getAll(filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
-    return this.researchTicketRepository.getAll(filter);
+  public async getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
+    return this.researchTicketRepository.getAll(size, page, filter);
   }
   public async getOne(filter?: Partial<ResearchTicket>): Promise<ResearchTicket> {
     return this.researchTicketRepository.getOne(filter);

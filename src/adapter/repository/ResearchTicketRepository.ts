@@ -1,28 +1,20 @@
 import { ResearchTicket } from "../../domain/model";
 import { CreateResearchTicketDto } from "../dto";
 import { HttpClient } from "../infrastructure";
+import { queryMaker } from "../utils/queryMaker";
 import { IResearchTicketRepository } from "./interface";
 
 export default class ResearchTicketRepository implements IResearchTicketRepository {
   constructor(
-     private readonly http: HttpClient
+    private readonly http: HttpClient
   ) { }
 
-  public async getAll(filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
-    return this.http.get('research-ticket/list')
+  public async getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
+    const query = queryMaker<ResearchTicket>(filter, true);
+    return this.http.get(`research-ticket/list?size=${size}&page=${page}${query}`)
   }
   public async getOne(filter?: Partial<ResearchTicket>): Promise<ResearchTicket> {
-    let query: string = "";
-    if (filter) {
-      let i = 0;
-      Object.entries(filter).forEach((item) => {
-        if (item[1]) {
-          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-          query = `${query}${string}`;
-          i++;
-        }
-      });
-    }
+    const query = queryMaker<ResearchTicket>(filter);
 
     return this.http.get(`research-ticket/${query}`)
   }
@@ -35,5 +27,5 @@ export default class ResearchTicketRepository implements IResearchTicketReposito
   public async delete(id: string): Promise<void> {
     return this.http.delete(`research-ticket/${id}`);
   }
-  
+
 }

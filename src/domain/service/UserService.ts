@@ -8,14 +8,14 @@ export default class UserService implements IUserService {
     private readonly userRepository: IUserRepository
     ) { }
 
-  public async find(): Promise<User[]> {
-    return this.userRepository.find();
+  public async getAll(size: number, page: number, filter?: Partial<User>): Promise<User[]> {
+    return this.userRepository.getAll(size, page, filter);
   }
-  public async findCurrentUser(): Promise<User | undefined> {
-    return this.userRepository.findCurrentUser();
+  public async getCurrentUser(): Promise<User | undefined> {
+    return this.userRepository.getCurrentUser();
   }
-  public async findOne(id: string): Promise<User> {
-    return this.userRepository.findOne(id);
+  public async getOne(id: string): Promise<User> {
+    return this.userRepository.getOne(id);
   }
   public async register(createUserDto: CreateUserDto): Promise<User> {
     return this.userRepository.register(createUserDto);

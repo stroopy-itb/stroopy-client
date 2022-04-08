@@ -55,7 +55,13 @@ export default function TokenForm(props: {
         async (res) => {
           if (res.meta.requestStatus === "fulfilled") {
             toast.success("Token baru berhasil dibuat!");
-            await dispatch(researchTokenMiddleware.getAll({ full: true }));
+            dispatch(
+              researchTokenMiddleware.getAll({
+                size: -1,
+                page: 1,
+                filter: { full: true },
+              })
+            );
             if (afterSubmit) afterSubmit();
           }
         }

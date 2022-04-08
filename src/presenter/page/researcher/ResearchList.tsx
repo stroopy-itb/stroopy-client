@@ -24,7 +24,8 @@ export default function ResearchList(): JSX.Element {
         researchTokenMiddleware.getOneByResearcherId({ researcherId: user.id })
       );
     }
-    if (!researches) dispatch(researchMiddleware.getAll());
+    if (!researches)
+      dispatch(researchMiddleware.getAll({ size: -1, page: 1, filter: {} }));
   }, [user, researchersToken, researches, dispatch]);
 
   const [researchForm, setTokenForm] = useState<{

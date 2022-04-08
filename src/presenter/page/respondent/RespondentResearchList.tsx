@@ -13,7 +13,9 @@ export default function RespondentResearchList(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!researches) {
-      dispatch(researchMiddleware.getAllByTickets());
+      dispatch(
+        researchMiddleware.getAllByTickets({ size: -1, page: 1, filter: {} })
+      );
     }
   }, [researches, dispatch]);
 

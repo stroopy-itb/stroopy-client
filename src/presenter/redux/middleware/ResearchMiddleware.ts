@@ -4,11 +4,11 @@ import { ColorPair, ErrorResponse, Research, ResearchSetup, ResearchTicket } fro
 import di from "../../di";
 
 const researchMiddleware = {
-  getAll: createAsyncThunk<Research[], (Partial<Research> & { full?: boolean }) | undefined>
+  getAll: createAsyncThunk<Research[], { size: number, page: number, filter: (Partial<Research> & { full?: boolean }) | undefined }>
     ('[Research] Get all',
       async (arg, thunkApi) => {
         try {
-          const res = await di.service.researchService.getAll({ ...arg });
+          const res = await di.service.researchService.getAll(arg.size, arg.page, arg.filter);
           return res.map((item) => {
             return serializeDate(item);
           });
@@ -17,11 +17,11 @@ const researchMiddleware = {
         }
       }
     ),
-  getAllByTickets: createAsyncThunk<Research[], Partial<ResearchTicket> | undefined>
+  getAllByTickets: createAsyncThunk<Research[], { size: number, page: number, filter: (Partial<ResearchTicket>) | undefined }>
     ('[Research] Get all by Tickets',
       async (arg, thunkApi) => {
         try {
-          const res = await di.service.researchTicketService.getAll({ ...arg });
+          const res = await di.service.researchTicketService.getAll(arg.size, arg.page, arg.filter);
           const extractedResearch: Research[] = [];
           res.forEach((item) => {
             if (item.research) {

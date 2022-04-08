@@ -1,6 +1,7 @@
 import { UserProfile } from "../../domain/model";
 import { CreateUserProfileDto, UpdateUserProfileDto } from "../dto";
 import { HttpClient } from "../infrastructure";
+import { queryMaker } from "../utils/queryMaker";
 import { IUserProfileRepository } from "./interface";
 
 export default class UserProfileRepository implements IUserProfileRepository {
@@ -9,17 +10,7 @@ export default class UserProfileRepository implements IUserProfileRepository {
   ) { }
 
   public async getOne(filter?: (Partial<UserProfile> & { full?: boolean })): Promise<UserProfile> {
-    let query: string = "";
-    if (filter) {
-      let i = 0;
-      Object.entries(filter).forEach((item) => {
-        if (item[1]) {
-          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-          query = `${query}${string}`;
-          i++;
-        }
-      });
-    }
+    const query = queryMaker<UserProfile>(filter);
 
     return this.http.get(`user-profile${query}`);
   }

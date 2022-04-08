@@ -10,7 +10,11 @@ import {
 } from "../../../domain/model";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
-import { translateActivityBurden, translateBodyCondition, translateRoomCondition } from "../../utils";
+import {
+  translateActivityBurden,
+  translateBodyCondition,
+  translateRoomCondition,
+} from "../../utils";
 
 interface CreateTestDataRequest {
   bodyCondition: BodyCondition;
@@ -38,7 +42,13 @@ export default function Setup(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!testResults) {
-      dispatch(testResultMiddleware.getAll({ researchId: researchId }));
+      dispatch(
+        testResultMiddleware.getAll({
+          size: -1,
+          page: 1,
+          filter: { researchId: researchId },
+        })
+      );
     }
   }, [testResults, researchId, dispatch]);
 

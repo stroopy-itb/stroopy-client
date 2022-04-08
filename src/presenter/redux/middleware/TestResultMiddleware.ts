@@ -4,11 +4,11 @@ import { AnswerRecord, ErrorResponse, Result, TestResult } from "../../../domain
 import di from "../../di";
 
 const testResultMiddleware = {
-  getAll: createAsyncThunk<TestResult[], Partial<TestResult> | undefined>
+  getAll: createAsyncThunk<TestResult[], { size: number, page: number, filter: (Partial<TestResult>) | undefined }>
     ('[Test Result] Get all',
       async (arg, thunkApi) => {
         try {
-          const res = await di.service.testResultService.getAll({ ...arg });
+          const res = await di.service.testResultService.getAll(arg.size, arg.page, arg.filter);
           return res.map((item) => {
             return serializeDate(item);
           });

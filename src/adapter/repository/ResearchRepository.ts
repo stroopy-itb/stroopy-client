@@ -1,6 +1,7 @@
 import { Research } from "../../domain/model";
 import { CreateResearchDto, UpdateResearchDto } from "../dto";
 import { HttpClient } from "../infrastructure";
+import { queryMaker } from "../utils/queryMaker";
 import { IResearchRepository } from "./interface";
 
 export default class ResearchRepository implements IResearchRepository {
@@ -8,33 +9,13 @@ export default class ResearchRepository implements IResearchRepository {
     private readonly http: HttpClient
   ) { }
 
-  getAll(filter?: (Partial<Research> & { full?: boolean })): Promise<Research[]> {
-    let query: string = "";
-    if (filter) {
-      let i = 0;
-      Object.entries(filter).forEach((item) => {
-        if (item[1]) {
-          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-          query = `${query}${string}`;
-          i++;
-        }
-      });
-    }
+  getAll(size: number, page: number, filter?: (Partial<Research> & { full?: boolean })): Promise<Research[]> {
+const query = queryMaker<Research>(filter, true);
 
-    return this.http.get(`research/list${query}`);
+    return this.http.get(`research/list?size=${size}&page=${page}${query}`);
   }
   getOne(filter?: (Partial<Research> & { full?: boolean })): Promise<Research> {
-    let query: string = "";
-    if (filter) {
-      let i = 0;
-      Object.entries(filter).forEach((item) => {
-        if (item[1]) {
-          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-          query = `${query}${string}`;
-          i++;
-        }
-      });
-    }
+const query = queryMaker<Research>(filter);
 
     return this.http.get(`research${query}`);
   }

@@ -8,8 +8,8 @@ export default class ResearchService implements IResearchService {
     private readonly researchRepository: IResearchRepository
   ) { }
 
-  getAll(filter?: Partial<Research> & { full?: boolean | undefined; }): Promise<Research[]> {
-    return this.researchRepository.getAll(filter);
+  getAll(size: number, page: number, filter?: Partial<Research> & { full?: boolean | undefined; }): Promise<Research[]> {
+    return this.researchRepository.getAll(size, page, filter);
   }
   getOne(filter?: Partial<Research> & { full?: boolean | undefined; }): Promise<Research> {
     return this.researchRepository.getOne(filter);

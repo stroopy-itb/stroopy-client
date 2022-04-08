@@ -13,7 +13,13 @@ export default function TokenList(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(researchTokenMiddleware.getAll({ full: true }));
+    dispatch(
+      researchTokenMiddleware.getAll({
+        size: -1,
+        page: 1,
+        filter: { full: true },
+      })
+    );
   }, [dispatch]);
 
   const [tokenForm, setTokenForm] = useState<{

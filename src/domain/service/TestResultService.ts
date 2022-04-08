@@ -8,8 +8,8 @@ export default class TestResultService implements ITestResultService {
     private readonly testResultRepository: ITestResultRepository
   ) { }
 
-  getAll(filter?: Partial<TestResult>): Promise<TestResult[]> {
-    return this.testResultRepository.getAll(filter);
+  getAll(size: number, page: number, filter?: Partial<TestResult>): Promise<TestResult[]> {
+    return this.testResultRepository.getAll(size, page, filter);
   }
   getOne(filter?: Partial<TestResult>): Promise<TestResult> {
     return this.testResultRepository.getOne(filter);

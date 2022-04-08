@@ -7,7 +7,7 @@ export const authMiddleware = {
   login: createAsyncThunk<User | undefined, LoginDto>('[Auth] Login', async (loginDto, thunkApi) => {
     try {
       await di.service.authService.login(loginDto);
-      const user = await di.service.userService.findCurrentUser();
+      const user = await di.service.userService.getCurrentUser();
       const profile = await di.service.userProfileService.getOne({ userId: user?.id });
       if (user) {
         return { ...user, profile: profile };
@@ -25,7 +25,7 @@ export const authMiddleware = {
   }),
   reauth: createAsyncThunk('[Auth] Re-auth', async (_arg, thunkApi) => {
     try {
-      const user = await di.service.userService.findCurrentUser();
+      const user = await di.service.userService.getCurrentUser();
       const profile = await di.service.userProfileService.getOne({ userId: user?.id });
       if (user) {
         return { ...user, profile: profile };

@@ -65,7 +65,13 @@ export default function ResearchForm(props: {
       ).then(async (res) => {
         if (res.meta.requestStatus === "fulfilled") {
           toast.success("Penelitian baru berhasil dibuat!");
-          await dispatch(researchMiddleware.getAll({ full: true }));
+          await dispatch(
+            researchMiddleware.getAll({
+              size: -1,
+              page: 1,
+              filter: { full: true },
+            })
+          );
           if (afterSubmit) afterSubmit();
         }
       });
@@ -99,13 +105,7 @@ export default function ResearchForm(props: {
         }}
         validateOnBlur
       >
-        {({
-          values,
-          errors,
-          isSubmitting,
-          handleChange,
-          handleSubmit,
-        }) => (
+        {({ values, errors, isSubmitting, handleChange, handleSubmit }) => (
           <form
             className="grid gap-5 justify-items-stetch"
             onSubmit={handleSubmit}

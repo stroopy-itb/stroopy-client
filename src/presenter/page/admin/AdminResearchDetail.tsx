@@ -10,13 +10,10 @@ export default function AdminResearchDetail(): JSX.Element {
   const research = useSelector(
     (state: RootState) => state.research.selectedResearch
   );
-  const user = useSelector(
-    (state: RootState) => state.user.user
-  );
+  const user = useSelector((state: RootState) => state.user.user);
   const testResults = useSelector(
     (state: RootState) => state.testResult.testResults
   );
-
 
   const { id } = useParams();
 
@@ -24,7 +21,13 @@ export default function AdminResearchDetail(): JSX.Element {
   useEffect(() => {
     if (id && research?.id !== id) {
       dispatch(researchMiddleware.getOneById({ id }));
-      dispatch(testResultMiddleware.getAll({ researchId: id }));
+      dispatch(
+        testResultMiddleware.getAll({
+          size: 10,
+          page: 1,
+          filter: { researchId: id },
+        })
+      );
     }
   }, [id, research, dispatch]);
 
@@ -37,7 +40,11 @@ export default function AdminResearchDetail(): JSX.Element {
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
-      <ResearchHeader research={research} user={user} tokenExpired={tokenExpired()} />
+      <ResearchHeader
+        research={research}
+        user={user}
+        tokenExpired={tokenExpired()}
+      />
       <h1 className="text-4xl font-bold text-white">Hasil Tes</h1>
       <TestResultTable testResults={testResults} />
     </div>

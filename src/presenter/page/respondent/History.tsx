@@ -5,12 +5,14 @@ import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
 export default function History(): JSX.Element {
-  const testResults = useSelector((state: RootState) => state.testResult.testResults);
+  const testResults = useSelector(
+    (state: RootState) => state.testResult.testResults
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!testResults) {
-      dispatch(testResultMiddleware.getAll());
+      dispatch(testResultMiddleware.getAll({ size: -1, page: 1, filter: {} }));
     }
   }, [testResults, dispatch]);
 

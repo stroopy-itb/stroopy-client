@@ -3,7 +3,7 @@ import { CreateResearchTicketDto } from "../../../adapter/dto";
 import { ResearchTicket } from "../../../domain/model";
 
 export default interface IResearchTicketService {
-  getAll(filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]>;
+  getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]>;
   getOne(filter?: Partial<ResearchTicket>): Promise<ResearchTicket>;
   getOneById(id: string): Promise<ResearchTicket>;
   create(createResearchTicketDto: CreateResearchTicketDto): Promise<ResearchTicket>;

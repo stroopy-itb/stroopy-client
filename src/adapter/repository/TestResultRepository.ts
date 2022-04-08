@@ -1,6 +1,7 @@
 import { TestResult } from "../../domain/model";
 import { CreateTestResultDto } from "../dto";
 import { HttpClient } from "../infrastructure";
+import { queryMaker } from "../utils/queryMaker";
 import { ITestResultRepository } from "./interface";
 
 export default class TestResultRepository implements ITestResultRepository {
@@ -8,33 +9,13 @@ export default class TestResultRepository implements ITestResultRepository {
     private readonly http: HttpClient
   ) { }
 
-  getAll(filter?: Partial<TestResult>): Promise<TestResult[]> {
-    let query: string = "";
-    if (filter) {
-      let i = 0;
-      Object.entries(filter).forEach((item) => {
-        if (item[1]) {
-          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-          query = `${query}${string}`;
-          i++;
-        }
-      });
-    }
+  getAll(size: number, page: number, filter?: Partial<TestResult>): Promise<TestResult[]> {
+    const query = queryMaker<TestResult>(filter, true);
 
-    return this.http.get(`test-result/list${query}`);
+    return this.http.get(`test-result/list?size=${size}&page=${page}${query}`);
   }
   getOne(filter?: Partial<TestResult>): Promise<TestResult> {
-    let query: string = "";
-    if (filter) {
-      let i = 0;
-      Object.entries(filter).forEach((item) => {
-        if (item[1]) {
-          const string = ((i === 0) ? `?${item[0]}=${item[1]}` : `&${item[0]}=${item[1]}`);
-          query = `${query}${string}`;
-          i++;
-        }
-      });
-    }
+    const query = queryMaker<TestResult>(filter);
 
     return this.http.get(`test-result${query}`);
   }

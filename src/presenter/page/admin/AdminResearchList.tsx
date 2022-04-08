@@ -11,7 +11,7 @@ export default function AdminResearchList(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (!researches) dispatch(researchMiddleware.getAll());
+    if (!researches) dispatch(researchMiddleware.getAll({ size: -1, page: 1, filter: {} }));
   }, [researches, dispatch]);
 
   return (

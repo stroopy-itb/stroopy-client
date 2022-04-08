@@ -4,11 +4,11 @@ import { ErrorResponse, ResearchToken } from "../../../domain/model";
 import di from "../../di";
 
 export const researchTokenMiddleware = {
-  getAll: createAsyncThunk<ResearchToken[], (Partial<ResearchToken> & { full?: boolean })>
+  getAll: createAsyncThunk<ResearchToken[], { size: number, page: number, filter: (Partial<ResearchToken> & { full?: boolean }) }>
     ('[Research Token] Get all',
       async (arg, thunkApi) => {
         try {
-          const tokenRes = await di.service.researchTokenService.getAll({ token: arg.token, full: arg.full });
+          const tokenRes = await di.service.researchTokenService.getAll(arg.size, arg.page, arg.filter);
           return tokenRes.map((token) => {
             return serializeDate(token);
           });
