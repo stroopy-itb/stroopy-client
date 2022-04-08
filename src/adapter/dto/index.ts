@@ -1,5 +1,8 @@
 export { default as LoginDto } from './LoginDto';
 export { default as CreateUserDto } from './CreateUserDto';
+export { default as UpdateUserDto } from './UpdateUserDto';
+export { default as CreateUserProfileDto } from './CreateUserProfileDto';
+export { default as UpdateUserProfileDto } from './UpdateUserProfileDto';
 export { default as CreateResearchTokenDto } from './CreateResearchTokenDto';
 export { default as UpdateResearchTokenDto } from './UpdateResearchTokenDto';
 export { default as CreateResearchDto } from './CreateResearchDto';

@@ -1,4 +1,4 @@
-import { CreateUserDto } from "../../adapter/dto";
+import { CreateUserDto, UpdateUserDto } from "../../adapter/dto";
 import { IUserRepository } from "../../adapter/repository/interface";
 import { User } from "../model";
 import { IUserService } from "./interface";
@@ -20,5 +20,7 @@ export default class UserService implements IUserService {
   public async register(createUserDto: CreateUserDto): Promise<User> {
     return this.userRepository.register(createUserDto);
   }
-  
+  public async update(updateUserDto: UpdateUserDto): Promise<User> {
+    return this.userRepository.update(updateUserDto);
+  }
 }

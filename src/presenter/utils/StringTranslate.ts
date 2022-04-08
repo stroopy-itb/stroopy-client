@@ -1,30 +1,39 @@
-import { ActivityBurden, BodyCondition, RoomCondition } from "../../domain/model";
+import { ActivityBurden, BodyCondition, InstitutionType, RoomCondition } from "../../domain/model";
 
 export const translateBodyCondition = (cond: BodyCondition): string => {
   switch (cond) {
     case BodyCondition.Healthy:
-      return "sehat";
+      return "Sehat";
     case BodyCondition.NotHealthy:
-      return "tidak sehat";
+      return "Tidak sehat";
   }
 }
 
 export const translateRoomCondition = (room: RoomCondition): string => {
   switch (room) {
     case RoomCondition.Indoor:
-      return "dalam ruangan";
+      return "Dalam ruangan";
     case RoomCondition.Outdoor:
-      return "luar ruangan";
+      return "Luar ruangan";
   }
 }
 
 export const translateActivityBurden = (burden: ActivityBurden): string => {
   switch (burden) {
     case ActivityBurden.Heavy:
-      return "berat";
+      return "Berat";
     case ActivityBurden.Medium:
-      return "sedang";
+      return "Sedang";
     case ActivityBurden.Light:
-      return "ringan";
+      return "Ringan";
+  }
+}
+
+export const translateInstitutionType = (type: InstitutionType): string => {
+  switch (type) {
+    case InstitutionType.GENERAL:
+      return "Umum";
+    case InstitutionType.UNIVERSITY:
+      return "Universitas";
   }
 }

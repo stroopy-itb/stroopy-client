@@ -8,3 +8,5 @@ export { default as ResearchHeader } from "./ResearchHeader";
 export { default as ResearchSetupInfo } from "./ResearchSetupInfo";
 export { default as TestResultTable } from "./TestResultTable";
 export { default as ExportSpreadsheet } from "./ExportSpreadsheet";
+export { default as UserProfileInfo } from "./UserProfileInfo";
+export { default as UserProfileForm } from "./UserProfileForm";

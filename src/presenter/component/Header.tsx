@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "../redux/store";
 
 export default function Header(): JSX.Element {
   const username = useSelector((state: RootState) => state.user.user?.username);
+  const name = useSelector((state: RootState) => state.user.profile?.name);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,7 +19,13 @@ export default function Header(): JSX.Element {
     });
   };
 
-  if (location.pathname !== "/login" && location.pathname !== "/register") {
+  if (
+    ["/login", "/register"].includes(location.pathname) ||
+    location.pathname.match("/test") ||
+    location.pathname.match("/result")
+  ) {
+    return <div></div>;
+  } else {
     return (
       <div className="flex justify-between py-5">
         <button
@@ -29,21 +36,18 @@ export default function Header(): JSX.Element {
           <img className="w-8" src={logo} alt="logo" />
           <span className="text-white text-lg font-bold">Stroopy</span>
         </button>
-        {location.pathname !== "/test" ? (
-          <div>
-            <button>
-              <span className="text-white font-bold">{username}</span>
-            </button>
-            <button onClick={handleLogout}>
-              <span className="ml-3 text-red font-bold">Keluar</span>
-            </button>
-          </div>
-        ) : (
-          ""
-        )}
+        <div>
+          <button>
+            <span className="text-white font-bold">{name || username}</span>
+          </button>
+          <button onClick={() => navigate("/profile")}>
+            <span className="ml-3 text-white font-bold">Profil</span>
+          </button>
+          <button onClick={handleLogout}>
+            <span className="ml-3 text-red font-bold">Keluar</span>
+          </button>
+        </div>
       </div>
     );
-  } else {
-    return <div></div>;
   }
 }

@@ -1,6 +1,7 @@
 export { default as Home } from "./Home";
 export { default as Login } from "./Login";
 export { default as Register } from "./Register";
+export { default as UserProfile } from "./UserProfile";
 export { default as AdminRoot } from "./admin/AdminRoot";
 export { default as AdminHome } from "./admin/AdminHome";
 export { default as AdminResearchList } from "./admin/AdminResearchList";

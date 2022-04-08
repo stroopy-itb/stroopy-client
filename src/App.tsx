@@ -16,6 +16,7 @@ import {
   AdminResearchDetail,
   RespondentResearchList,
   RespondentResearchDetail,
+  UserProfile,
 } from "./presenter/page";
 import { History, Setup, Stroop, Result } from "./presenter/page/respondent";
 import { authMiddleware } from "./presenter/redux/middleware";
@@ -24,6 +25,12 @@ import { AppDispatch, RootState } from "./presenter/redux/store";
 function App() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
+  );
+  const user = useSelector(
+    (state: RootState) => state.user.user
+  );
+  const userProfile = useSelector(
+    (state: RootState) => state.user.profile
   );
   const authError = useSelector(
     (state: RootState) => state.auth.error
@@ -52,12 +59,36 @@ function App() {
         navigate(prevPath);
       });
     }
-  }, [isAuthenticated]);
+    if (isAuthenticated && user && !userProfile) {
+      toast.warning("Silahkan lengkapi data profil anda!");
+      navigate('profile');
+    }
+  }, [isAuthenticated, user, userProfile, prevPath]);
   useEffect(() => {
     if (authError) {
       toast.error(`${authError.message}`);
     }
   }, [authError]);
+  useEffect(() => {
+    if (userError) {
+      toast.error(`${userError.message}`);
+    }
+  }, [userError]);
+  useEffect(() => {
+    if (researchTokenError) {
+      toast.error(`${researchTokenError.message}`);
+    }
+  }, [researchTokenError]);
+  useEffect(() => {
+    if (researchError) {
+      toast.error(`${researchError.message}`);
+    }
+  }, [researchError]);
+  useEffect(() => {
+    if (testResultError) {
+      toast.error(`${testResultError.message}`);
+    }
+  }, [testResultError]);
 
   return (
     <div className="bg-black px-10 min-h-screen flex flex-col justify-start items-stretch">
@@ -66,6 +97,10 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="/" element={<ProtectedRoute children={<Home />} />} />
+          <Route
+            path="profile"
+            element={<ProtectedRoute children={<UserProfile />} />}
+          />
           <Route
             path="history"
             element={<ProtectedRoute children={<History />} />}
@@ -103,7 +138,7 @@ function App() {
             <Route path="research/:id" element={<ResearchDetail />} />
           </Route>
         </Routes>
-        <ToastContainer position="top-center" autoClose={3000} />
+        <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );
 }

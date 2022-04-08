@@ -7,9 +7,12 @@ export const authMiddleware = {
   login: createAsyncThunk<User | undefined, LoginDto>('[Auth] Login', async (loginDto, thunkApi) => {
     try {
       await di.service.authService.login(loginDto);
-      return await di.service.userService.findCurrentUser();
+      const user = await di.service.userService.findCurrentUser();
+      const profile = await di.service.userProfileService.getOne({ userId: user?.id });
+      if (user) {
+        return { ...user, profile: profile };
+      }
     } catch (error: any) {
-      console.log(error);
       return thunkApi.rejectWithValue(error as ErrorResponse);
     }
   }),
@@ -22,7 +25,11 @@ export const authMiddleware = {
   }),
   reauth: createAsyncThunk('[Auth] Re-auth', async (_arg, thunkApi) => {
     try {
-      return await di.service.userService.findCurrentUser();
+      const user = await di.service.userService.findCurrentUser();
+      const profile = await di.service.userProfileService.getOne({ userId: user?.id });
+      if (user) {
+        return { ...user, profile: profile };
+      }
     } catch (error: any) {
       return thunkApi.rejectWithValue(error as ErrorResponse);
     }
