@@ -1,5 +1,5 @@
 import { ResearchTicket } from "../../domain/model";
-import { CreateResearchTicketDto } from "../dto";
+import { CreateResearchTicketDto, ListResearchTicketResponseDto } from "../dto";
 import { HttpClient } from "../infrastructure";
 import { queryMaker } from "../utils/queryMaker";
 import { IResearchTicketRepository } from "./interface";
@@ -9,7 +9,7 @@ export default class ResearchTicketRepository implements IResearchTicketReposito
     private readonly http: HttpClient
   ) { }
 
-  public async getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
+  public async getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ListResearchTicketResponseDto> {
     const query = queryMaker<ResearchTicket>(filter, true);
     return this.http.get(`research-ticket/list?size=${size}&page=${page}${query}`)
   }

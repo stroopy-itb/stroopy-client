@@ -11,7 +11,7 @@ export default class AuthRepository implements IAuthRepository {
     private readonly storage: WebStorage
   ) { }
 
-  async login(loginDto: LoginDto): Promise<JwtTokens> {
+  public async login(loginDto: LoginDto): Promise<JwtTokens> {
     const response: JwtTokens = await this.http.post('auth/login', loginDto);
 
     if (response) {
@@ -20,7 +20,7 @@ export default class AuthRepository implements IAuthRepository {
 
     return response;
   }
-  logout(): void {
+  public  logout(): void {
     this.storage.removeItem(ACCESS_TOKEN_KEY);
   }
 

@@ -1,17 +1,18 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateTestResultDto } from "../../../adapter/dto";
+import { CreateTestResultDto, ListTestResultResponseDto } from "../../../adapter/dto";
 import { AnswerRecord, ErrorResponse, Result, TestResult } from "../../../domain/model";
 import di from "../../di";
 
 const testResultMiddleware = {
-  getAll: createAsyncThunk<TestResult[], { size: number, page: number, filter: (Partial<TestResult>) | undefined }>
+  getAll: createAsyncThunk<ListTestResultResponseDto, { size: number, page: number, filter: (Partial<TestResult>) | undefined }>
     ('[Test Result] Get all',
       async (arg, thunkApi) => {
         try {
           const res = await di.service.testResultService.getAll(arg.size, arg.page, arg.filter);
-          return res.map((item) => {
+          const testResults = res.testResults.map((item) => {
             return serializeDate(item);
           });
+          return { testResults: testResults, size: res.size, page: res.page, totalSize: res.totalSize };
         } catch (error: any) {
           return thunkApi.rejectWithValue(error as ErrorResponse);
         }

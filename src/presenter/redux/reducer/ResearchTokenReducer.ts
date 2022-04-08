@@ -5,6 +5,9 @@ import researchTokenMiddleware from "../middleware/ResearchTokenMiddleware";
 export interface ResearchTokenState {
   loading: boolean;
   researchTokens?: ResearchToken[];
+  size: number;
+  page: number;
+  totalSize?: number;
   researchersToken?: ResearchToken;
   selectedResearchToken?: ResearchToken;
   error?: ErrorResponse;
@@ -13,6 +16,9 @@ export interface ResearchTokenState {
 const initialState: ResearchTokenState = {
   loading: false,
   researchTokens: undefined,
+  size: 10,
+  page: 1,
+  totalSize: undefined,
   researchersToken: undefined,
   selectedResearchToken: undefined,
   error: undefined
@@ -28,7 +34,10 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
     .addCase(researchTokenMiddleware.getAll.fulfilled, (state, action) => ({
       ...state,
       loading: false,
-      researchTokens: action.payload
+      researchTokens: action.payload.researchTokens,
+      size: action.payload.size,
+      page: action.payload.page,
+      totalSize: action.payload.totalSize,
     }))
     .addCase(researchTokenMiddleware.getAll.rejected, (state, action) => ({
       ...state,

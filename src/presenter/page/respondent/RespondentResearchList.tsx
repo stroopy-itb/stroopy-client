@@ -9,15 +9,23 @@ export default function RespondentResearchList(): JSX.Element {
   const researches = useSelector(
     (state: RootState) => state.research.researches
   );
+  const sizeState = useSelector((state: RootState) => state.research.size);
+  const pageState = useSelector((state: RootState) => state.research.page);
+  const totalSize = useSelector((state: RootState) => state.research.totalSize);
+
+  const [size, setSize] = useState(sizeState);
+  const [page, setPage] = useState(pageState);
+
+  const changePage = (event: any) => {
+    setPage(event.selected + 1);
+  };
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (!researches) {
       dispatch(
-        researchMiddleware.getAllByTickets({ size: -1, page: 1, filter: {} })
+        researchMiddleware.getAllByTickets({ size: size, page: page, filter: {} })
       );
-    }
-  }, [researches, dispatch]);
+  }, [size, page, dispatch]);
 
   const [modal, setModal] = useState<{ isOpen: boolean }>({ isOpen: false });
 
@@ -25,7 +33,17 @@ export default function RespondentResearchList(): JSX.Element {
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
       <h1 className="text-4xl font-bold text-white">Penelitian</h1>
-      <ResearchTable researches={researches} />
+      {totalSize ? (
+        <ResearchTable
+          researches={researches}
+          size={size}
+          page={page}
+          totalSize={totalSize}
+          changePage={changePage}
+        />
+      ) : (
+        ""
+      )}
       <div className="justify-self-stretch flex justify-between">
         <button
           onClick={() => setModal({ isOpen: true })}
@@ -33,14 +51,6 @@ export default function RespondentResearchList(): JSX.Element {
         >
           Daftar Ke Penelitian
         </button>
-        {/* <div className="rounded-2xl bg-white flex">
-          <button className="py-2 px-4 text-gray-400">Prev</button>
-          <button className="py-2 px-4 bg-blue text-white">1</button>
-          <button className="py-2 px-4 text-blue">2</button>
-          <button className="py-2 px-4 text-blue">3</button>
-          <button className="py-2 px-4 text-blue">4</button>
-          <button className="py-2 px-4 text-blue">Next</button>
-        </div> */}
       </div>
       <Modal
         isOpen={modal.isOpen}

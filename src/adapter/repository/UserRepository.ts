@@ -1,5 +1,5 @@
 import { User } from "../../domain/model";
-import { CreateUserDto, UpdateUserDto } from "../dto";
+import { CreateUserDto, ListUserResponseDto, UpdateUserDto } from "../dto";
 import { HttpClient } from "../infrastructure";
 import { queryMaker } from "../utils/queryMaker";
 import { IUserRepository } from "./interface";
@@ -9,7 +9,7 @@ export default class UserRepository implements IUserRepository {
     private readonly http: HttpClient,
   ) { }
 
-  public async getAll(size: number, page: number, filter?: (Partial<User> & { full?: boolean })): Promise<User[]> {
+  public async getAll(size: number, page: number, filter?: (Partial<User> & { full?: boolean })): Promise<ListUserResponseDto> {
     const query = queryMaker<User>(filter, true);
 
     return this.http.get(`users/list?size=${size}&page=${page}${query}`);

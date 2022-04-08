@@ -1,8 +1,8 @@
 import { ResearchTicket } from "../../../domain/model";
-import { CreateResearchTicketDto } from "../../dto";
+import { CreateResearchTicketDto, ListResearchTicketResponseDto } from "../../dto";
 
 export default interface IResearchTicketRepository {
-  getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]>;
+  getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ListResearchTicketResponseDto>;
   getOne(filter?: Partial<ResearchTicket>): Promise<ResearchTicket>;
   getOneById(id: string): Promise<ResearchTicket>;
   create(createResearchTicketDto: CreateResearchTicketDto): Promise<ResearchTicket>;

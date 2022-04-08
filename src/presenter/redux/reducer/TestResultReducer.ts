@@ -5,6 +5,9 @@ import testResultMiddleware from "../middleware/TestResultMiddleware";
 export interface TestResultState {
   loading: boolean;
   testResults?: TestResult[];
+  size: number;
+  page: number;
+  totalSize?: number;
   selectedTestResult?: TestResult;
   testData?: TestResult;
   resultData?: (Result & {
@@ -16,6 +19,9 @@ export interface TestResultState {
 const initialState: TestResultState = {
   loading: false,
   testResults: undefined,
+  size: 10,
+  page: 1,
+  totalSize: undefined,
   selectedTestResult: undefined,
   testData: undefined,
   resultData: undefined,
@@ -32,7 +38,10 @@ const TestResultReducer = createReducer(initialState, (builder) => {
     .addCase(testResultMiddleware.getAll.fulfilled, (state, action) => ({
       ...state,
       loading: false,
-      testResults: action.payload
+      testResults: action.payload.testResults,
+      size: action.payload.size,
+      page: action.payload.page,
+      totalSize: action.payload.totalSize,
     }))
     .addCase(testResultMiddleware.getAll.rejected, (state, action) => ({
       ...state,

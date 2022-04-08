@@ -57,7 +57,7 @@ export default function TokenForm(props: {
             toast.success("Token baru berhasil dibuat!");
             dispatch(
               researchTokenMiddleware.getAll({
-                size: -1,
+                size: 10,
                 page: 1,
                 filter: { full: true },
               })

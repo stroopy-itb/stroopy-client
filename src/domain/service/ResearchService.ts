@@ -1,4 +1,4 @@
-import { CreateResearchDto, UpdateResearchDto } from "../../adapter/dto";
+import { CreateResearchDto, ListResearchResponseDto, UpdateResearchDto } from "../../adapter/dto";
 import { IResearchRepository } from "../../adapter/repository/interface";
 import { Research } from "../model";
 import { IResearchService } from "./interface";
@@ -8,7 +8,7 @@ export default class ResearchService implements IResearchService {
     private readonly researchRepository: IResearchRepository
   ) { }
 
-  getAll(size: number, page: number, filter?: Partial<Research> & { full?: boolean | undefined; }): Promise<Research[]> {
+  getAll(size: number, page: number, filter?: Partial<Research> & { full?: boolean | undefined; }): Promise<ListResearchResponseDto> {
     return this.researchRepository.getAll(size, page, filter);
   }
   getOne(filter?: Partial<Research> & { full?: boolean | undefined; }): Promise<Research> {

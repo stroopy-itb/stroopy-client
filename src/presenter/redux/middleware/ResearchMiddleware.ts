@@ -1,35 +1,37 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateResearchDto, CreateResearchSetupDto, CreateResearchTicketDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
+import { CreateResearchDto, CreateResearchSetupDto, CreateResearchTicketDto, ListResearchResponseDto, UpdateResearchDto, UpdateResearchSetupDto } from "../../../adapter/dto";
 import { ColorPair, ErrorResponse, Research, ResearchSetup, ResearchTicket } from "../../../domain/model";
 import di from "../../di";
 
 const researchMiddleware = {
-  getAll: createAsyncThunk<Research[], { size: number, page: number, filter: (Partial<Research> & { full?: boolean }) | undefined }>
+  getAll: createAsyncThunk<ListResearchResponseDto, { size: number, page: number, filter: (Partial<Research> & { full?: boolean }) | undefined }>
     ('[Research] Get all',
       async (arg, thunkApi) => {
         try {
           const res = await di.service.researchService.getAll(arg.size, arg.page, arg.filter);
-          return res.map((item) => {
+          const researches = res.researches.map((item) => {
             return serializeDate(item);
           });
+
+          return { researches: researches, size: res.size, page: res.page, totalSize: res.totalSize };
         } catch (error: any) {
           return thunkApi.rejectWithValue(error as ErrorResponse);
         }
       }
     ),
-  getAllByTickets: createAsyncThunk<Research[], { size: number, page: number, filter: (Partial<ResearchTicket>) | undefined }>
+  getAllByTickets: createAsyncThunk<ListResearchResponseDto, { size: number, page: number, filter: (Partial<ResearchTicket>) | undefined }>
     ('[Research] Get all by Tickets',
       async (arg, thunkApi) => {
         try {
           const res = await di.service.researchTicketService.getAll(arg.size, arg.page, arg.filter);
           const extractedResearch: Research[] = [];
-          res.forEach((item) => {
+          res.researchTickets.forEach((item) => {
             if (item.research) {
               extractedResearch.push(serializeDate(item.research));
             }
           });
 
-          return extractedResearch;
+          return { researches: extractedResearch, size: res.size, page: res.page, totalSize: res.totalSize };
         } catch (error: any) {
           return thunkApi.rejectWithValue(error as ErrorResponse);
         }

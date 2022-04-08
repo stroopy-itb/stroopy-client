@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TestResultTable } from "../../component";
 import { testResultMiddleware } from "../../redux/middleware";
@@ -8,18 +8,39 @@ export default function History(): JSX.Element {
   const testResults = useSelector(
     (state: RootState) => state.testResult.testResults
   );
+  const sizeState = useSelector((state: RootState) => state.testResult.size);
+  const pageState = useSelector((state: RootState) => state.testResult.page);
+  const totalSize = useSelector(
+    (state: RootState) => state.testResult.totalSize
+  );
+
+  const [size, setSize] = useState(sizeState);
+  const [page, setPage] = useState(pageState);
+
+  const changePage = (event: any) => {
+    setPage(event.selected + 1);
+  };
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (!testResults) {
-      dispatch(testResultMiddleware.getAll({ size: -1, page: 1, filter: {} }));
-    }
-  }, [testResults, dispatch]);
-
+    dispatch(
+      testResultMiddleware.getAll({ size: size, page: page, filter: {} })
+    );
+  }, [size, page, dispatch]);
   return (
     <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-start">
       <h1 className="text-4xl font-bold text-white">Riwayat Hasil Tes</h1>
-      <TestResultTable testResults={testResults} />
+      {totalSize ? (
+        <TestResultTable
+          testResults={testResults}
+          size={size}
+          page={page}
+          totalSize={totalSize}
+          changePage={changePage}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

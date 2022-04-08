@@ -17,6 +17,17 @@ export default function ResearchList(): JSX.Element {
     (state: RootState) => state.researchToken.researchersToken
   );
 
+  const sizeState = useSelector((state: RootState) => state.research.size);
+  const pageState = useSelector((state: RootState) => state.research.page);
+  const totalSize = useSelector((state: RootState) => state.research.totalSize);
+
+  const [size, setSize] = useState(sizeState);
+  const [page, setPage] = useState(pageState);
+
+  const changePage = (event: any) => {
+    setPage(event.selected + 1);
+  };
+
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (user && user.role === UserRole.Researcher && !researchersToken) {
@@ -24,9 +35,12 @@ export default function ResearchList(): JSX.Element {
         researchTokenMiddleware.getOneByResearcherId({ researcherId: user.id })
       );
     }
-    if (!researches)
-      dispatch(researchMiddleware.getAll({ size: -1, page: 1, filter: {} }));
-  }, [user, researchersToken, researches, dispatch]);
+  }, [user, researchersToken, dispatch]);
+  useEffect(() => {
+      dispatch(
+        researchMiddleware.getAll({ size: size, page: page, filter: {} })
+      );
+  },[size, page, dispatch]);
 
   const [researchForm, setTokenForm] = useState<{
     isOpen: boolean;
@@ -52,7 +66,17 @@ export default function ResearchList(): JSX.Element {
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
       <h1 className="text-4xl font-bold text-white">Penelitian</h1>
-      <ResearchTable researches={researches} />
+      {totalSize ? (
+        <ResearchTable
+          researches={researches}
+          size={size}
+          page={page}
+          totalSize={totalSize}
+          changePage={changePage}
+        />
+      ) : (
+        ""
+      )}
       <div className="justify-self-stretch flex justify-between">
         {!tokenExpired() ? (
           <button
@@ -64,14 +88,6 @@ export default function ResearchList(): JSX.Element {
         ) : (
           ""
         )}
-        {/* <div className="rounded-2xl bg-white flex">
-          <button className="py-2 px-4 text-gray-400">Prev</button>
-          <button className="py-2 px-4 bg-blue text-white">1</button>
-          <button className="py-2 px-4 text-blue">2</button>
-          <button className="py-2 px-4 text-blue">3</button>
-          <button className="py-2 px-4 text-blue">4</button>
-          <button className="py-2 px-4 text-blue">Next</button>
-        </div> */}
       </div>
       <Modal
         isOpen={researchForm.isOpen}

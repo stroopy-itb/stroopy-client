@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ResearchHeader, TestResultTable } from "../../component";
@@ -7,6 +7,8 @@ import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
 export default function AdminResearchDetail(): JSX.Element {
+  const { id } = useParams();
+
   const research = useSelector(
     (state: RootState) => state.research.selectedResearch
   );
@@ -14,22 +16,29 @@ export default function AdminResearchDetail(): JSX.Element {
   const testResults = useSelector(
     (state: RootState) => state.testResult.testResults
   );
+  const sizeState = useSelector((state: RootState) => state.testResult.size);
+  const pageState = useSelector((state: RootState) => state.testResult.page);
+  const totalSize = useSelector(
+    (state: RootState) => state.testResult.totalSize
+  );
 
-  const { id } = useParams();
+  const [size, setSize] = useState(sizeState);
+  const [page, setPage] = useState(pageState);
+
+  const changePage = (event: any) => {
+    setPage(event.selected + 1);
+    console.log(page);
+  };
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (id && research?.id !== id) {
       dispatch(researchMiddleware.getOneById({ id }));
-      dispatch(
-        testResultMiddleware.getAll({
-          size: 10,
-          page: 1,
-          filter: { researchId: id },
-        })
-      );
     }
-  }, [id, research, dispatch]);
+  }, [id, dispatch]);
+  useEffect(() => {
+    dispatch(testResultMiddleware.getAll({ size: size, page: page, filter: { researchId: id } }));
+  }, [id, size, page, dispatch]);
 
   const tokenExpired = useCallback(() => {
     if (research?.researchToken) {
@@ -46,7 +55,17 @@ export default function AdminResearchDetail(): JSX.Element {
         tokenExpired={tokenExpired()}
       />
       <h1 className="text-4xl font-bold text-white">Hasil Tes</h1>
-      <TestResultTable testResults={testResults} />
+      {totalSize ? (
+        <TestResultTable
+          testResults={testResults}
+          size={size}
+          page={page}
+          totalSize={totalSize}
+          changePage={changePage}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

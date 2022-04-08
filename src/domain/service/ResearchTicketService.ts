@@ -1,4 +1,4 @@
-import { CreateResearchTicketDto } from "../../adapter/dto";
+import { CreateResearchTicketDto, ListResearchTicketResponseDto } from "../../adapter/dto";
 import { IResearchTicketRepository } from "../../adapter/repository/interface";
 import { ResearchTicket } from "../model";
 import IResearchTicketService from "./interface/IResearchTicketService";
@@ -8,7 +8,7 @@ export default class ResearchTicketService implements IResearchTicketService {
     private readonly researchTicketRepository: IResearchTicketRepository
   ) { }
 
-  public async getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ResearchTicket[]> {
+  public async getAll(size: number, page: number, filter?: Partial<ResearchTicket>): Promise<ListResearchTicketResponseDto> {
     return this.researchTicketRepository.getAll(size, page, filter);
   }
   public async getOne(filter?: Partial<ResearchTicket>): Promise<ResearchTicket> {

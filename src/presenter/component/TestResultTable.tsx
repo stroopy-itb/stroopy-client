@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import ReactPaginate from "react-paginate";
 import { TestResult } from "../../domain/model";
 import {
   translateActivityBurden,
@@ -6,17 +7,35 @@ import {
   translateRoomCondition,
 } from "../utils";
 import ExportSpreadsheet from "./ExportSpreadsheet";
+import Paginate from "./Paginate";
 
 export default function TestResultTable(props: {
   testResults?: TestResult[];
+  size: number;
+  page: number;
+  totalSize: number;
+  changePage?: (event: any) => void;
 }): JSX.Element {
-  const { testResults } = props;
+  const { testResults, size, page, totalSize, changePage } = props;
 
   return (
     <div className="justify-self-stretch overflow-hidden">
-    <div className="bg-white rounded-2xl overflow-auto md:p-5">
+      <div className="flex justify-between mb-5">
+        {testResults && testResults.length > 0 ? (
+          <ExportSpreadsheet data={testResults} />
+        ) : (
+          ""
+        )}
+        <Paginate
+          size={size}
+          page={page}
+          totalSize={totalSize}
+          changePage={changePage}
+        />
+      </div>
+      <div className="bg-white rounded-2xl overflow-auto md:p-5">
         {testResults ? (
-        <table className="table-auto w-full">
+          <table className="table-auto w-full">
             <thead>
               <tr className="font-bold">
                 <td className="py-2 px-5 border-b-2 border-black">NO.</td>
@@ -101,21 +120,6 @@ export default function TestResultTable(props: {
         ) : (
           ""
         )}
-      </div>
-      <div className="justify-self-stretch flex justify-between mt-5">
-        {testResults && testResults.length > 0 ? (
-          <ExportSpreadsheet data={testResults} />
-        ) : (
-          ""
-        )}
-        {/* <div className="rounded-2xl bg-white flex">
-          <button className="py-2 px-4 text-gray-400">Prev</button>
-          <button className="py-2 px-4 bg-blue text-white">1</button>
-          <button className="py-2 px-4 text-blue">2</button>
-          <button className="py-2 px-4 text-blue">3</button>
-          <button className="py-2 px-4 text-blue">4</button>
-          <button className="py-2 px-4 text-blue">Next</button>
-        </div> */}
       </div>
     </div>
   );

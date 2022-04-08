@@ -5,6 +5,9 @@ import researchMiddleware from "../middleware/ResearchMiddleware";
 export interface ResearchState {
   loading: boolean;
   researches?: Research[];
+  size: number;
+  page: number;
+  totalSize?: number;
   selectedResearch?: Research;
   localSetup: {
     pairs: ColorPair[];
@@ -16,6 +19,9 @@ export interface ResearchState {
 const initialState: ResearchState = {
   loading: false,
   researches: undefined,
+  size: 10,
+  page: 1,
+  totalSize: undefined,
   selectedResearch: undefined,
   localSetup: {
     pairs: [
@@ -51,7 +57,10 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.getAll.fulfilled, (state, action) => ({
       ...state,
       loading: false,
-      researches: action.payload
+      researches: action.payload.researches,
+      size: action.payload.size,
+      page: action.payload.page,
+      totalSize: action.payload.totalSize,
     }))
     .addCase(researchMiddleware.getAll.rejected, (state, action) => ({
       ...state,
@@ -66,7 +75,10 @@ const ResearchReducer = createReducer(initialState, (builder) => {
     .addCase(researchMiddleware.getAllByTickets.fulfilled, (state, action) => ({
       ...state,
       loading: false,
-      researches: action.payload
+      researches: action.payload.researches,
+      size: action.payload.size,
+      page: action.payload.page,
+      totalSize: action.payload.totalSize,
     }))
     .addCase(researchMiddleware.getAllByTickets.rejected, (state, action) => ({
       ...state,

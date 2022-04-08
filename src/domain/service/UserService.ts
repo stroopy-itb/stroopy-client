@@ -1,4 +1,4 @@
-import { CreateUserDto, UpdateUserDto } from "../../adapter/dto";
+import { CreateUserDto, ListUserResponseDto, UpdateUserDto } from "../../adapter/dto";
 import { IUserRepository } from "../../adapter/repository/interface";
 import { User } from "../model";
 import { IUserService } from "./interface";
@@ -8,7 +8,7 @@ export default class UserService implements IUserService {
     private readonly userRepository: IUserRepository
     ) { }
 
-  public async getAll(size: number, page: number, filter?: Partial<User>): Promise<User[]> {
+  public async getAll(size: number, page: number, filter?: Partial<User>): Promise<ListUserResponseDto> {
     return this.userRepository.getAll(size, page, filter);
   }
   public async getCurrentUser(): Promise<User | undefined> {

@@ -1,8 +1,8 @@
 import { ResearchToken } from "../../../domain/model";
-import { CreateResearchTokenDto, UpdateResearchTokenDto } from "../../dto";
+import { CreateResearchTokenDto, ListResearchTokenResponseDto, UpdateResearchTokenDto } from "../../dto";
 
 export default interface IResearchTokenRepository {
-  getAll(size: number, page: number, filter?: Partial<ResearchToken> & { full?: boolean }): Promise<ResearchToken[]>;
+  getAll(size: number, page: number, filter?: Partial<ResearchToken> & { full?: boolean }): Promise<ListResearchTokenResponseDto>;
   getOne(filter?: Partial<ResearchToken> & { full?: boolean }): Promise<ResearchToken>;
   getOneById(id: string): Promise<ResearchToken>;
   getOneByResearcherId(researcherId: string): Promise<ResearchToken>;

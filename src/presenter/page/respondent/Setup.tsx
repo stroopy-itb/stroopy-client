@@ -41,16 +41,14 @@ export default function Setup(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (!testResults) {
-      dispatch(
-        testResultMiddleware.getAll({
-          size: -1,
-          page: 1,
-          filter: { researchId: researchId },
-        })
-      );
-    }
-  }, [testResults, researchId, dispatch]);
+    dispatch(
+      testResultMiddleware.getAll({
+        size: -1,
+        page: 1,
+        filter: { researchId: researchId },
+      })
+    );
+  }, [researchId, dispatch]);
 
   const countLatestTest = () => {
     if (testResults && testResults.length !== 0) {

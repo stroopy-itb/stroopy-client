@@ -1,4 +1,4 @@
-import { CreateResearchTokenDto, UpdateResearchTokenDto } from "../../adapter/dto";
+import { CreateResearchTokenDto, ListResearchTokenResponseDto, UpdateResearchTokenDto } from "../../adapter/dto";
 import { IResearchTokenRepository } from "../../adapter/repository/interface";
 import { ResearchToken } from "../model";
 import { IResearchTokenService } from "./interface";
@@ -7,7 +7,7 @@ export default class ResearchTokenService implements IResearchTokenService {
   constructor(
     private readonly researchTokenRepository: IResearchTokenRepository
   ) { }
-  getAll(size: number, page: number, filter?: Partial<ResearchToken> & { full?: boolean; }): Promise<ResearchToken[]> {
+  getAll(size: number, page: number, filter?: Partial<ResearchToken> & { full?: boolean; }): Promise<ListResearchTokenResponseDto> {
     return this.researchTokenRepository.getAll(size, page, filter);
   }
   getOne(filter?: Partial<ResearchToken> & { full?: boolean; }): Promise<ResearchToken> {

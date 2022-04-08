@@ -67,7 +67,7 @@ export default function ResearchForm(props: {
           toast.success("Penelitian baru berhasil dibuat!");
           await dispatch(
             researchMiddleware.getAll({
-              size: -1,
+              size: 10,
               page: 1,
               filter: { full: true },
             })
