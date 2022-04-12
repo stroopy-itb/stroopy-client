@@ -13,7 +13,7 @@ export default function AdminResearchList(): JSX.Element {
   const pageState = useSelector((state: RootState) => state.research.page);
   const totalSize = useSelector((state: RootState) => state.research.totalSize);
 
-  const [size, setSize] = useState(sizeState);
+  const [size] = useState(sizeState);
   const [page, setPage] = useState(pageState);
 
   const changePage = (event: any) => {

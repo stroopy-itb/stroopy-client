@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from "react";
-import ReactPaginate from "react-paginate";
+import React from "react";
 import { TestResult } from "../../domain/model";
 import {
   translateActivityBurden,

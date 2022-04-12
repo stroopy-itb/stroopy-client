@@ -9,7 +9,7 @@ export default function Paginate(props: {
 }): JSX.Element {
   const { totalSize, size, changePage } = props;
 
-  const [pageCount, setPageCount] = useState(Math.ceil(totalSize / size));
+  const [pageCount] = useState(Math.ceil(totalSize / size));
   return (
     <ReactPaginate
       pageCount={pageCount}

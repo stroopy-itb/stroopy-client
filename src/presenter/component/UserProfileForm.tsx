@@ -84,7 +84,7 @@ export default function UserProfileForm(props: {
         afterSubmit();
       }
     },
-    [profile, user, dispatch]
+    [profile, user, dispatch, afterSubmit]
   );
 
   return (

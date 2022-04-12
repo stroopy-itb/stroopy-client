@@ -14,7 +14,7 @@ export default function History(): JSX.Element {
     (state: RootState) => state.testResult.totalSize
   );
 
-  const [size, setSize] = useState(sizeState);
+  const [size] = useState(sizeState);
   const [page, setPage] = useState(pageState);
 
   const changePage = (event: any) => {

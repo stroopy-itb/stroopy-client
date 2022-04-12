@@ -14,7 +14,7 @@ export default function TokenList(): JSX.Element {
   const pageState = useSelector((state: RootState) => state.researchToken.page);
   const totalSize = useSelector((state: RootState) => state.researchToken.totalSize);
 
-  const [size, setSize] = useState(sizeState);
+  const [size] = useState(sizeState);
   const [page, setPage] = useState(pageState);
 
   const changePage = (event: any) => {

@@ -1,6 +1,4 @@
-
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { ResearchToken } from "../../domain/model";
 import Paginate from "./Paginate";
 
@@ -13,8 +11,6 @@ export default function ResearchTokenTable(props: {
   showModal: (token: ResearchToken) => void;
 }): JSX.Element {
   const { researchTokens, size, page, totalSize, changePage, showModal } = props;
-
-  const navigate = useNavigate();
 
   return (
     <div className="justify-self-stretch overflow-hidden">
