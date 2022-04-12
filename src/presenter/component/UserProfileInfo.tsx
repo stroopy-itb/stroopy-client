@@ -1,5 +1,5 @@
 import React from "react";
-import { User, UserProfile } from "../../domain/model";
+import { UserProfile } from "../../domain/model";
 
 export default function UserProfileInfo(props: {
   profile?: UserProfile;
