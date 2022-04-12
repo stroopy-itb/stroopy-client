@@ -1,10 +1,11 @@
 import { BaseModel, BodyCondition, DeviceType, RoomCondition, ActivityBurden, Research, User } from ".";
+import { RoomTemperature } from "./RoomTemperature";
 
 export default interface TestResult extends BaseModel {
   bodyCondition: BodyCondition;
-  bodyTemp: number;
   device: DeviceType;
   roomCondition: RoomCondition;
+  roomTemperature: RoomTemperature;
   preActivity: string;
   preActivityPhysicalBurden: ActivityBurden;
   preActivityMentalBurden: ActivityBurden;

@@ -7,6 +7,7 @@ import {
   BodyCondition,
   DeviceType,
   RoomCondition,
+  RoomTemperature,
 } from "../../../domain/model";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -14,13 +15,14 @@ import {
   translateActivityBurden,
   translateBodyCondition,
   translateRoomCondition,
+  translateRoomTemperature,
 } from "../../utils";
 
 interface CreateTestDataRequest {
   bodyCondition: BodyCondition;
-  bodyTemp: number;
   device: DeviceType;
   roomCondition: RoomCondition;
+  roomTemperature: RoomTemperature;
   preActivity: string;
   preActivityPhysicalBurden: ActivityBurden;
   preActivityMentalBurden: ActivityBurden;
@@ -65,7 +67,7 @@ export default function Setup(): JSX.Element {
 
   const initialValues: CreateTestDataRequest = {
     bodyCondition: testData?.bodyCondition || BodyCondition.Healthy,
-    bodyTemp: testData?.bodyTemp || 0,
+    roomTemperature: testData?.roomTemperature || RoomTemperature.Normal,
     device: testData?.device || DeviceType.PC,
     roomCondition: testData?.roomCondition || RoomCondition.Indoor,
     preActivity: testData?.preActivity || "",
@@ -140,20 +142,6 @@ export default function Setup(): JSX.Element {
                   </select>
                 </div>
                 <div className="form-control">
-                  <label htmlFor="bodyTemp">Temperatur Tubuh</label>
-                  <input
-                    required
-                    type="number"
-                    name="bodyTemp"
-                    id="bodyTemp"
-                    placeholder="Suhu Tubuh"
-                    value={values.bodyTemp}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-5">
-                <div className="form-control">
                   <label htmlFor="device">Device</label>
                   <select
                     required
@@ -170,6 +158,8 @@ export default function Setup(): JSX.Element {
                     ))}
                   </select>
                 </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-5">
                 <div className="form-control">
                   <label htmlFor="roomCondition">Kondisi Ruangan</label>
                   <select
@@ -182,6 +172,22 @@ export default function Setup(): JSX.Element {
                     {Object.entries(RoomCondition).map((item) => (
                       <option key={item[0]} value={item[0]}>
                         {translateRoomCondition(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-control">
+                  <label htmlFor="roomTemperature">Suhu Ruangan</label>
+                  <select
+                    required
+                    name="roomTemperature"
+                    id="roomTemperature"
+                    value={values.roomTemperature}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(RoomTemperature).map((item) => (
+                      <option key={item[0]} value={item[0]}>
+                        {translateRoomTemperature(item[1])}
                       </option>
                     ))}
                   </select>

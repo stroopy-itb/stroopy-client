@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { ErrorResponse, ResearchToken } from "../../../domain/model";
-import researchTokenMiddleware from "../middleware/ResearchTokenMiddleware";
+import { researchMiddleware, researchTokenMiddleware } from "../middleware";
 
 export interface ResearchTokenState {
   loading: boolean;
@@ -122,6 +122,11 @@ const ResearchTokenReducer = createReducer(initialState, (builder) => {
       ...state,
       loading: false,
       error: action.payload as ErrorResponse
+    }))
+    .addCase(researchMiddleware.getOneById.fulfilled, (state, action) => ({
+      ...state,
+      loading: false,
+      selectedResearchToken: action.payload.researchToken
     }))
 });
 

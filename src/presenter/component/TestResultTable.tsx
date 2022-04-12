@@ -49,10 +49,13 @@ export default function TestResultTable(props: {
                   Tempat Tes
                 </td>
                 <td className="py-2 px-5 border-b-2 border-black">
-                  Kondisi Tubuh
+                  Suhu Tempat Tes
                 </td>
                 <td className="py-2 px-5 border-b-2 border-black">
-                  Suhu Tubuh
+                  Perangkat Tes
+                </td>
+                <td className="py-2 px-5 border-b-2 border-black">
+                  Kondisi Tubuh
                 </td>
                 <td className="py-2 px-5 border-b-2 border-black">
                   Aktivitas Sebelum
@@ -91,10 +94,11 @@ export default function TestResultTable(props: {
                     <td className="py-2 px-5">
                       {translateRoomCondition(row.roomCondition)}
                     </td>
+                    <td className="py-2 px-5">{row.roomTemperature}</td>
+                    <td className="py-2 px-5">{row.device}</td>
                     <td className="py-2 px-5">
                       {translateBodyCondition(row.bodyCondition)}
                     </td>
-                    <td className="py-2 px-5">{row.bodyTemp}</td>
                     <td className="py-2 px-5">{row.preActivity}</td>
                     <td className="py-2 px-5">
                       {translateActivityBurden(row.preActivityPhysicalBurden)}

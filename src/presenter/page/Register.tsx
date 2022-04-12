@@ -6,6 +6,7 @@ import { CreateUserDto } from "../../adapter/dto";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { userMiddleware } from "../redux/middleware/UserMiddleware";
+import { toast } from "react-toastify";
 
 interface RegisterRequest extends CreateUserDto {
   token: string;
@@ -32,6 +33,7 @@ export default function Login(): JSX.Element {
       })
     );
     if (request.meta.requestStatus === "fulfilled") {
+      toast.success("Registrasi Berhasil!");
       navigate("/login");
     }
 

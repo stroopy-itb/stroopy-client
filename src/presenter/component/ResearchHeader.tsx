@@ -1,13 +1,14 @@
-import { Research, User } from "../../domain/model";
+import { Research, ResearchToken, User } from "../../domain/model";
 import { UserRole } from "../../domain/model/UserRole";
 import { ResearchSetupInfo } from ".";
 
 export default function ResearchHeader(props: {
   research?: Research;
+  researchToken?: ResearchToken;
   user?: User;
   tokenExpired: boolean;
 }): JSX.Element {
-  const { research, user, tokenExpired } = props;
+  const { research, researchToken, user, tokenExpired } = props;
 
   return (
     <div className="grid grid-flow-row gap-5 justify-items-center content-start">
@@ -52,11 +53,11 @@ export default function ResearchHeader(props: {
               <tbody>
                 <tr>
                   <td className="py-1 px-2">
-                    {research?.researchToken?.token}
+                    {researchToken?.token}
                   </td>
                   <td className={`py-1 px-2 ${tokenExpired ? "text-red" : ""}`}>
                     {new Date(
-                      research?.researchToken?.expiredAt || ""
+                      researchToken?.expiredAt || ""
                     ).toLocaleString()}
                   </td>
                 </tr>

@@ -1,4 +1,4 @@
-import { ActivityBurden, BodyCondition, InstitutionType, RoomCondition } from "../../domain/model";
+import { ActivityBurden, BodyCondition, InstitutionType, RoomCondition, RoomTemperature } from "../../domain/model";
 
 export const translateBodyCondition = (cond: BodyCondition): string => {
   switch (cond) {
@@ -15,6 +15,17 @@ export const translateRoomCondition = (room: RoomCondition): string => {
       return "Dalam ruangan";
     case RoomCondition.Outdoor:
       return "Luar ruangan";
+  }
+}
+
+export const translateRoomTemperature = (roomTemp: RoomTemperature): string => {
+  switch (roomTemp) {
+    case RoomTemperature.Hot:
+      return "Panas";
+    case RoomTemperature.Normal:
+      return "Normal";
+    case RoomTemperature.Cold:
+      return "Dingin";
   }
 }
 

@@ -77,6 +77,12 @@ export default function Stroop(): JSX.Element {
         return;
       }
 
+      if (answerRecords.length >= rounds()) {
+        actions.start(5000);
+        setStarted(GameState.Ended);
+        return;
+      }
+
       const newRecord: AnswerRecord = {
         status: AnswerStatus.Unanswered,
         time: (roundTime - time) / 1000,
@@ -108,12 +114,6 @@ export default function Stroop(): JSX.Element {
       }
 
       setAnswerRecords((oldRecord) => [...oldRecord, newRecord]);
-
-      if (answerRecords.length >= rounds()) {
-        actions.start(5000);
-        setStarted(GameState.Ended);
-        return;
-      }
 
       setStroopKey(pickRandomPair);
       setPrompt(randomPrompt);

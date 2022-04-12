@@ -21,9 +21,9 @@ export default function Result(): JSX.Element {
         testResultMiddleware.create({
           dto: {
             bodyCondition: testData?.bodyCondition,
-            bodyTemp: testData?.bodyTemp,
             device: testData?.device,
             roomCondition: testData?.roomCondition,
+            roomTemperature: testData?.roomTemperature,
             preActivity: testData?.preActivity,
             preActivityPhysicalBurden: testData?.preActivityPhysicalBurden,
             preActivityMentalBurden: testData?.preActivityMentalBurden,

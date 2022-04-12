@@ -12,6 +12,9 @@ export default function ResearchDetail(): JSX.Element {
   const research = useSelector(
     (state: RootState) => state.research.selectedResearch
   );
+  const researchToken = useSelector(
+    (state: RootState) => state.researchToken.selectedResearchToken
+  );
   const user = useSelector((state: RootState) => state.user.user);
   const testResults = useSelector(
     (state: RootState) => state.testResult.testResults
@@ -31,12 +34,18 @@ export default function ResearchDetail(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (id && research?.id !== id) {
+    if (id) {
       dispatch(researchMiddleware.getOneById({ id }));
     }
-  }, [id, research, dispatch]);
+  }, [id, dispatch]);
   useEffect(() => {
-    dispatch(testResultMiddleware.getAll({ size: size, page: page, filter: { researchId: id } }));
+    dispatch(
+      testResultMiddleware.getAll({
+        size: size,
+        page: page,
+        filter: { researchId: id },
+      })
+    );
   }, [id, size, page, dispatch]);
 
   const tokenExpired = useCallback(() => {
@@ -50,6 +59,7 @@ export default function ResearchDetail(): JSX.Element {
     <div className="flex-grow p-10 grid grid-flow-row gap-5 justify-items-center content-start">
       <ResearchHeader
         research={research}
+        researchToken={researchToken}
         user={user}
         tokenExpired={tokenExpired()}
       />

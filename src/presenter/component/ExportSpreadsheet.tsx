@@ -6,6 +6,7 @@ import {
   translateActivityBurden,
   translateBodyCondition,
   translateRoomCondition,
+  translateRoomTemperature,
 } from "../utils";
 
 export default function ExportSpreadsheet(props: {
@@ -27,9 +28,10 @@ export default function ExportSpreadsheet(props: {
         responden: entry.respondent?.username,
         tes_ke: entry.testNo,
         waktu_tes: entry.createdAt,
-        kondisi_tempat: translateRoomCondition(entry.roomCondition),
+        kondisi_ruangan: translateRoomCondition(entry.roomCondition),
+        suhu_ruangan: translateRoomTemperature(entry.roomTemperature),
+        perangkat: entry.device,
         kondisi_tubuh: translateBodyCondition(entry.bodyCondition),
-        suhu_tubuh: entry.bodyTemp,
         aktivitas_sebelum: entry.preActivity,
         beban_fisik_aktivitas_sebelum: translateActivityBurden(
           entry.preActivityPhysicalBurden

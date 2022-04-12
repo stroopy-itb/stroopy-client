@@ -9,9 +9,10 @@ export default function RespodentResearchDetail(): JSX.Element {
   const research = useSelector(
     (state: RootState) => state.research.selectedResearch
   );
-  const user = useSelector(
-    (state: RootState) => state.user.user
+  const researchToken = useSelector(
+    (state: RootState) => state.researchToken.selectedResearchToken
   );
+  const user = useSelector((state: RootState) => state.user.user);
 
   const { id } = useParams();
 
@@ -33,13 +34,22 @@ export default function RespodentResearchDetail(): JSX.Element {
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
-      <ResearchHeader research={research} user={user} tokenExpired={tokenExpired()} />
-      {research?.researchSetup && !tokenExpired() ?
-          <button
-            className="w-64 button button-nav hover:button-hover"
-            onClick={() => navigate(`/setup/${id}`)}
-          >Mulai Tes!</button>
-      : ""}
+      <ResearchHeader
+        research={research}
+        researchToken={researchToken}
+        user={user}
+        tokenExpired={tokenExpired()}
+      />
+      {research?.researchSetup && !tokenExpired() ? (
+        <button
+          className="w-64 button button-nav hover:button-hover"
+          onClick={() => navigate(`/setup/${id}`)}
+        >
+          Mulai Tes!
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

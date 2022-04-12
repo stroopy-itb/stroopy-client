@@ -2,6 +2,7 @@ export { AnswerStatus } from './AnswerStatus';
 export { Prompt } from './Prompt';
 export { BodyCondition } from './BodyCondition';
 export { RoomCondition } from './RoomCondition';
+export { RoomTemperature } from './RoomTemperature';
 export { ActivityBurden } from './ActivityBurden';
 export { InstitutionType } from './InstitutionType';
 export { DeviceType } from './DeviceType';
