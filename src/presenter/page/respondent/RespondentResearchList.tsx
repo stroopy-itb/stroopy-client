@@ -6,6 +6,7 @@ import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
 export default function RespondentResearchList(): JSX.Element {
+  const user = useSelector((state: RootState) => state.user.user);
   const researches = useSelector(
     (state: RootState) => state.research.researches
   );
@@ -22,9 +23,9 @@ export default function RespondentResearchList(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-      dispatch(
-        researchMiddleware.getAllByTickets({ size: size, page: page, filter: {} })
-      );
+    dispatch(
+      researchMiddleware.getAllByTickets({ size: size, page: page, filter: {} })
+    );
   }, [size, page, dispatch]);
 
   const [modal, setModal] = useState<{ isOpen: boolean }>({ isOpen: false });
@@ -40,6 +41,7 @@ export default function RespondentResearchList(): JSX.Element {
           page={page}
           totalSize={totalSize}
           changePage={changePage}
+          user={user}
         />
       ) : (
         ""

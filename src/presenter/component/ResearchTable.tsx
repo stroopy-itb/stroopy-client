@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Research } from "../../domain/model";
+import { Research, User } from "../../domain/model";
+import { UserRole } from "../../domain/model/UserRole";
 import Paginate from "./Paginate";
 
 export default function ResearchTable(props: {
@@ -9,8 +10,9 @@ export default function ResearchTable(props: {
   page: number;
   totalSize: number;
   changePage?: (event: any) => void;
+  user?: User;
 }): JSX.Element {
-  const { researches, size, page, totalSize, changePage } = props;
+  const { researches, size, page, totalSize, changePage, user } = props;
 
   const navigate = useNavigate();
 
@@ -52,10 +54,10 @@ export default function ResearchTable(props: {
                     </td>
                     <td className="py-2 px-5 text-right">
                       <button
-                        onClick={() => navigate(`./${row.id}`)}
+                        onClick={() => navigate(`${user?.role === UserRole.Respondent ? "/setup/" : "./"}${row.id}`)}
                         className="button button-action p-1 px-5 text-base"
                       >
-                        Detail
+                        { user?.role === UserRole.Respondent ? "Kerjakan Tes" : "Detail" }
                       </button>
                     </td>
                   </tr>

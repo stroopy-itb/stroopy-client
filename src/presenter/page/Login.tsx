@@ -2,13 +2,14 @@ import React from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../logo.svg";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 import { authMiddleware } from "../redux/middleware/AuthMiddleware";
 import { LoginDto } from "../../adapter/dto";
 
 
 export default function Login(): JSX.Element {
+  const authLoading = useSelector((state: RootState) => state.auth.loading);
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -54,6 +55,7 @@ export default function Login(): JSX.Element {
                 value={values.username}
                 onChange={handleChange}
                 autoFocus
+                disabled={authLoading || isSubmitting}
                 required
               />
               {<p className="text-red">{errors.username}</p>}
@@ -65,13 +67,14 @@ export default function Login(): JSX.Element {
                 placeholder="Password"
                 value={values.password}
                 onChange={handleChange}
+                disabled={authLoading || isSubmitting}
                 required
               />
               {<p className="text-red">{errors.password}</p>}
             </div>
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={authLoading || isSubmitting}
               className="button button-action"
             >
               Masuk

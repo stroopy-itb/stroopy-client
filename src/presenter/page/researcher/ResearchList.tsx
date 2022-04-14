@@ -73,6 +73,7 @@ export default function ResearchList(): JSX.Element {
           page={page}
           totalSize={totalSize}
           changePage={changePage}
+          user={user}
         />
       ) : (
         ""
