@@ -1,5 +1,6 @@
 import React from "react";
 import { UserProfile } from "../../domain/model";
+import { translateInstitutionType } from "../utils";
 
 export default function UserProfileInfo(props: {
   profile?: UserProfile;
@@ -27,7 +28,7 @@ export default function UserProfileInfo(props: {
         </div>
         <div>
           <h3 className="py-3 text-lg font-bold">Tipe Institusi</h3>
-          <p className="py-3 text-md">{profile?.institutionType}</p>
+          <p className="py-3 text-md">{translateInstitutionType(profile?.institutionType)}</p>
         </div>
         <div>
           <h3 className="py-3 text-lg font-bold">Institusi</h3>

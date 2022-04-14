@@ -135,7 +135,7 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(BodyCondition).map((item) => (
-                      <option key={item[0]} value={item[0]}>
+                      <option key={item[1]} value={item[1]}>
                         {translateBodyCondition(item[1])}
                       </option>
                     ))}
@@ -152,7 +152,7 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(DeviceType).map((item) => (
-                      <option key={item[0]} value={item[0]}>
+                      <option key={item[1]} value={item[1]}>
                         {item[1]}
                       </option>
                     ))}
@@ -170,7 +170,7 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(RoomCondition).map((item) => (
-                      <option key={item[0]} value={item[0]}>
+                      <option key={item[1]} value={item[1]}>
                         {translateRoomCondition(item[1])}
                       </option>
                     ))}
@@ -186,7 +186,7 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   >
                     {Object.entries(RoomTemperature).map((item) => (
-                      <option key={item[0]} value={item[0]}>
+                      <option key={item[1]} value={item[1]}>
                         {translateRoomTemperature(item[1])}
                       </option>
                     ))}
@@ -219,7 +219,7 @@ export default function Setup(): JSX.Element {
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                        <option key={`post-phys-${item[1]}`} value={item[1]}>
                           {translateActivityBurden(item[1])}
                         </option>
                       ))}
@@ -237,7 +237,7 @@ export default function Setup(): JSX.Element {
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                        <option key={`post-phys-${item[1]}`} value={item[1]}>
                           {translateActivityBurden(item[1])}
                         </option>
                       ))}
@@ -269,7 +269,7 @@ export default function Setup(): JSX.Element {
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                        <option key={`post-phys-${item[1]}`} value={item[1]}>
                           {translateActivityBurden(item[1])}
                         </option>
                       ))}
@@ -287,7 +287,7 @@ export default function Setup(): JSX.Element {
                       onChange={handleChange}
                     >
                       {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[0]}`} value={item[0]}>
+                        <option key={`post-phys-${item[1]}`} value={item[1]}>
                           {translateActivityBurden(item[1])}
                         </option>
                       ))}

@@ -40,7 +40,11 @@ export const translateActivityBurden = (burden: ActivityBurden): string => {
   }
 }
 
-export const translateInstitutionType = (type: InstitutionType): string => {
+export const translateInstitutionType = (type: InstitutionType | undefined): string => {
+  if (!type) {
+    return "";
+  }
+
   switch (type) {
     case InstitutionType.GENERAL:
       return "Umum";

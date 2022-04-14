@@ -34,6 +34,7 @@ export default function UserProfileForm(props: {
       { setSubmitting }: FormikHelpers<CreateUserProfileDto>
     ) => {
       if (profile) {
+        console.log(values);
         dispatch(
           userMiddleware.updateProfile({
             dto: {
@@ -160,7 +161,7 @@ export default function UserProfileForm(props: {
                   onChange={handleChange}
                 >
                   {Object.entries(InstitutionType).map((item) => (
-                    <option key={item[0]} value={item[0]}>
+                    <option key={item[1]} value={item[1]}>
                       {translateInstitutionType(item[1])}
                     </option>
                   ))}
