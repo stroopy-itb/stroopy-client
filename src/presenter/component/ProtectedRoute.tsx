@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthStatus } from "../../domain/model";
 import { authMiddleware } from "../redux/middleware";
 import { AppDispatch, RootState } from "../redux/store";
 
@@ -10,8 +11,8 @@ export default function ProtectedRoute(props: {
 }): JSX.Element {
   const { children } = props;
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
+  const authStatus = useSelector(
+    (state: RootState) => state.auth.authStatus
   );
   const authLoading = useSelector((state: RootState) => state.auth.loading);
   const user = useSelector((state: RootState) => state.user.user);
@@ -23,21 +24,21 @@ export default function ProtectedRoute(props: {
 
   const [prevPath] = useState(location.pathname);
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (authStatus === AuthStatus.UNAUTHENTICATED) {
       dispatch(authMiddleware.reauth()).then(() => {
         navigate(prevPath);
       });
     }
-    if (isAuthenticated && user && !userProfile) {
+    if (authStatus === AuthStatus.AUTHENTICATED && user && !userProfile) {
       toast.warning("Silahkan lengkapi data profil anda!");
-      navigate("profile");
+      navigate("/profile");
     }
-  }, [isAuthenticated, user, userProfile, prevPath]);
+  }, [authStatus, user, userProfile, prevPath]);
 
   if (authLoading) {
-    return <h1 className="text-5xl font-bold text-white text center">Loading</h1>
+    return <h1 className="w-screen flex-grow text-5xl font-bold text-white text-center">Loading</h1>
   } else {
-    if (isAuthenticated) {
+    if (authStatus === AuthStatus.AUTHENTICATED) {
       return children;
     } else {
       return <Navigate to={"/login"} />;

@@ -1,3 +1,4 @@
+export { AuthStatus } from './AuthStatus';
 export { AnswerStatus } from './AnswerStatus';
 export { Prompt } from './Prompt';
 export { BodyCondition } from './BodyCondition';
