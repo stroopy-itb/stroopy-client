@@ -23,15 +23,6 @@ import { authMiddleware } from "./presenter/redux/middleware";
 import { AppDispatch, RootState } from "./presenter/redux/store";
 
 function App() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-  const user = useSelector(
-    (state: RootState) => state.user.user
-  );
-  const userProfile = useSelector(
-    (state: RootState) => state.user.profile
-  );
   const authError = useSelector(
     (state: RootState) => state.auth.error
   );
@@ -48,22 +39,6 @@ function App() {
     (state: RootState) => state.testResult.error
   );
 
-  const dispatch = useDispatch<AppDispatch>();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const [prevPath] = useState(location.pathname);
-  useEffect(() => {
-    if (!isAuthenticated) {
-      dispatch(authMiddleware.reauth()).then(() => {
-        navigate(prevPath);
-      });
-    }
-    if (isAuthenticated && user && !userProfile) {
-      toast.warning("Silahkan lengkapi data profil anda!");
-      navigate('profile');
-    }
-  }, [isAuthenticated, user, userProfile, prevPath]);
   useEffect(() => {
     if (authError) {
       toast.error(`${authError.message}`);
