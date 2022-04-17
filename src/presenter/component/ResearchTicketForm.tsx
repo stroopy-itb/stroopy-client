@@ -11,8 +11,14 @@ interface CreateResearchTicketRequest {
   groupToken: string;
 }
 
-export default function ResearchTicketForm(): JSX.Element {
-  const respondentId = useSelector((state: RootState) => state.user.user?.id);
+export default function ResearchTicketForm(props: {
+  page: number;
+  size: number;
+  respondentId?: string;
+  afterSubmit?: () => void;
+}
+): JSX.Element {
+  const { respondentId, page, size, afterSubmit } = props;
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -28,7 +34,10 @@ export default function ResearchTicketForm(): JSX.Element {
       ).then((res: any) => {
         if (res) {
           toast.success('Berhasil Mendaftar ke Penelitian!');
-          navigate(`./${res.payload.id}`);
+          dispatch(
+            researchMiddleware.getAllByTickets({ size: size, page: page, filter: {} })
+          );
+          if (afterSubmit) afterSubmit();
         }
       });
     }

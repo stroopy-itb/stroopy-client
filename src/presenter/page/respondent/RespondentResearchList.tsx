@@ -60,7 +60,13 @@ export default function RespondentResearchList(): JSX.Element {
         className="place-self-center lg:w-1/4 w-screen bg-black rounded-2xl p-8"
         overlayClassName="fixed top-0 bottom-0 left-0 right-0 w-screen h-screen bg-white bg-opacity-10 grid"
       >
-        <ResearchTicketForm />
+        <ResearchTicketForm 
+          page={page} 
+          size={size} 
+          respondentId={user?.id} 
+          afterSubmit={() => 
+          setModal({ isOpen: false })} 
+        />
       </Modal>
     </div>
   );

@@ -62,7 +62,7 @@ export const AuthReducer = createReducer(initialState, (builder) => {
   .addCase(authMiddleware.reauth.rejected, (state) => ({
     ...state,
     loading: false,
-    authStatus: AuthStatus.UNAUTHENTICATED,
+    authStatus: AuthStatus.LOGGEDOUT,
     error: undefined,
   }))
 });
