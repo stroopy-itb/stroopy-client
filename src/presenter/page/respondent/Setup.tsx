@@ -1,5 +1,5 @@
 import { Formik, FormikHelpers } from "formik";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -41,6 +41,7 @@ export default function Setup(): JSX.Element {
 
   const { researchId } = useParams();
 
+  const [refreshed, setRefreshed] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(
@@ -49,21 +50,19 @@ export default function Setup(): JSX.Element {
         page: 1,
         filter: { researchId: researchId },
       })
-    );
+    ).then(() => setRefreshed(true));
   }, [researchId, dispatch]);
 
-  const countLatestTest = () => {
-    if (testResults && testResults.length !== 0) {
-      const sortedResults = testResults
-        ?.slice()
-        .sort((a, b) => b.testNo - a.testNo);
-
-      return sortedResults[0].testNo + 1;
-    } else {
-      console.log("empty");
-      return 1;
+  const [testNo, setTestNo] = useState(-1);
+  useEffect(() => {
+    if (refreshed) {
+      const todayDate = new Date().toLocaleDateString();
+      const todayTests = testResults?.filter(
+        t => new Date(t.createdAt).toLocaleDateString() === todayDate
+      );
+      setTestNo(todayTests ? todayTests.length + 1 : -1);
     }
-  };
+  }, [testResults, refreshed]);
 
   const initialValues: CreateTestDataRequest = {
     bodyCondition: testData?.bodyCondition || BodyCondition.Healthy,
@@ -80,7 +79,7 @@ export default function Setup(): JSX.Element {
       testData?.postActivityPhysicalBurden || ActivityBurden.Light,
     postActivityMentalBurden:
       testData?.postActivityMentalBurden || ActivityBurden.Light,
-    testNo: countLatestTest(),
+    testNo: testNo,
   };
 
   const handleSubmit = (
@@ -107,205 +106,211 @@ export default function Setup(): JSX.Element {
 
   return (
     <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-center">
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ values, isSubmitting, handleChange, handleSubmit }) => (
-          <form onSubmit={handleSubmit} className="md:w-1/2">
-            <div className="grid gap-7">
-              <div className="form-control">
-                <label htmlFor="testNo">Pengujian ke</label>
-                <input
-                  required
-                  type="number"
-                  name="testNo"
-                  id="testNo"
-                  placeholder="Pengujian ke"
-                  value={values.testNo}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="grid md:grid-cols-2 gap-5">
+      {testNo > 0 ? (
+        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+          {({ values, isSubmitting, handleChange, handleSubmit }) => (
+            <form onSubmit={handleSubmit} className="md:w-1/2">
+              <div className="grid gap-7">
                 <div className="form-control">
-                  <label htmlFor="bodyCondition">Kondisi Tubuh</label>
-                  <select
+                  <label htmlFor="testNo">Pengujian ke</label>
+                  <input
                     required
-                    name="bodyCondition"
-                    id="bodyCondition"
-                    placeholder="Kondisi Tubuh"
-                    value={values.bodyCondition}
+                    type="number"
+                    name="testNo"
+                    id="testNo"
+                    placeholder="Pengujian ke"
+                    value={values.testNo}
                     onChange={handleChange}
-                  >
-                    {Object.entries(BodyCondition).map((item) => (
-                      <option key={item[1]} value={item[1]}>
-                        {translateBodyCondition(item[1])}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
-                <div className="form-control">
-                  <label htmlFor="device">Device</label>
-                  <select
-                    required
-                    name="device"
-                    id="device"
-                    placeholder="Tipe Device"
-                    value={values.device}
-                    onChange={handleChange}
-                  >
-                    {Object.entries(DeviceType).map((item) => (
-                      <option key={item[1]} value={item[1]}>
-                        {item[1]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-5">
-                <div className="form-control">
-                  <label htmlFor="roomCondition">Kondisi Ruangan</label>
-                  <select
-                    required
-                    name="roomCondition"
-                    id="roomCondition"
-                    value={values.roomCondition}
-                    onChange={handleChange}
-                  >
-                    {Object.entries(RoomCondition).map((item) => (
-                      <option key={item[1]} value={item[1]}>
-                        {translateRoomCondition(item[1])}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-control">
-                  <label htmlFor="roomTemperature">Suhu Ruangan</label>
-                  <select
-                    required
-                    name="roomTemperature"
-                    id="roomTemperature"
-                    value={values.roomTemperature}
-                    onChange={handleChange}
-                  >
-                    {Object.entries(RoomTemperature).map((item) => (
-                      <option key={item[1]} value={item[1]}>
-                        {translateRoomTemperature(item[1])}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-5">
-                <div className="grid gap-5">
+                <div className="grid md:grid-cols-2 gap-5">
                   <div className="form-control">
-                    <label htmlFor="preActivity">Aktivitas Sebelum</label>
-                    <input
-                      required
-                      type="text"
-                      name="preActivity"
-                      id="preActivity"
-                      placeholder="Aktivitas Sebelum"
-                      value={values.preActivity}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="preActivityPhysicalBurden">
-                      Beban Fisik
-                    </label>
+                    <label htmlFor="bodyCondition">Kondisi Tubuh</label>
                     <select
                       required
-                      name="preActivityPhysicalBurden"
-                      id="preActivityPhysicalBurden"
-                      value={values.preActivityPhysicalBurden}
+                      name="bodyCondition"
+                      id="bodyCondition"
+                      placeholder="Kondisi Tubuh"
+                      value={values.bodyCondition}
                       onChange={handleChange}
                     >
-                      {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[1]}`} value={item[1]}>
-                          {translateActivityBurden(item[1])}
+                      {Object.entries(BodyCondition).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {translateBodyCondition(item[1])}
                         </option>
                       ))}
                     </select>
                   </div>
                   <div className="form-control">
-                    <label htmlFor="preActivityMentalBurden">
-                      Beban Mental
-                    </label>
+                    <label htmlFor="device">Device</label>
                     <select
                       required
-                      name="preActivityMentalBurden"
-                      id="preActivityMentalBurden"
-                      value={values.preActivityMentalBurden}
+                      name="device"
+                      id="device"
+                      placeholder="Tipe Device"
+                      value={values.device}
                       onChange={handleChange}
                     >
-                      {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[1]}`} value={item[1]}>
-                          {translateActivityBurden(item[1])}
+                      {Object.entries(DeviceType).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {item[1]}
                         </option>
                       ))}
                     </select>
                   </div>
                 </div>
-                <div className="grid gap-5">
+                <div className="grid md:grid-cols-2 gap-5">
                   <div className="form-control">
-                    <label htmlFor="postActivity">Aktivitas Sesudah</label>
-                    <input
-                      required
-                      type="text"
-                      name="postActivity"
-                      id="postActivity"
-                      placeholder="Aktivitas Sesudah"
-                      value={values.postActivity}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="postActivityPhysicalBurden">
-                      Beban Fisik
-                    </label>
+                    <label htmlFor="roomCondition">Kondisi Ruangan</label>
                     <select
                       required
-                      name="postActivityPhysicalBurden"
-                      id="postActivityPhysicalBurden"
-                      value={values.postActivityPhysicalBurden}
+                      name="roomCondition"
+                      id="roomCondition"
+                      value={values.roomCondition}
                       onChange={handleChange}
                     >
-                      {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[1]}`} value={item[1]}>
-                          {translateActivityBurden(item[1])}
+                      {Object.entries(RoomCondition).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {translateRoomCondition(item[1])}
                         </option>
                       ))}
                     </select>
                   </div>
                   <div className="form-control">
-                    <label htmlFor="postActivityMentalBurden">
-                      Beban Mental
-                    </label>
+                    <label htmlFor="roomTemperature">Suhu Ruangan</label>
                     <select
                       required
-                      name="postActivityMentalBurden"
-                      id="postActivityMentalBurden"
-                      value={values.postActivityMentalBurden}
+                      name="roomTemperature"
+                      id="roomTemperature"
+                      value={values.roomTemperature}
                       onChange={handleChange}
                     >
-                      {Object.entries(ActivityBurden).map((item) => (
-                        <option key={`post-phys-${item[1]}`} value={item[1]}>
-                          {translateActivityBurden(item[1])}
+                      {Object.entries(RoomTemperature).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {translateRoomTemperature(item[1])}
                         </option>
                       ))}
                     </select>
                   </div>
                 </div>
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="grid gap-5">
+                    <div className="form-control">
+                      <label htmlFor="preActivity">Aktivitas Sebelum</label>
+                      <input
+                        required
+                        type="text"
+                        name="preActivity"
+                        id="preActivity"
+                        placeholder="Aktivitas Sebelum"
+                        value={values.preActivity}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-control">
+                      <label htmlFor="preActivityPhysicalBurden">
+                        Beban Fisik
+                      </label>
+                      <select
+                        required
+                        name="preActivityPhysicalBurden"
+                        id="preActivityPhysicalBurden"
+                        value={values.preActivityPhysicalBurden}
+                        onChange={handleChange}
+                      >
+                        {Object.entries(ActivityBurden).map((item) => (
+                          <option key={`post-phys-${item[1]}`} value={item[1]}>
+                            {translateActivityBurden(item[1])}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="form-control">
+                      <label htmlFor="preActivityMentalBurden">
+                        Beban Mental
+                      </label>
+                      <select
+                        required
+                        name="preActivityMentalBurden"
+                        id="preActivityMentalBurden"
+                        value={values.preActivityMentalBurden}
+                        onChange={handleChange}
+                      >
+                        {Object.entries(ActivityBurden).map((item) => (
+                          <option key={`post-phys-${item[1]}`} value={item[1]}>
+                            {translateActivityBurden(item[1])}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid gap-5">
+                    <div className="form-control">
+                      <label htmlFor="postActivity">Aktivitas Sesudah</label>
+                      <input
+                        required
+                        type="text"
+                        name="postActivity"
+                        id="postActivity"
+                        placeholder="Aktivitas Sesudah"
+                        value={values.postActivity}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-control">
+                      <label htmlFor="postActivityPhysicalBurden">
+                        Beban Fisik
+                      </label>
+                      <select
+                        required
+                        name="postActivityPhysicalBurden"
+                        id="postActivityPhysicalBurden"
+                        value={values.postActivityPhysicalBurden}
+                        onChange={handleChange}
+                      >
+                        {Object.entries(ActivityBurden).map((item) => (
+                          <option key={`post-phys-${item[1]}`} value={item[1]}>
+                            {translateActivityBurden(item[1])}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="form-control">
+                      <label htmlFor="postActivityMentalBurden">
+                        Beban Mental
+                      </label>
+                      <select
+                        required
+                        name="postActivityMentalBurden"
+                        id="postActivityMentalBurden"
+                        value={values.postActivityMentalBurden}
+                        onChange={handleChange}
+                      >
+                        {Object.entries(ActivityBurden).map((item) => (
+                          <option key={`post-phys-${item[1]}`} value={item[1]}>
+                            {translateActivityBurden(item[1])}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="justify-self-center w-64 button button-action hover:button-hover"
+                  disabled={isSubmitting}
+                >
+                  Simpan dan Mulai Tes
+                </button>
               </div>
-              <button
-                type="submit"
-                className="justify-self-center w-64 button button-action hover:button-hover"
-                disabled={isSubmitting}
-              >
-                Simpan dan Mulai Tes
-              </button>
-            </div>
-          </form>
-        )}
-      </Formik>
+            </form>
+          )}
+        </Formik>
+      ) : (
+      <div className="flex-grow flex justify-center">
+        <h1 className="self-center text-3xl font-bold text-white text-center">Memuat...</h1>
+      </div>
+      )}
     </div>
   );
 }
