@@ -1,5 +1,5 @@
 import { Formik, FormikHelpers } from "formik";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -9,6 +9,7 @@ import {
   RoomCondition,
   RoomTemperature,
 } from "../../../domain/model";
+import { Loading } from "../../component";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
 import {
@@ -58,7 +59,7 @@ export default function Setup(): JSX.Element {
     if (refreshed) {
       const todayDate = new Date().toLocaleDateString();
       const todayTests = testResults?.filter(
-        t => new Date(t.createdAt).toLocaleDateString() === todayDate
+        (t) => new Date(t.createdAt).toLocaleDateString() === todayDate
       );
       setTestNo(todayTests ? todayTests.length + 1 : -1);
     }
@@ -307,9 +308,7 @@ export default function Setup(): JSX.Element {
           )}
         </Formik>
       ) : (
-      <div className="flex-grow flex justify-center">
-        <h1 className="self-center text-3xl font-bold text-white text-center">Memuat...</h1>
-      </div>
+        <Loading />
       )}
     </div>
   );

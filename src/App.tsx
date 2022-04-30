@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { AuthStatus } from "./domain/model";
 import { Header, ProtectedRoute } from "./presenter/component";
 import {
   Home,
@@ -38,6 +39,29 @@ function App() {
   const testResultError = useSelector(
     (state: RootState) => state.testResult.error
   );
+
+  const authStatus = useSelector(
+    (state: RootState) => state.auth.authStatus
+  );
+  const user = useSelector((state: RootState) => state.user.user);
+  const userProfile = useSelector((state: RootState) => state.user.profile);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [prevPath] = useState(location.pathname);
+  useEffect(() => {
+    if (authStatus === AuthStatus.UNAUTHENTICATED) {
+      dispatch(authMiddleware.reauth()).then(() => {
+        navigate(prevPath);
+      });
+    }
+    if (authStatus === AuthStatus.AUTHENTICATED && user && !userProfile) {
+      toast.warning("Silahkan lengkapi data profil anda!");
+      navigate("/profile");
+    }
+  }, [authStatus, user, userProfile, prevPath]);
 
   useEffect(() => {
     if (authError) {

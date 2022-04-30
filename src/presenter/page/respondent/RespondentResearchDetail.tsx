@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { ResearchHeader } from "../../component";
+import { Loading, ResearchHeader } from "../../component";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
@@ -48,7 +48,7 @@ export default function RespodentResearchDetail(): JSX.Element {
           Mulai Tes!
         </button>
       ) : (
-        ""
+        <Loading context="Penelitian" />
       )}
     </div>
   );

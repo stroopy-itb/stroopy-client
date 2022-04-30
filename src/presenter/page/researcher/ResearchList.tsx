@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Research } from "../../../domain/model";
 import { UserRole } from "../../../domain/model/UserRole";
-import { ResearchForm, ResearchTable } from "../../component";
+import { Loading, ResearchForm, ResearchTable } from "../../component";
 import { researchTokenMiddleware } from "../../redux/middleware";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -37,10 +37,8 @@ export default function ResearchList(): JSX.Element {
     }
   }, [user, researchersToken, dispatch]);
   useEffect(() => {
-      dispatch(
-        researchMiddleware.getAll({ size: size, page: page, filter: {} })
-      );
-  },[size, page, dispatch]);
+    dispatch(researchMiddleware.getAll({ size: size, page: page, filter: {} }));
+  }, [size, page, dispatch]);
 
   const [researchForm, setTokenForm] = useState<{
     isOpen: boolean;
@@ -76,7 +74,7 @@ export default function ResearchList(): JSX.Element {
           user={user}
         />
       ) : (
-        ""
+        <Loading />
       )}
       <div className="justify-self-stretch flex justify-between">
         {!tokenExpired() ? (

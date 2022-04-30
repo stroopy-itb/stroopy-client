@@ -12,3 +12,4 @@ export { default as ExportSpreadsheet } from "./ExportSpreadsheet";
 export { default as UserProfileInfo } from "./UserProfileInfo";
 export { default as UserProfileForm } from "./UserProfileForm";
 export { default as Paginate } from "./Paginate";
+export { default as Loading } from "./Loading";

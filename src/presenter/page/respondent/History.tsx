@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TestResultTable } from "../../component";
+import { Loading, TestResultTable } from "../../component";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
@@ -39,7 +39,7 @@ export default function History(): JSX.Element {
           changePage={changePage}
         />
       ) : (
-        ""
+        <Loading />
       )}
     </div>
   );

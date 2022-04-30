@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ResearchTable } from "../../component";
+import { Loading, ResearchTable } from "../../component";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
 
@@ -39,9 +39,8 @@ export default function AdminResearchList(): JSX.Element {
           user={user}
         />
       ) : (
-        ""
+      <Loading />  
       )}
-      <div className="justify-self-stretch flex justify-between"></div>
     </div>
   );
 }

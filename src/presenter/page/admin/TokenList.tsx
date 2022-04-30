@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ResearchToken } from "../../../domain/model";
 import researchTokenMiddleware from "../../redux/middleware/ResearchTokenMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
-import { ResearchTokenTable, TokenForm } from "../../component";
+import { Loading, ResearchTokenTable, TokenForm } from "../../component";
 import Modal from "react-modal";
 
 export default function TokenList(): JSX.Element {
@@ -59,7 +59,7 @@ export default function TokenList(): JSX.Element {
           showModal={showModal}
         />
       ) : (
-        ""
+      <Loading />  
       )}
       <div className="justify-self-stretch flex justify-between">
         <button
