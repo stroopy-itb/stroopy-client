@@ -5,9 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   ActivityBurden,
   BodyCondition,
-  DeviceType,
   RoomCondition,
+  RoomLighting,
+  RoomNoise,
   RoomTemperature,
+  RoomVibration,
 } from "../../../domain/model";
 import { Loading } from "../../component";
 import { testResultMiddleware } from "../../redux/middleware";
@@ -16,14 +18,20 @@ import {
   translateActivityBurden,
   translateBodyCondition,
   translateRoomCondition,
+  translateRoomLighting,
+  translateRoomNoise,
   translateRoomTemperature,
+  translateRoomVibration,
 } from "../../utils";
 
 interface CreateTestDataRequest {
   bodyCondition: BodyCondition;
-  device: DeviceType;
   roomCondition: RoomCondition;
-  roomTemperature: RoomTemperature;
+  roomTemperature: number;
+  roomTemperaturePerception: RoomTemperature;
+  roomLighting: RoomLighting;
+  roomNoise: RoomNoise;
+  roomVibration: RoomVibration;
   preActivity: string;
   preActivityPhysicalBurden: ActivityBurden;
   preActivityMentalBurden: ActivityBurden;
@@ -67,9 +75,13 @@ export default function Setup(): JSX.Element {
 
   const initialValues: CreateTestDataRequest = {
     bodyCondition: testData?.bodyCondition || BodyCondition.Healthy,
-    roomTemperature: testData?.roomTemperature || RoomTemperature.Normal,
-    device: testData?.device || DeviceType.PC,
     roomCondition: testData?.roomCondition || RoomCondition.Indoor,
+    roomTemperature: testData?.roomTemperature || 0,
+    roomTemperaturePerception:
+      testData?.roomTemperaturePerception || RoomTemperature.Normal,
+    roomLighting: testData?.roomLighting || RoomLighting.Normal,
+    roomNoise: testData?.roomNoise || RoomNoise.Normal,
+    roomVibration: testData?.roomVibration || RoomVibration.None,
     preActivity: testData?.preActivity || "",
     preActivityPhysicalBurden:
       testData?.preActivityPhysicalBurden || ActivityBurden.Light,
@@ -106,12 +118,12 @@ export default function Setup(): JSX.Element {
   };
 
   return (
-    <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-center">
+    <div className="flex-grow grid grid-flow-row gap-5 justify-items-stretch lg:justify-items-center content-center">
       {testNo > 0 ? (
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ values, isSubmitting, handleChange, handleSubmit }) => (
-            <form onSubmit={handleSubmit} className="md:w-1/2">
-              <div className="grid gap-7">
+            <form onSubmit={handleSubmit} className="lg:w-1/2">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
                 <div className="form-control">
                   <label htmlFor="testNo">Pengujian ke</label>
                   <input
@@ -124,7 +136,6 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="grid md:grid-cols-2 gap-5">
                   <div className="form-control">
                     <label htmlFor="bodyCondition">Kondisi Tubuh</label>
                     <select
@@ -143,25 +154,6 @@ export default function Setup(): JSX.Element {
                     </select>
                   </div>
                   <div className="form-control">
-                    <label htmlFor="device">Device</label>
-                    <select
-                      required
-                      name="device"
-                      id="device"
-                      placeholder="Tipe Device"
-                      value={values.device}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(DeviceType).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {item[1]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div className="form-control">
                     <label htmlFor="roomCondition">Kondisi Ruangan</label>
                     <select
                       required
@@ -179,11 +171,25 @@ export default function Setup(): JSX.Element {
                   </div>
                   <div className="form-control">
                     <label htmlFor="roomTemperature">Suhu Ruangan</label>
-                    <select
+                    <input
                       required
+                      type="number"
                       name="roomTemperature"
                       id="roomTemperature"
+                      placeholder="Suhu Ruangan"
                       value={values.roomTemperature}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label htmlFor="roomTemperaturePerception">
+                      Persepsi Suhu Ruangan
+                    </label>
+                    <select
+                      required
+                      name="roomTemperaturePerception"
+                      id="roomTemperaturePerception"
+                      value={values.roomTemperaturePerception}
                       onChange={handleChange}
                     >
                       {Object.entries(RoomTemperature).map((item) => (
@@ -193,8 +199,55 @@ export default function Setup(): JSX.Element {
                       ))}
                     </select>
                   </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="form-control">
+                    <label htmlFor="roomLighting">Pencahayaan Ruangan</label>
+                    <select
+                      required
+                      name="roomLighting"
+                      id="roomLighting"
+                      value={values.roomLighting}
+                      onChange={handleChange}
+                    >
+                      {Object.entries(RoomLighting).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {translateRoomLighting(item[1])}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-control">
+                    <label htmlFor="roomNoise">Kebisingan Ruangan</label>
+                    <select
+                      required
+                      name="roomNoise"
+                      id="roomNoise"
+                      value={values.roomNoise}
+                      onChange={handleChange}
+                    >
+                      {Object.entries(RoomNoise).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {translateRoomNoise(item[1])}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-control">
+                    <label htmlFor="roomVibration">Getaran Ruangan</label>
+                    <select
+                      required
+                      name="roomVibration"
+                      id="roomVibration"
+                      value={values.roomVibration}
+                      onChange={handleChange}
+                    >
+                      {Object.entries(RoomVibration).map((item) => (
+                        <option key={item[1]} value={item[1]}>
+                          {translateRoomVibration(item[1])}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                <div className="col-span-1 lg:col-span-2 grid lg:grid-cols-2 gap-5">
                   <div className="grid gap-5">
                     <div className="form-control">
                       <label htmlFor="preActivity">Aktivitas Sebelum</label>
@@ -208,41 +261,49 @@ export default function Setup(): JSX.Element {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="form-control">
-                      <label htmlFor="preActivityPhysicalBurden">
-                        Beban Fisik
-                      </label>
-                      <select
-                        required
-                        name="preActivityPhysicalBurden"
-                        id="preActivityPhysicalBurden"
-                        value={values.preActivityPhysicalBurden}
-                        onChange={handleChange}
-                      >
-                        {Object.entries(ActivityBurden).map((item) => (
-                          <option key={`post-phys-${item[1]}`} value={item[1]}>
-                            {translateActivityBurden(item[1])}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-control">
-                      <label htmlFor="preActivityMentalBurden">
-                        Beban Mental
-                      </label>
-                      <select
-                        required
-                        name="preActivityMentalBurden"
-                        id="preActivityMentalBurden"
-                        value={values.preActivityMentalBurden}
-                        onChange={handleChange}
-                      >
-                        {Object.entries(ActivityBurden).map((item) => (
-                          <option key={`post-phys-${item[1]}`} value={item[1]}>
-                            {translateActivityBurden(item[1])}
-                          </option>
-                        ))}
-                      </select>
+                    <div className="grid grid-cols-2 gap-5">
+                      <div className="form-control">
+                        <label htmlFor="preActivityPhysicalBurden">
+                          Beban Fisik
+                        </label>
+                        <select
+                          required
+                          name="preActivityPhysicalBurden"
+                          id="preActivityPhysicalBurden"
+                          value={values.preActivityPhysicalBurden}
+                          onChange={handleChange}
+                        >
+                          {Object.entries(ActivityBurden).map((item) => (
+                            <option
+                              key={`post-phys-${item[1]}`}
+                              value={item[1]}
+                            >
+                              {translateActivityBurden(item[1])}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-control">
+                        <label htmlFor="preActivityMentalBurden">
+                          Beban Mental
+                        </label>
+                        <select
+                          required
+                          name="preActivityMentalBurden"
+                          id="preActivityMentalBurden"
+                          value={values.preActivityMentalBurden}
+                          onChange={handleChange}
+                        >
+                          {Object.entries(ActivityBurden).map((item) => (
+                            <option
+                              key={`post-phys-${item[1]}`}
+                              value={item[1]}
+                            >
+                              {translateActivityBurden(item[1])}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <div className="grid gap-5">
@@ -258,6 +319,7 @@ export default function Setup(): JSX.Element {
                         onChange={handleChange}
                       />
                     </div>
+                    <div className="grid grid-cols-2 gap-5">
                     <div className="form-control">
                       <label htmlFor="postActivityPhysicalBurden">
                         Beban Fisik
@@ -295,10 +357,11 @@ export default function Setup(): JSX.Element {
                       </select>
                     </div>
                   </div>
+                  </div>
                 </div>
                 <button
                   type="submit"
-                  className="justify-self-center w-64 button button-md button-blue"
+                  className="col-span-1 lg:col-span-2 justify-self-center button button-md button-blue"
                   disabled={isSubmitting}
                 >
                   Simpan dan Mulai Tes

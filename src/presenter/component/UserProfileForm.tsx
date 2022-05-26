@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Formik, FormikHelpers } from "formik";
-import { InstitutionType, User, UserProfile } from "../../domain/model";
+import { Gender, InstitutionType, User, UserProfile } from "../../domain/model";
 import { CreateUserProfileDto } from "../../adapter/dto";
 import { translateInstitutionType } from "../utils";
 import { useDispatch } from "react-redux";
@@ -20,6 +20,10 @@ export default function UserProfileForm(props: {
     identityNumber: profile?.identityNumber || "",
     email: profile?.email || "",
     phone: profile?.phone || "",
+    dateOfBirth: profile?.dateOfBirth || "",
+    gender: profile?.gender || Gender.Male,
+    ethnicGroup: profile?.ethnicGroup || "",
+    job: profile?.job || "",
     institutionType: profile?.institutionType || InstitutionType.GENERAL,
     institution: profile?.institution || "",
     faculty: profile?.faculty || "",
@@ -45,6 +49,10 @@ export default function UserProfileForm(props: {
               identityNumber: values.identityNumber,
               email: values.email,
               phone: values.phone,
+              dateOfBirth: values.dateOfBirth,
+              gender: values.gender,
+              ethnicGroup: values.ethnicGroup,
+              job: values.job,
               institutionType: values.institutionType,
               institution: values.institution,
               faculty: values.faculty,
@@ -66,6 +74,10 @@ export default function UserProfileForm(props: {
               identityNumber: values.identityNumber,
               email: values.email,
               phone: values.phone,
+              dateOfBirth: values.dateOfBirth,
+              gender: values.gender,
+              ethnicGroup: values.ethnicGroup,
+              job: values.job,
               institutionType: values.institutionType,
               institution: values.institution,
               faculty: values.faculty,
@@ -145,6 +157,62 @@ export default function UserProfileForm(props: {
                   id="phone"
                   placeholder="No. Telepon"
                   value={values.phone}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="py-3 text-lg font-bold">Tanggal Lahir</h3>
+              <div className="form-control">
+                <input
+                  required
+                  type="date"
+                  name="dateOfBirth"
+                  id="dateOfBirth"
+                  placeholder="Tanggal Lahir"
+                  value={values.dateOfBirth.toLocaleString()}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="py-3 text-lg font-bold">Gender</h3>
+              <div className="form-control">
+                <input
+                  required
+                  type="text"
+                  name="gender"
+                  id="gender"
+                  placeholder="Gender"
+                  value={values.gender}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="py-3 text-lg font-bold">Suku</h3>
+              <div className="form-control">
+                <input
+                  required
+                  type="text"
+                  name="ethnicGroup"
+                  id="ethnicGroup"
+                  placeholder="Suku"
+                  value={values.ethnicGroup}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="py-3 text-lg font-bold">Pekerjaan</h3>
+              <div className="form-control">
+                <input
+                  required
+                  type="text"
+                  name="job"
+                  id="job"
+                  placeholder="Pekerjaan"
+                  value={values.job}
                   onChange={handleChange}
                 />
               </div>

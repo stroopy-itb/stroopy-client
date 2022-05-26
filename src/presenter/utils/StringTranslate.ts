@@ -1,4 +1,4 @@
-import { ActivityBurden, BodyCondition, InstitutionType, RoomCondition, RoomTemperature } from "../../domain/model";
+import { ActivityBurden, BodyCondition, Gender, InstitutionType, RoomCondition, RoomLighting, RoomNoise, RoomTemperature, RoomVibration } from "../../domain/model";
 
 export const translateBodyCondition = (cond: BodyCondition): string => {
   switch (cond) {
@@ -18,7 +18,9 @@ export const translateRoomCondition = (room: RoomCondition): string => {
   }
 }
 
-export const translateRoomTemperature = (roomTemp: RoomTemperature): string => {
+export const translateRoomTemperature = (roomTemp: RoomTemperature | undefined): string => {
+  if (!roomTemp) return "";
+
   switch (roomTemp) {
     case RoomTemperature.Hot:
       return "Panas";
@@ -26,6 +28,45 @@ export const translateRoomTemperature = (roomTemp: RoomTemperature): string => {
       return "Normal";
     case RoomTemperature.Cold:
       return "Dingin";
+  }
+}
+
+export const translateRoomLighting = (roomLight: RoomLighting | undefined): string => {
+  if (!roomLight) return "";
+
+  switch (roomLight) {
+    case RoomLighting.Bright:
+      return "Terang";
+    case RoomLighting.Normal:
+      return "Normal";
+    case RoomLighting.Dark:
+      return "Gelap";
+  }
+}
+
+export const translateRoomNoise = (roomNoise: RoomNoise | undefined): string => {
+  if (!roomNoise) return "";
+
+  switch (roomNoise) {
+    case RoomNoise.Noisy:
+      return "Berisik";
+    case RoomNoise.Normal:
+      return "Normal";
+    case RoomNoise.Quiet:
+      return "Sunyi";
+  }
+}
+
+export const translateRoomVibration = (roomVibe: RoomVibration | undefined): string => {
+  if (!roomVibe) return "";
+
+  switch (roomVibe) {
+    case RoomVibration.None:
+      return "Tidak Ada";
+    case RoomVibration.Weak:
+      return "Kecil";
+    case RoomVibration.Strong:
+      return "Besar";
   }
 }
 
@@ -52,3 +93,25 @@ export const translateInstitutionType = (type: InstitutionType | undefined): str
       return "Universitas";
   }
 }
+
+export const translateGender = (type: Gender | undefined): string => {
+  if (!type) {
+    return "";
+  }
+
+  switch (type) {
+    case Gender.Male:
+      return "Pria";
+    case Gender.Female:
+      return "Wanita";
+  }
+}
+
+export const countAge = (dob: Date | string | undefined): number => {
+  if (!dob) return 0;
+
+  const today = Date.now();
+  const birthDate = new Date(dob).valueOf();
+
+  return Math.floor((today - birthDate) / (31556952000));
+};

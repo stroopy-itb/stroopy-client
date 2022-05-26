@@ -1,11 +1,17 @@
-import { BaseModel, BodyCondition, DeviceType, RoomCondition, ActivityBurden, Research, User } from ".";
+import { BaseModel, BodyCondition, RoomCondition, ActivityBurden, Research, User } from ".";
+import { RoomLighting } from "./RoomLighting";
+import { RoomNoise } from "./RoomNoise";
 import { RoomTemperature } from "./RoomTemperature";
+import { RoomVibration } from "./RoomVibration";
 
 export default interface TestResult extends BaseModel {
   bodyCondition: BodyCondition;
-  device: DeviceType;
   roomCondition: RoomCondition;
-  roomTemperature: RoomTemperature;
+  roomTemperature: number;
+  roomTemperaturePerception: RoomTemperature;
+  roomLighting: RoomLighting;
+  roomNoise: RoomNoise;
+  roomVibration: RoomVibration;
   preActivity: string;
   preActivityPhysicalBurden: ActivityBurden;
   preActivityMentalBurden: ActivityBurden;

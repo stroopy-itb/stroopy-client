@@ -1,10 +1,21 @@
-import { ActivityBurden, BodyCondition, DeviceType, RoomCondition, RoomTemperature } from "../../domain/model";
+import { 
+  ActivityBurden, 
+  BodyCondition, 
+  RoomCondition, 
+  RoomLighting, 
+  RoomNoise, 
+  RoomTemperature, 
+  RoomVibration
+} from "../../domain/model";
 
 export default class CreateTestResultDto {
   public bodyCondition: BodyCondition;
-  public device: DeviceType;
   public roomCondition: RoomCondition;
-  public roomTemperature: RoomTemperature;
+  public roomTemperature: number;
+  public roomTemperaturePerception: RoomTemperature;
+  public roomLighting: RoomLighting;
+  public roomNoise: RoomNoise;
+  public roomVibration: RoomVibration;
   public preActivity: string;
   public preActivityPhysicalBurden: ActivityBurden;
   public preActivityMentalBurden: ActivityBurden;

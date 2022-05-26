@@ -1,9 +1,8 @@
 import React from "react";
 import { Formik, FormikErrors } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import di from "../di";
-import { AppDispatch, RootState } from "../redux/store";
-import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../redux/store";
 import { researchMiddleware } from "../redux/middleware";
 import { toast } from "react-toastify";
 
@@ -21,7 +20,6 @@ export default function ResearchTicketForm(props: {
   const { respondentId, page, size, afterSubmit } = props;
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const handleSubmit = async (values: CreateResearchTicketRequest) => {
     if (respondentId) {
       await dispatch(

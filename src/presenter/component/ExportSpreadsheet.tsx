@@ -3,10 +3,15 @@ import { TestResult } from "../../domain/model";
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import {
+  countAge,
   translateActivityBurden,
   translateBodyCondition,
+  translateGender,
   translateRoomCondition,
+  translateRoomLighting,
+  translateRoomNoise,
   translateRoomTemperature,
+  translateRoomVibration,
 } from "../utils";
 
 export default function ExportSpreadsheet(props: {
@@ -25,12 +30,22 @@ export default function ExportSpreadsheet(props: {
       return {
         id: entry.id,
         penelitian: entry.research?.groupToken,
-        responden: entry.respondent?.username,
+        responden: entry.respondent?.profile?.name,
+        umur: countAge(entry.respondent?.profile?.dateOfBirth),
+        gender: translateGender(entry.respondent?.profile?.gender),
+        suku: entry.respondent?.profile?.ethnicGroup,
+        pekerjaan: entry.respondent?.profile?.job,
+        institusi: entry.respondent?.profile?.institution,
+        bagian: entry.respondent?.profile?.faculty,
+        divisi: entry.respondent?.profile?.study,
         tes_ke: entry.testNo,
         waktu_tes: entry.createdAt,
         kondisi_ruangan: translateRoomCondition(entry.roomCondition),
-        suhu_ruangan: translateRoomTemperature(entry.roomTemperature),
-        perangkat: entry.device,
+        suhu_ruangan: entry.roomTemperature,
+        persepsi_suhu_ruangan: translateRoomTemperature(entry.roomTemperaturePerception),
+        pencahayaan_ruangan: translateRoomLighting(entry.roomLighting),
+        kebisingan_ruangan: translateRoomNoise(entry.roomNoise),
+        getaran_ruangan: translateRoomVibration(entry.roomVibration),
         kondisi_tubuh: translateBodyCondition(entry.bodyCondition),
         aktivitas_sebelum: entry.preActivity,
         beban_fisik_aktivitas_sebelum: translateActivityBurden(

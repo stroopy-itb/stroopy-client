@@ -27,6 +27,22 @@ export default function UserProfileInfo(props: {
           <p className="py-3 text-md">{profile?.phone}</p>
         </div>
         <div>
+          <h3 className="py-3 text-lg font-bold">Tanggal Lahir</h3>
+          <p className="py-3 text-md">{profile?.dateOfBirth}</p>
+        </div>
+        <div>
+          <h3 className="py-3 text-lg font-bold">Gender</h3>
+          <p className="py-3 text-md">{profile?.gender}</p>
+        </div>
+        <div>
+          <h3 className="py-3 text-lg font-bold">Suku</h3>
+          <p className="py-3 text-md">{profile?.ethnicGroup}</p>
+        </div>
+        <div>
+          <h3 className="py-3 text-lg font-bold">Pekerjaan</h3>
+          <p className="py-3 text-md">{profile?.job}</p>
+        </div>
+        <div>
           <h3 className="py-3 text-lg font-bold">Tipe Institusi</h3>
           <p className="py-3 text-md">{translateInstitutionType(profile?.institutionType)}</p>
         </div>

@@ -196,13 +196,13 @@ code {
   }
 
   .form-control input {
-    padding: theme(padding.3);
+    padding: theme(padding.2);
     border-radius: theme(borderRadius.xl);
     border-width: theme(borderWidth.2);
   }
 
   .form-control select {
-    padding: theme(padding.3);
+    padding: theme(padding.2);
     border-radius: theme(borderRadius.xl);
     border-width: theme(borderWidth.2);
   }
