@@ -215,15 +215,18 @@ export default function Stroop(): JSX.Element {
       ) : (
         ""
       )}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-10">
+      <div className="grid grid-cols-2 gap-5 md:gap-10">
         {pairs.map((pair) => (
           <div key={pair.text}>
             <button
-              className="w-full p-16 rounded-lg"
-              style={{ backgroundColor: pair.color }}
+              className="w-full p-10 rounded-lg border-2 border-white"
               onClick={() => chooseAnswer(pair, timeleft)}
               disabled={started !== GameState.Started}
-            ></button>
+            >
+              <p className="text-8xl font-bold text-center text-white">
+                {pair.text.charAt(0)}
+              </p>
+            </button>
             {started < GameState.Started ? (
               <h2
                 className="text-xl font-bold text-center"
