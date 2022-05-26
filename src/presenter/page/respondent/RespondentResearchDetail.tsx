@@ -42,7 +42,7 @@ export default function RespodentResearchDetail(): JSX.Element {
       />
       {research?.researchSetup && !tokenExpired() ? (
         <button
-          className="w-64 button button-nav hover:button-hover"
+          className="w-64 button button-xl button-neutral-outline"
           onClick={() => navigate(`/setup/${id}`)}
         >
           Mulai Tes!

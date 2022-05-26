@@ -57,8 +57,8 @@ export default function Result(): JSX.Element {
 
   return (
     <div className="flex-grow grid grid-flow-row gap-20 justify-items-center content-center">
-      <h1 className="text-5xl text-white font-bold">Hasil</h1>
-      <div className="text-white text-center grid grid-flow-row gap-2">
+      <h1 className="text-5xl text-gray-100 font-bold">Hasil</h1>
+      <div className="text-gray-100 text-center grid grid-flow-row gap-2">
         <div className="grid grid-cols-3">
           <div>
             <h2 className="text-3xl font-bold">Benar</h2>
@@ -79,7 +79,7 @@ export default function Result(): JSX.Element {
           <h4 className="text-xl">{result?.rtca.toPrecision(3)}</h4>
         </div>
       </div>
-      <div className="h-52 overflow-y-auto text-white text-center w-full md:w-1/3">
+      <div className="h-52 overflow-y-auto text-gray-100 text-center w-full md:w-1/3">
         {result && result.answerRecords.length > 0 ? (
           <table className="w-full">
             <thead className="font-bold">
@@ -107,7 +107,7 @@ export default function Result(): JSX.Element {
       </div>
       {uploadStatus ? (
         <button
-          className="w-64 button button-nav hover:button-hover"
+          className="w-64 button button-xl button-neutral-outline"
           onClick={() => returnHome()}
         >
           Kembali ke Halaman Utama

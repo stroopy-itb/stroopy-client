@@ -12,8 +12,8 @@ export default function ResearchHeader(props: {
 
   return (
     <div className="grid grid-flow-row gap-5 justify-items-center content-start">
-      <h1 className="text-4xl font-bold text-white">Detail Penelitian</h1>
-      <div className="justify-self-stretch bg-white rounded-2xl overflow-auto md:p-2">
+      <h1 className="text-4xl font-bold text-gray-100">Detail Penelitian</h1>
+      <div className="justify-self-stretch bg-gray-100 rounded-2xl overflow-auto md:p-2">
         <table className="table-auto w-full">
           <thead>
             <tr className="font-bold">
@@ -39,8 +39,8 @@ export default function ResearchHeader(props: {
       </div>
       <div className="grid grid-flow-col gap-10 w-full">
         <div>
-          <h3 className="text-lg font-bold text-white">Token Penelitian</h3>
-          <div className="justify-self-stretch bg-white rounded-2xl overflow-auto md:p-2">
+          <h3 className="text-lg font-bold text-gray-100">Token Penelitian</h3>
+          <div className="justify-self-stretch bg-gray-100 rounded-2xl overflow-auto md:p-2">
             <table className="table-auto w-full">
               <thead>
                 <tr className="font-bold">
@@ -67,8 +67,8 @@ export default function ResearchHeader(props: {
         </div>
         {user?.role !== UserRole.Researcher ? (
           <div>
-            <h3 className="text-lg font-bold text-white">Peneliti</h3>
-            <div className="justify-self-stretch bg-white rounded-2xl overflow-auto md:p-2">
+            <h3 className="text-lg font-bold text-gray-100">Peneliti</h3>
+            <div className="justify-self-stretch bg-gray-100 rounded-2xl overflow-auto md:p-2">
               <table className="table-auto w-full">
                 <thead>
                   <tr className="font-bold">
@@ -91,7 +91,7 @@ export default function ResearchHeader(props: {
           ""
         )}
       </div>
-      <h3 className="text-lg font-bold text-white">Pengaturan Penelitian</h3>
+      <h3 className="text-lg font-bold text-gray-100">Pengaturan Penelitian</h3>
       <ResearchSetupInfo research={research} user={user} tokenExpired={tokenExpired} />
     </div>
   );

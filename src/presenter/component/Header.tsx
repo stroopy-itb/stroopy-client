@@ -34,14 +34,14 @@ export default function Header(): JSX.Element {
           className="grid grid-flow-col justify-items-center content-center gap-2"
         >
           <img className="w-8" src={logo} alt="logo" />
-          <span className="text-white text-lg font-bold">Stroopy</span>
+          <span className="text-gray-100 text-lg font-bold">Stroopy</span>
         </button>
         <div>
           <button>
-            <span className="text-white font-bold">{name || username}</span>
+            <span className="text-gray-100 font-bold">{name || username}</span>
           </button>
           <button onClick={() => navigate("/profile")}>
-            <span className="ml-3 text-white font-bold">Profil</span>
+            <span className="ml-3 text-gray-100 font-bold">Profil</span>
           </button>
           <button onClick={handleLogout}>
             <span className="ml-3 text-red font-bold">Keluar</span>

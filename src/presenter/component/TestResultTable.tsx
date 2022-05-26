@@ -32,7 +32,7 @@ export default function TestResultTable(props: {
           changePage={changePage}
         />
       </div>
-      <div className="bg-white rounded-2xl overflow-auto md:p-5">
+      <div className="bg-gray-100 rounded-2xl overflow-auto md:p-5">
         {testResults ? (
           <table className="table-auto w-full">
             <thead>

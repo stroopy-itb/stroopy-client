@@ -71,7 +71,7 @@ export default function TokenForm(props: {
 
   return (
     <div className="grid gap-5 justify-items-stretch">
-      <h3 className="text-center font-bold text-xl text-white">
+      <h3 className="text-center font-bold text-xl text-gray-100">
         {data ? "Edit Token" : "Buat Token"}
       </h3>
       <Formik
@@ -135,7 +135,7 @@ export default function TokenForm(props: {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="button button-action justify-self-center"
+              className="button button-md button-green justify-self-center"
             >
               Simpan
             </button>

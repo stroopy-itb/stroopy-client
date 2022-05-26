@@ -69,7 +69,7 @@ export default function ResearchDetail(): JSX.Element {
         user={user}
         tokenExpired={tokenExpired()}
       />
-      <h1 className="text-4xl font-bold text-white">Hasil Tes</h1>
+      <h1 className="text-4xl font-bold text-gray-100">Hasil Tes</h1>
       {!testResultLoading && totalSize ? (
         <TestResultTable
           testResults={testResults}

@@ -48,7 +48,7 @@ export default function TokenList(): JSX.Element {
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
-      <h1 className="text-4xl font-bold text-white">Token Penelitian</h1>
+      <h1 className="text-4xl font-bold text-gray-100">Token Penelitian</h1>
       {totalSize ? (
         <ResearchTokenTable
           researchTokens={researchTokens}
@@ -64,7 +64,7 @@ export default function TokenList(): JSX.Element {
       <div className="justify-self-stretch flex justify-between">
         <button
           onClick={() => showModal(undefined)}
-          className="button button-action py-3 bg-green"
+          className="button button-md py-3 button-green"
         >
           Buat Token Baru
         </button>
@@ -73,7 +73,7 @@ export default function TokenList(): JSX.Element {
         isOpen={tokenForm.isOpen}
         onRequestClose={() => setTokenForm({ isOpen: false })}
         className="place-self-center lg:w-1/4 w-screen bg-black rounded-2xl p-8"
-        overlayClassName="fixed top-0 bottom-0 left-0 right-0 w-screen h-screen bg-white bg-opacity-10 grid"
+        overlayClassName="fixed top-0 bottom-0 left-0 right-0 w-screen h-screen bg-gray-100 bg-opacity-10 grid"
       >
         <TokenForm
           data={tokenForm.data}

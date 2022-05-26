@@ -22,7 +22,7 @@ export default function ResearchTokenTable(props: {
           changePage={changePage}
         />
       </div>
-      <div className="bg-white rounded-2xl overflow-auto md:p-5">
+      <div className="bg-gray-100 rounded-2xl overflow-auto md:p-5">
         {researchTokens ? (
           <table className="table-auto w-full">
             <thead>
@@ -61,7 +61,7 @@ export default function ResearchTokenTable(props: {
                     <td className="py-2 px-5 text-right">
                       <button
                         onClick={() => showModal(row)}
-                        className="button button-action p-1 px-5 text-base"
+                        className="button button-md button-blue p-1 px-5 text-base"
                       >
                         Edit
                       </button>

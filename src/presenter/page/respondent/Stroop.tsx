@@ -188,7 +188,7 @@ export default function Stroop(): JSX.Element {
       </h1>
       {/* <h2 style={{ fontWeight: "bold", color: "white" }}>{promptToString(prompt)}</h2> */}
       <h2
-        className={`text-center font-bold text-white ${
+        className={`text-center font-bold text-gray-100 ${
           started === GameState.Started ? "text-2xl" : "text-4xl"
         }`}
       >
@@ -198,10 +198,10 @@ export default function Stroop(): JSX.Element {
       </h2>
       {started < GameState.Started ? (
         <div>
-          <p className="text-center text-xl text-white">
+          <p className="text-center text-xl text-gray-100">
             {`${rounds()} pengulangan`}
           </p>
-          <p className="text-center text-xl text-white">
+          <p className="text-center text-xl text-gray-100">
             Pilih jawaban sesuai warna
           </p>
         </div>
@@ -210,7 +210,7 @@ export default function Stroop(): JSX.Element {
       )}
       {started === GameState.Ended ? (
         <div>
-          <p className="text-center text-xl text-white">Pengujian Selesai</p>
+          <p className="text-center text-xl text-gray-100">Pengujian Selesai</p>
         </div>
       ) : (
         ""
@@ -219,11 +219,11 @@ export default function Stroop(): JSX.Element {
         {pairs.map((pair) => (
           <div key={pair.text}>
             <button
-              className="w-full p-10 rounded-lg border-2 border-white"
+              className="w-full p-8 md:p-10 lg:p-10 rounded-lg border-2 border-white"
               onClick={() => chooseAnswer(pair, timeleft)}
               disabled={started !== GameState.Started}
             >
-              <p className="text-8xl font-bold text-center text-white">
+              <p className="text-4xl md:text-6xl lg:text-8xl font-bold text-center text-gray-100">
                 {pair.text.charAt(0)}
               </p>
             </button>
@@ -242,7 +242,7 @@ export default function Stroop(): JSX.Element {
       </div>
       {started < GameState.Countdown ? (
         <button
-          className="button button-nav"
+          className="button button-xl button-neutral-outline"
           onClick={() => {
             actions.start(5000);
             setStarted(GameState.Countdown);

@@ -20,13 +20,13 @@ export default function Home(): JSX.Element {
       return (
         <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-center">
           <button
-            className="w-64 button button-nav hover:button-hover"
+            className="w-64 button button-xl button-neutral-outline"
             onClick={() => navigate("/research")}
           >
             Mulai Tes!
           </button>
           <button
-            className="w-64 button button-nav hover:button-hover"
+            className="w-64 button button-xl button-neutral-outline"
             onClick={() => navigate("/history")}
           >
             Riwayat

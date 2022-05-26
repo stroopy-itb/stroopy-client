@@ -298,7 +298,7 @@ export default function Setup(): JSX.Element {
                 </div>
                 <button
                   type="submit"
-                  className="justify-self-center w-64 button button-action hover:button-hover"
+                  className="justify-self-center w-64 button button-md button-blue"
                   disabled={isSubmitting}
                 >
                   Simpan dan Mulai Tes

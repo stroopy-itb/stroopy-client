@@ -75,7 +75,7 @@ export default function ExportSpreadsheet(props: {
   };
 
   return (
-    <button className="button button-action" onClick={exportSpreadSheet}>
+    <button className="button button-md button-blue" onClick={exportSpreadSheet}>
       Unduh Spreadsheet
     </button>
   );

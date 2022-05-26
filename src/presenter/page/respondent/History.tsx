@@ -29,7 +29,7 @@ export default function History(): JSX.Element {
   }, [size, page, dispatch]);
   return (
     <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-start">
-      <h1 className="text-4xl font-bold text-white">Riwayat Hasil Tes</h1>
+      <h1 className="text-4xl font-bold text-gray-100">Riwayat Hasil Tes</h1>
       {totalSize ? (
         <TestResultTable
           testResults={testResults}

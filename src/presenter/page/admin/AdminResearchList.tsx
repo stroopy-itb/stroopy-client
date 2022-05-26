@@ -28,7 +28,7 @@ export default function AdminResearchList(): JSX.Element {
 
   return (
     <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
-      <h1 className="text-4xl font-bold text-white">Penelitian</h1>
+      <h1 className="text-4xl font-bold text-gray-100">Penelitian</h1>
       {totalSize ? (
         <ResearchTable
           researches={researches}

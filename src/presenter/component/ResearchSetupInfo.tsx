@@ -20,7 +20,7 @@ export default function ResearchSetupInfo(props: {
   });
 
   return (
-    <div className="justify-self-stretch bg-white rounded-2xl overflow-auto md:p-2">
+    <div className="justify-self-stretch bg-gray-100 rounded-2xl overflow-auto md:p-2">
       {!setupForm.isOpen ? (
         research?.researchSetup ? (
           <table className="table-auto w-full">
@@ -38,7 +38,7 @@ export default function ResearchSetupInfo(props: {
                 <td className="py-1 px-2 text-right">
                   {user?.role === UserRole.Researcher && !tokenExpired ? (
                     <button
-                      className="button button-action p-3"
+                      className="button button-md p-3"
                       onClick={() =>
                         setSetupForm({
                           isOpen: true,
@@ -57,7 +57,7 @@ export default function ResearchSetupInfo(props: {
           </table>
         ) : user?.role === UserRole.Researcher && !tokenExpired ? (
           <button
-            className="button bg-red w-full"
+            className="button button-red w-full"
             onClick={() =>
               setSetupForm({ isOpen: true, data: research?.researchSetup })
             }
@@ -157,7 +157,7 @@ function SetupForm(props: {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="button button-action py-3"
+                    className="button button-md py-3"
                   >
                     Simpan
                   </button>
@@ -166,7 +166,7 @@ function SetupForm(props: {
                     onClick={() => {
                       if (afterSubmit) afterSubmit();
                     }}
-                    className="button button-action py-3 bg-red"
+                    className="button button-md py-3 button-red"
                   >
                     Batal
                   </button>

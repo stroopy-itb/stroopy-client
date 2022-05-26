@@ -11,8 +11,8 @@ export default function UserProfile(): JSX.Element {
 
   return (
     <div className="flex-grow grid grid-flow-row gap-5 justify-items-center content-start">
-      <h1 className="text-4xl font-bold text-white">Profil Pengguna</h1>
-      <div className="justify-self-stretch bg-white rounded-2xl md:p-5">
+      <h1 className="text-4xl font-bold text-gray-100">Profil Pengguna</h1>
+      <div className="justify-self-stretch bg-gray-100 rounded-2xl p-2 md:p-5">
         <div className="grid grid-flow-row gap-5 justify-items-around content-stretch">
           <div className="grid md:grid-cols-2 gap-5">
             <div>
@@ -38,7 +38,7 @@ export default function UserProfile(): JSX.Element {
           ""
         ) : (
           <button
-            className="justify-self-center w-64 button button-action"
+            className="justify-self-center w-64 button button-md button-blue"
             onClick={() => setEditingProfile(true)}
           >
             Perbarui Profil

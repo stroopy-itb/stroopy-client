@@ -18,13 +18,13 @@ export default function Paginate(props: {
       nextLabel="Next"
       breakLabel="..."
       previousLabel="Prev"
-      containerClassName="rounded-2xl bg-white grid grid-flow-col"
+      containerClassName="rounded-2xl bg-gray-100 grid grid-flow-col"
       pageClassName="p-4 text-blue"
       pageLinkClassName="my-auto"
       nextClassName="p-4 text-blue"
       previousClassName="p-4 text-blue"
       activeClassName="bg-blue"
-      activeLinkClassName="text-white"
+      activeLinkClassName="text-gray-100"
       disabledLinkClassName="text-gray-400"
     />
   );

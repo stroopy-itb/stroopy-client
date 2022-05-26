@@ -33,7 +33,7 @@ export default function Login(): JSX.Element {
     <div className="flex-grow grid grid-flow-row gap-10 justify-items-center content-center">
       <h1 className="grid grid-flow-col justify-items-center content-center gap-5">
         <img className="w-16" src={logo} alt="logo" />
-        <span className="text-white text-5xl font-bold">Stroopy</span>
+        <span className="text-gray-100 text-5xl font-bold">Stroopy</span>
       </h1>
       <Formik
         initialValues={{
@@ -75,14 +75,14 @@ export default function Login(): JSX.Element {
             <button
               type="submit"
               disabled={authLoading || isSubmitting}
-              className="button button-action"
+              className="button button-md button-blue"
             >
               Masuk
             </button>
           </form>
         )}
       </Formik>
-      <p className="text-white">
+      <p className="text-gray-100">
         Tidak punya akun?{" "}
         <Link to={"/register"} className="text-blue font-bold">
           Daftar sekarang!

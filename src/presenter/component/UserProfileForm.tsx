@@ -210,17 +210,17 @@ export default function UserProfileForm(props: {
                 />
               </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="flex flex-col md:flex-row gap-5">
               <button
                 type="submit"
-                className="justify-self-center w-64 button button-action"
+                className="w-full button button-md button-green"
                 disabled={isSubmitting}
               >
                 Simpan
               </button>
               <button
                 type="button"
-                className="justify-self-center w-64 button button-action"
+                className="w-full button button-md button-red"
                 disabled={isSubmitting}
                 onClick={afterSubmit}
               >

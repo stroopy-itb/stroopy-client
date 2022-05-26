@@ -45,7 +45,7 @@ export default function ResearchTicketForm(props: {
 
   return (
     <div className="grid gap-5 justify-items-stretch">
-      <h3 className="text-center font-bold text-xl text-white">
+      <h3 className="text-center font-bold text-xl text-gray-100">
         Daftar Penelitian
       </h3>
       <Formik
@@ -92,7 +92,7 @@ export default function ResearchTicketForm(props: {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="button button-action justify-self-center"
+              className="justify-self-center button button-md button-green"
             >
               Simpan
             </button>

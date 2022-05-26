@@ -15,29 +15,172 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-/*border-2 py-8 px-16 rounded-xl text-2xl text-white font-bold hover:bg-white hover:text-black*/
+
 @layer components {
   .button {
     padding: theme(padding.4);
-    color: theme(colors.white);
+    color: theme(colors.gray.200);
     border-radius: theme(borderRadius.2xl);
+    font-weight: theme(fontWeight.bold);
   }
 
-  .button-nav {
+  .button-xl {
     font-size: theme(fontSize.2xl);
-    font-weight: theme(fontWeight.bold);
     border-width: theme(borderWidth.2);
   }
 
-  .button-action {
+  .button-lg {
     font-size: theme(fontSize.lg);
     font-weight: theme(fontWeight.bold);
-    background-color: theme(colors.blue);
   }
 
-  .button-hover {
-    color: theme(colors.black);
-    background-color: theme(colors.white);
+  .button-neutral {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.gray.100);
+    border-color: theme(colors.gray.100);
+  }
+  .button-neutral:hover {
+    background-color: theme(colors.gray.600);
+    border-color: theme(colors.gray.600);
+  }
+  .button-neutral:disabled {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.gray.800);
+    border-color: theme(colors.gray.800);
+  }
+
+  .button-neutral-outline {
+    color: theme(colors.gray.200);
+    border-color: theme(colors.gray.200);
+  }
+  .button-neutral-outline:hover {
+    color: theme(colors.gray.900);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.gray.200);
+  }
+  .button-neutral-outline:disabled {
+    color: theme(colors.gray.800);
+    border-color: theme(colors.gray.800);
+  }
+
+  .button-blue {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.blue.DEFAULT);
+    border-color: theme(colors.blue.DEFAULT);
+  }
+  .button-blue:hover {
+    background-color: theme(colors.blue.600);
+    border-color: theme(colors.blue.600);
+  }
+  .button-blue:disabled {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.blue.800);
+    border-color: theme(colors.blue.800);
+  }
+
+  .button-blue-outline {
+    color: theme(colors.blue.DEFAULT);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.blue.DEFAULT);
+  }
+  .button-blue-outline:hover {
+    color: theme(colors.blue.600);
+    border-color: theme(colors.blue.600);
+  }
+  .button-blue-outline:disabled {
+    color: theme(colors.blue.800);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.blue.800);
+  }
+
+  .button-red {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.red.DEFAULT);
+    border-color: theme(colors.red.DEFAULT);
+  }
+  .button-red:hover {
+    background-color: theme(colors.red.600);
+    border-color: theme(colors.red.600);
+  }
+  .button-red:disabled {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.red.800);
+    border-color: theme(colors.red.800);
+  }
+
+  .button-red-outline {
+    color: theme(colors.red.DEFAULT);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.red.DEFAULT);
+  }
+  .button-red-outline:hover {
+    color: theme(colors.red.600);
+    border-color: theme(colors.red.600);
+  }
+  .button-red-outline:disabled {
+    color: theme(colors.red.800);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.red.800);
+  }
+
+  .button-yellow {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.yellow.DEFAULT);
+    border-color: theme(colors.yellow.DEFAULT);
+  }
+  .button-yellow:hover {
+    background-color: theme(colors.yellow.600);
+    border-color: theme(colors.yellow.600);
+  }
+  .button-yellow:disabled {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.yellow.800);
+    border-color: theme(colors.yellow.800);
+  }
+
+  .button-yellow-outline {
+    color: theme(colors.yellow.DEFAULT);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.yellow.DEFAULT);
+  }
+  .button-yellow-outline:hover {
+    color: theme(colors.yellow.600);
+    border-color: theme(colors.yellow.600);
+  }
+  .button-yellow-outline:disabled {
+    color: theme(colors.yellow.800);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.yellow.800);
+  }
+
+  .button-green {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.green.DEFAULT);
+    border-color: theme(colors.green.DEFAULT);
+  }
+  .button-green:hover {
+    background-color: theme(colors.green.600);
+    border-color: theme(colors.green.600);
+  }
+  .button-green:disabled {
+    color: theme(colors.gray.200);
+    background-color: theme(colors.green.800);
+    border-color: theme(colors.green.800);
+  }
+
+  .button-green-outline {
+    color: theme(colors.green.DEFAULT);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.green.DEFAULT);
+  }
+  .button-green-outline:hover {
+    color: theme(colors.green.600);
+    border-color: theme(colors.green.600);
+  }
+  .button-green-outline:disabled {
+    color: theme(colors.green.800);
+    background-color: theme(colors.gray.200);
+    border-color: theme(colors.green.800);
   }
 
   .form-control {
@@ -48,7 +191,7 @@ code {
   }
 
   .form-control label {
-    color: theme(colors.white);
+    color: theme(colors.gray.200);
     font-weight: theme(fontWeight.bold);
   }
 

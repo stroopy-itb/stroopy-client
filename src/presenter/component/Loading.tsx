@@ -5,7 +5,7 @@ export default function Loading(props: { context?: string }): JSX.Element {
 
   return (
     <div className="flex-grow flex justify-center">
-      <h1 className="self-center text-3xl font-bold text-white text-center">
+      <h1 className="self-center text-3xl font-bold text-gray-100 text-center">
         Memuat{ context? ` ${context}` : "" }...
       </h1>
     </div>
