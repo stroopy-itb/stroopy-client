@@ -38,7 +38,7 @@ export default function ResearchSetupInfo(props: {
                 <td className="py-1 px-2 text-right">
                   {user?.role === UserRole.Researcher && !tokenExpired ? (
                     <button
-                      className="button button-md p-3"
+                      className="button button-md button-blue p-3"
                       onClick={() =>
                         setSetupForm({
                           isOpen: true,
@@ -139,8 +139,9 @@ function SetupForm(props: {
             <tbody>
               <tr>
                 <td className="p-2">
-                  <div className="form-control">
+                  <div className="form-group">
                     <input
+                      className="form-control"
                       type="number"
                       min={30}
                       max={200}
@@ -153,11 +154,11 @@ function SetupForm(props: {
                     />
                   </div>
                 </td>
-                <td className="p-2 grid grid-flow-col gap-2">
+                <td className="p-2 grid grid-flow-col justify-end gap-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="button button-md py-3"
+                    className="button button-md button-green py-3"
                   >
                     Simpan
                   </button>

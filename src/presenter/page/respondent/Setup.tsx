@@ -124,9 +124,10 @@ export default function Setup(): JSX.Element {
           {({ values, isSubmitting, handleChange, handleSubmit }) => (
             <form onSubmit={handleSubmit} className="lg:w-1/2">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
-                <div className="form-control">
+                <div className="form-group">
                   <label htmlFor="testNo">Pengujian ke</label>
                   <input
+                    className="form-control"
                     required
                     type="number"
                     name="testNo"
@@ -136,122 +137,130 @@ export default function Setup(): JSX.Element {
                     onChange={handleChange}
                   />
                 </div>
-                  <div className="form-control">
-                    <label htmlFor="bodyCondition">Kondisi Tubuh</label>
-                    <select
-                      required
-                      name="bodyCondition"
-                      id="bodyCondition"
-                      placeholder="Kondisi Tubuh"
-                      value={values.bodyCondition}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(BodyCondition).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {translateBodyCondition(item[1])}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="roomCondition">Kondisi Ruangan</label>
-                    <select
-                      required
-                      name="roomCondition"
-                      id="roomCondition"
-                      value={values.roomCondition}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(RoomCondition).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {translateRoomCondition(item[1])}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="roomTemperature">Suhu Ruangan</label>
-                    <input
-                      required
-                      type="number"
-                      name="roomTemperature"
-                      id="roomTemperature"
-                      placeholder="Suhu Ruangan"
-                      value={values.roomTemperature}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="roomTemperaturePerception">
-                      Persepsi Suhu Ruangan
-                    </label>
-                    <select
-                      required
-                      name="roomTemperaturePerception"
-                      id="roomTemperaturePerception"
-                      value={values.roomTemperaturePerception}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(RoomTemperature).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {translateRoomTemperature(item[1])}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="roomLighting">Pencahayaan Ruangan</label>
-                    <select
-                      required
-                      name="roomLighting"
-                      id="roomLighting"
-                      value={values.roomLighting}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(RoomLighting).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {translateRoomLighting(item[1])}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="roomNoise">Kebisingan Ruangan</label>
-                    <select
-                      required
-                      name="roomNoise"
-                      id="roomNoise"
-                      value={values.roomNoise}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(RoomNoise).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {translateRoomNoise(item[1])}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label htmlFor="roomVibration">Getaran Ruangan</label>
-                    <select
-                      required
-                      name="roomVibration"
-                      id="roomVibration"
-                      value={values.roomVibration}
-                      onChange={handleChange}
-                    >
-                      {Object.entries(RoomVibration).map((item) => (
-                        <option key={item[1]} value={item[1]}>
-                          {translateRoomVibration(item[1])}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div className="form-group">
+                  <label htmlFor="bodyCondition">Kondisi Tubuh</label>
+                  <select
+                    className="form-control"
+                    required
+                    name="bodyCondition"
+                    id="bodyCondition"
+                    placeholder="Kondisi Tubuh"
+                    value={values.bodyCondition}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(BodyCondition).map((item) => (
+                      <option key={item[1]} value={item[1]}>
+                        {translateBodyCondition(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="roomCondition">Kondisi Ruangan</label>
+                  <select
+                    className="form-control"
+                    required
+                    name="roomCondition"
+                    id="roomCondition"
+                    value={values.roomCondition}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(RoomCondition).map((item) => (
+                      <option key={item[1]} value={item[1]}>
+                        {translateRoomCondition(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="roomTemperature">Suhu Ruangan</label>
+                  <input
+                    className="form-control"
+                    required
+                    type="number"
+                    name="roomTemperature"
+                    id="roomTemperature"
+                    placeholder="Suhu Ruangan"
+                    value={values.roomTemperature}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="roomTemperaturePerception">
+                    Persepsi Suhu Ruangan
+                  </label>
+                  <select
+                    className="form-control"
+                    required
+                    name="roomTemperaturePerception"
+                    id="roomTemperaturePerception"
+                    value={values.roomTemperaturePerception}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(RoomTemperature).map((item) => (
+                      <option key={item[1]} value={item[1]}>
+                        {translateRoomTemperature(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="roomLighting">Pencahayaan Ruangan</label>
+                  <select
+                    className="form-control"
+                    required
+                    name="roomLighting"
+                    id="roomLighting"
+                    value={values.roomLighting}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(RoomLighting).map((item) => (
+                      <option key={item[1]} value={item[1]}>
+                        {translateRoomLighting(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="roomNoise">Kebisingan Ruangan</label>
+                  <select
+                    className="form-control"
+                    required
+                    name="roomNoise"
+                    id="roomNoise"
+                    value={values.roomNoise}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(RoomNoise).map((item) => (
+                      <option key={item[1]} value={item[1]}>
+                        {translateRoomNoise(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="roomVibration">Getaran Ruangan</label>
+                  <select
+                    className="form-control"
+                    required
+                    name="roomVibration"
+                    id="roomVibration"
+                    value={values.roomVibration}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(RoomVibration).map((item) => (
+                      <option key={item[1]} value={item[1]}>
+                        {translateRoomVibration(item[1])}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className="col-span-1 lg:col-span-2 grid lg:grid-cols-2 gap-5">
                   <div className="grid gap-5">
-                    <div className="form-control">
+                    <div className="form-group">
                       <label htmlFor="preActivity">Aktivitas Sebelum</label>
                       <input
+                        className="form-control"
                         required
                         type="text"
                         name="preActivity"
@@ -262,11 +271,12 @@ export default function Setup(): JSX.Element {
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-5">
-                      <div className="form-control">
+                      <div className="form-group">
                         <label htmlFor="preActivityPhysicalBurden">
                           Beban Fisik
                         </label>
                         <select
+                          className="form-control"
                           required
                           name="preActivityPhysicalBurden"
                           id="preActivityPhysicalBurden"
@@ -283,11 +293,12 @@ export default function Setup(): JSX.Element {
                           ))}
                         </select>
                       </div>
-                      <div className="form-control">
+                      <div className="form-group">
                         <label htmlFor="preActivityMentalBurden">
                           Beban Mental
                         </label>
                         <select
+                          className="form-control"
                           required
                           name="preActivityMentalBurden"
                           id="preActivityMentalBurden"
@@ -307,9 +318,10 @@ export default function Setup(): JSX.Element {
                     </div>
                   </div>
                   <div className="grid gap-5">
-                    <div className="form-control">
+                    <div className="form-group">
                       <label htmlFor="postActivity">Aktivitas Sesudah</label>
                       <input
+                        className="form-control"
                         required
                         type="text"
                         name="postActivity"
@@ -320,43 +332,51 @@ export default function Setup(): JSX.Element {
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-5">
-                    <div className="form-control">
-                      <label htmlFor="postActivityPhysicalBurden">
-                        Beban Fisik
-                      </label>
-                      <select
-                        required
-                        name="postActivityPhysicalBurden"
-                        id="postActivityPhysicalBurden"
-                        value={values.postActivityPhysicalBurden}
-                        onChange={handleChange}
-                      >
-                        {Object.entries(ActivityBurden).map((item) => (
-                          <option key={`post-phys-${item[1]}`} value={item[1]}>
-                            {translateActivityBurden(item[1])}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="form-group">
+                        <label htmlFor="postActivityPhysicalBurden">
+                          Beban Fisik
+                        </label>
+                        <select
+                          className="form-control"
+                          required
+                          name="postActivityPhysicalBurden"
+                          id="postActivityPhysicalBurden"
+                          value={values.postActivityPhysicalBurden}
+                          onChange={handleChange}
+                        >
+                          {Object.entries(ActivityBurden).map((item) => (
+                            <option
+                              key={`post-phys-${item[1]}`}
+                              value={item[1]}
+                            >
+                              {translateActivityBurden(item[1])}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="postActivityMentalBurden">
+                          Beban Mental
+                        </label>
+                        <select
+                          className="form-control"
+                          required
+                          name="postActivityMentalBurden"
+                          id="postActivityMentalBurden"
+                          value={values.postActivityMentalBurden}
+                          onChange={handleChange}
+                        >
+                          {Object.entries(ActivityBurden).map((item) => (
+                            <option
+                              key={`post-phys-${item[1]}`}
+                              value={item[1]}
+                            >
+                              {translateActivityBurden(item[1])}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
-                    <div className="form-control">
-                      <label htmlFor="postActivityMentalBurden">
-                        Beban Mental
-                      </label>
-                      <select
-                        required
-                        name="postActivityMentalBurden"
-                        id="postActivityMentalBurden"
-                        value={values.postActivityMentalBurden}
-                        onChange={handleChange}
-                      >
-                        {Object.entries(ActivityBurden).map((item) => (
-                          <option key={`post-phys-${item[1]}`} value={item[1]}>
-                            {translateActivityBurden(item[1])}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
                   </div>
                 </div>
                 <button

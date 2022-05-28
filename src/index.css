@@ -183,25 +183,19 @@ code {
     border-color: theme(colors.green.800);
   }
 
-  .form-control {
+  .form-group {
     display: grid;
     justify-items: stretch;
     align-content: start;
     gap: theme(gap.2);
   }
 
-  .form-control label {
+  .form-group label {
     color: theme(colors.gray.200);
     font-weight: theme(fontWeight.bold);
   }
 
-  .form-control input {
-    padding: theme(padding.2);
-    border-radius: theme(borderRadius.xl);
-    border-width: theme(borderWidth.2);
-  }
-
-  .form-control select {
+  .form-control {
     padding: theme(padding.2);
     border-radius: theme(borderRadius.xl);
     border-width: theme(borderWidth.2);

@@ -102,11 +102,12 @@ export default function TokenForm(props: {
             className="grid gap-5 justify-items-stetch"
             onSubmit={handleSubmit}
           >
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="token" className="text-black">
                 Token
               </label>
               <input
+                className="form-control"
                 type="text"
                 name="token"
                 id="token"
@@ -117,11 +118,12 @@ export default function TokenForm(props: {
               />
               {<p className="text-red">{errors.token}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="expiredAt" className="text-black">
                 Kadaluarsa
               </label>
               <input
+                className="form-control"
                 type="datetime-local"
                 name="expiredAt"
                 id="expiredAt"

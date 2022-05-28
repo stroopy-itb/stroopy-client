@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Loading, ResearchHeader, TestResultTable } from "../../component";
+import {
+  Loading,
+  ResearchHeader,
+  TestResultAnalytics,
+  TestResultTable,
+} from "../../component";
 import { testResultMiddleware } from "../../redux/middleware";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -69,7 +74,17 @@ export default function ResearchDetail(): JSX.Element {
         user={user}
         tokenExpired={tokenExpired()}
       />
-      <h1 className="text-4xl font-bold text-gray-100">Hasil Tes</h1>
+      <h1 className="text-center text-4xl font-bold text-gray-100">
+        Hasil Tes
+      </h1>
+      {!testResultLoading && totalSize ? (
+        <TestResultAnalytics
+          testResults={testResults}
+          researchTickets={research?.researchTickets}
+        />
+      ) : (
+        ""
+      )}
       {!testResultLoading && totalSize ? (
         <TestResultTable
           testResults={testResults}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Chart, registerables } from "chart.js";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -88,6 +89,8 @@ function App() {
       toast.error(`${testResultError.message}`);
     }
   }, [testResultError]);
+
+  Chart.register(...registerables);
 
   return (
     <div className="bg-black px-10 min-h-screen flex flex-col justify-start items-stretch">

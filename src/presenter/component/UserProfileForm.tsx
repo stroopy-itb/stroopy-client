@@ -107,8 +107,9 @@ export default function UserProfileForm(props: {
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-5">
             <div>
               <h3 className="py-3 text-lg font-bold">Nama</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="name"
@@ -121,8 +122,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">No. Identitas</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="identityNumber"
@@ -135,8 +137,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">E-Mail</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="email"
                   name="email"
@@ -149,8 +152,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">No. Telepon</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="phone"
@@ -163,8 +167,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Tanggal Lahir</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="date"
                   name="dateOfBirth"
@@ -177,8 +182,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Gender</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="gender"
@@ -191,8 +197,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Suku</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="ethnicGroup"
@@ -205,8 +212,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Pekerjaan</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="job"
@@ -219,8 +227,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Tipe Institusi</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <select
+                  className="form-control"
                   required
                   name="institutionType"
                   id="institutionType"
@@ -238,8 +247,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Institusi</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="institution"
@@ -252,8 +262,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Fakultas</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="faculty"
@@ -266,8 +277,9 @@ export default function UserProfileForm(props: {
             </div>
             <div>
               <h3 className="py-3 text-lg font-bold">Program Studi</h3>
-              <div className="form-control">
+              <div className="form-group">
                 <input
+                  className="form-control"
                   required
                   type="text"
                   name="study"

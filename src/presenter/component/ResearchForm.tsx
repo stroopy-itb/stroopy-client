@@ -110,11 +110,12 @@ export default function ResearchForm(props: {
             className="grid gap-5 justify-items-stetch"
             onSubmit={handleSubmit}
           >
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="groupToken" className="text-black">
                 Token Grup
               </label>
               <input
+                className="form-control"
                 type="text"
                 name="groupToken"
                 id="groupToken"
@@ -125,11 +126,12 @@ export default function ResearchForm(props: {
               />
               {<p className="text-red">{errors.groupToken}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="city" className="text-black">
                 Kota Tempat Penelitan
               </label>
               <input
+                className="form-control"
                 type="text"
                 name="city"
                 id="city"
@@ -140,11 +142,12 @@ export default function ResearchForm(props: {
               />
               {<p className="text-red">{errors.city}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="location" className="text-black">
                 Tempat Penelitian
               </label>
               <input
+                className="form-control"
                 type="text"
                 name="location"
                 id="location"
@@ -155,11 +158,12 @@ export default function ResearchForm(props: {
               />
               {<p className="text-red">{errors.location}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="address" className="text-black">
                 Alamat Penelitian
               </label>
               <input
+                className="form-control"
                 type="text"
                 name="address"
                 id="address"
@@ -170,11 +174,12 @@ export default function ResearchForm(props: {
               />
               {<p className="text-red">{errors.address}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="rounds" className="text-black">
                 Pengulangan
               </label>
               <input
+                className="form-control"
                 type="number"
                 min={30}
                 max={200}

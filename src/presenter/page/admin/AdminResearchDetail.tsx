@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Loading, ResearchHeader, TestResultTable } from "../../component";
+import {
+  Loading,
+  ResearchHeader,
+  TestResultAnalytics,
+  TestResultTable,
+} from "../../component";
 import { testResultMiddleware } from "../../redux/middleware";
 import researchMiddleware from "../../redux/middleware/ResearchMiddleware";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -30,7 +35,6 @@ export default function AdminResearchDetail(): JSX.Element {
   const testResultLoading = useSelector(
     (state: RootState) => state.testResult.loading
   );
-
 
   const [size] = useState(sizeState);
   const [page, setPage] = useState(pageState);
@@ -63,7 +67,7 @@ export default function AdminResearchDetail(): JSX.Element {
     return true;
   }, [research]);
 
-  return (!researchLoading && research?.id === id) ? (
+  return !researchLoading && research?.id === id ? (
     <div className="flex-grow p-10 grid grid-flow-row gap-5 justify-items-center content-start">
       <ResearchHeader
         research={research}
@@ -71,7 +75,17 @@ export default function AdminResearchDetail(): JSX.Element {
         user={user}
         tokenExpired={tokenExpired()}
       />
-      <h1 className="text-4xl font-bold text-gray-100">Hasil Tes</h1>
+      <h1 className="text-center text-4xl font-bold text-gray-100">
+        Hasil Tes
+      </h1>
+      {!testResultLoading && totalSize ? (
+        <TestResultAnalytics
+          testResults={testResults}
+          researchTickets={research?.researchTickets}
+        />
+      ) : (
+        ""
+      )}
       {!testResultLoading && totalSize ? (
         <TestResultTable
           testResults={testResults}
@@ -85,6 +99,6 @@ export default function AdminResearchDetail(): JSX.Element {
       )}
     </div>
   ) : (
-    <Loading context="Penelitian"/>  
+    <Loading context="Penelitian" />
   );
 }

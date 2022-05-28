@@ -73,8 +73,9 @@ export default function Login(): JSX.Element {
             onSubmit={handleSubmit}
             className="md:w-1/5 grid grid-flow-row gap-5 justify-items-stretch content-center"
           >
-            <div className="form-control">
+            <div className="form-group">
               <input
+                className="form-control"
                 type="text"
                 name="username"
                 placeholder="Username"
@@ -85,8 +86,9 @@ export default function Login(): JSX.Element {
               />
               {<p className="text-red">{errors.username}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <input
+                className="form-control"
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -96,8 +98,9 @@ export default function Login(): JSX.Element {
               />
               {<p className="text-red">{errors.password}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <input
+                className="form-control"
                 type="password"
                 name="password_confirm"
                 placeholder="Konfirmasi Password"
@@ -107,8 +110,9 @@ export default function Login(): JSX.Element {
               />
               {<p className="text-red">{errors.password_confirm}</p>}
             </div>
-            <div className="form-control">
+            <div className="form-group">
               <input
+                className="form-control"
                 type="text"
                 name="token"
                 placeholder="Token"

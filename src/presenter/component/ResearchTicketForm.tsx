@@ -72,11 +72,12 @@ export default function ResearchTicketForm(props: {
             className="grid gap-5 justify-items-stetch"
             onSubmit={handleSubmit}
           >
-            <div className="form-control">
+            <div className="form-group">
               <label htmlFor="groupToken" className="text-black">
                 Token Grup
               </label>
               <input
+                className="form-control"
                 type="text"
                 name="groupToken"
                 id="groupToken"
