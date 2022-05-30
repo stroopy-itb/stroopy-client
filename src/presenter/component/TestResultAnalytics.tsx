@@ -2,183 +2,141 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Gender, ResearchTicket, TestResult } from "../../domain/model";
 import { Bar } from "react-chartjs-2";
 import { ChartData } from "chart.js";
-import { countAge } from "../utils";
+import { translateAgeGroup, translateGender } from "../utils";
+import { GetAnalyticsResponseDto } from "../../adapter/dto";
 
 export default function TestResultAnalytics(props: {
-  testResults?: TestResult[];
+  analytics?: GetAnalyticsResponseDto;
   researchTickets?: ResearchTicket[];
+  respondentTestResults?: TestResult[];
+  onRespondentIdChange: (respondentId: string) => void;
 }): JSX.Element {
-  const { testResults, researchTickets } = props;
-
-  const [analyticsData, setAnalyticsData] = useState<{
-    recordCount: number;
-    respondentCount: number;
-    avgRtca: number;
-    latestRecord: Date;
-  }>({
-    recordCount: 0,
-    respondentCount: 0,
-    avgRtca: 0,
-    latestRecord: new Date(0),
-  });
-  useEffect(() => {
-    let avgRtca = 0;
-    let latestRecord = new Date(0);
-    testResults?.forEach((result) => {
-      avgRtca += result.rtca;
-
-      const recordValue = new Date(result.createdAt);
-      if (recordValue > latestRecord) {
-        latestRecord = recordValue;
-      }
-    });
-
-    setAnalyticsData({
-      recordCount: testResults?.length || 0,
-      respondentCount: researchTickets?.length || 0,
-      avgRtca: avgRtca / (testResults?.length || 1),
-      latestRecord: latestRecord,
-    });
-  }, [testResults, researchTickets]);
+  const {
+    analytics,
+    researchTickets,
+    respondentTestResults,
+    onRespondentIdChange,
+  } = props;
 
   const genderRtcaData = useCallback(() => {
-    let maleRecords = { total: 0, count: 0 };
-    let femaleRecords = { total: 0, count: 0 };
-
-    testResults?.forEach((result) => {
-      switch (result.respondent?.profile?.gender) {
-        case Gender.Male:
-          maleRecords.total += result.rtca;
-          maleRecords.count += 1;
-          break;
-        case Gender.Female:
-          femaleRecords.total += result.rtca;
-          femaleRecords.count += 1;
-          break;
-      }
-    });
-
     let data: ChartData<"bar"> = {
-      labels: ["Pria", "Wanita"],
+      labels: Object.entries(Gender).map((entry) => translateGender(entry[1])),
       datasets: [
         {
-          data: [
-            maleRecords.total / maleRecords.count,
-            femaleRecords.total / femaleRecords.count,
-          ],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-          ],
-          borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+          data: analytics?.genderRtca.map((entry) => entry.avgRtca) || [],
+          backgroundColor,
+          borderColor,
           borderWidth: 1,
+          borderRadius: 5,
         },
       ],
     };
 
     return data;
-  }, [testResults]);
+  }, [analytics]);
 
   const ageRtcaData = useCallback(() => {
-    let young = { total: 0, count: 0 };
-    let teen = { total: 0, count: 0 };
-    let working = { total: 0, count: 0 };
-    let parent = { total: 0, count: 0 };
-    let elder = { total: 0, count: 0 };
-
-    testResults?.forEach((result) => {
-      if (countAge(result.respondent?.profile?.dateOfBirth) < 12) {
-        young.total += result.rtca;
-        young.count += 1;
-      } else if (countAge(result.respondent?.profile?.dateOfBirth) <= 24) {
-        teen.total += result.rtca;
-        teen.count += 1;
-      } else if (countAge(result.respondent?.profile?.dateOfBirth) <= 40) {
-        working.total += result.rtca;
-        working.count += 1;
-      } else if (countAge(result.respondent?.profile?.dateOfBirth) <= 50) {
-        parent.total += result.rtca;
-        parent.count += 1;
-      } else if (countAge(result.respondent?.profile?.dateOfBirth) > 50) {
-        elder.total += result.rtca;
-        elder.count += 1;
-      }
-    });
-
     let data: ChartData<"bar"> = {
-      labels: ["< 12", "13 - 24", "25 - 40", "40 - 50", "> 50"],
+      labels:
+        analytics?.ageRtca.map((entry) => translateAgeGroup(entry.id)) || [],
       datasets: [
         {
-          data: [
-            young.total / young.count,
-            teen.total / teen.count,
-            working.total / working.count,
-            parent.total / parent.count,
-            elder.total / elder.count,
-          ],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-          ],
-          borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+          data: analytics?.ageRtca.map((entry) => entry.avgRtca) || [],
+          backgroundColor,
+          borderColor,
           borderWidth: 1,
+          borderRadius: 5,
         },
       ],
     };
 
     return data;
-  }, [testResults]);
+  }, [analytics]);
 
   const [respondentId, setRespondentId] = useState("");
+  useEffect(() => {
+    onRespondentIdChange(respondentId);
+  }, [respondentId, onRespondentIdChange]);
 
   const respondentChartData = useCallback(() => {
-    let respondentRecords: TestResult[] = [];
+    let respondentRecords: { avgRtca: number; date: Date | string }[] = [];
+    let newRecord = {
+      count: 0,
+      rtca: 0,
+      lastDate: new Date("").toLocaleDateString(),
+    };
 
-    testResults?.forEach((result) => {
-      if (result.respondentId === respondentId) {
-        respondentRecords.push(result);
+    if (
+      respondentTestResults &&
+      respondentTestResults.length !== 0 &&
+      respondentTestResults[0].respondentId === respondentId
+    ) {
+      respondentTestResults?.forEach((result) => {
+        const resultDate = new Date(result.createdAt).toLocaleDateString();
+        if (resultDate === newRecord.lastDate) {
+          newRecord.count += 1;
+          newRecord.rtca += result.rtca;
+        } else {
+          if (newRecord.count !== 0) {
+            respondentRecords.push({
+              avgRtca: newRecord.rtca / newRecord.count,
+              date: newRecord.lastDate,
+            });
+          }
+
+          newRecord = {
+            count: 1,
+            rtca: result.rtca,
+            lastDate: resultDate,
+          };
+        }
+      });
+
+      if (newRecord.count !== 0) {
+        respondentRecords.push({
+          avgRtca: newRecord.rtca / newRecord.count,
+          date: newRecord.lastDate,
+        });
       }
-    });
+    }
 
     let data: ChartData<"bar"> = {
-      labels: respondentRecords.map((record) =>
-        new Date(record.createdAt).toLocaleString()
-      ),
+      labels: respondentRecords?.map((record) => record.date),
       datasets: [
         {
-          data: respondentRecords.map((record) => record.rtca),
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-          ],
-          borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+          data: respondentRecords?.map((record) => record.avgRtca),
+          backgroundColor,
+          borderColor,
           borderWidth: 1,
+          borderRadius: 5,
         },
       ],
     };
 
     return data;
-  }, [testResults, respondentId]);
+  }, [respondentTestResults, respondentId]);
 
   return (
     <div className="justify-self-stretch overflow-hidden">
       <div className="grid gap-5 grid-cols-4 mb-5">
         <div className="bg-gray-100 rounded-2xl p-3">
           <h2 className="text-3xl font-bold text-green">Jumlah Data</h2>
-          <p className="text-3xl font-bold">{analyticsData.recordCount}</p>
+          <p className="text-3xl font-bold">{analytics?.recordCount}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
           <h2 className="text-3xl font-bold text-yellow">Jumlah Responden</h2>
-          <p className="text-3xl font-bold">{analyticsData.respondentCount}</p>
+          <p className="text-3xl font-bold">{analytics?.respondentCount}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
           <h2 className="text-3xl font-bold text-red">Rata-Rata RTCA</h2>
-          <p className="text-3xl font-bold">{analyticsData.avgRtca}</p>
+          <p className="text-3xl font-bold">{analytics?.avgRtca}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
           <h2 className="text-3xl font-bold text-blue">Pengujian Terakhir</h2>
           <p className="text-3xl font-bold">
-            {analyticsData.latestRecord.toLocaleString()}
+            {analytics?.latestRecord
+              ? new Date(analytics?.latestRecord || "").toLocaleDateString()
+              : ""}
           </p>
         </div>
       </div>
@@ -213,7 +171,7 @@ export default function TestResultAnalytics(props: {
             value={respondentId}
             onChange={(event) => setRespondentId(event.currentTarget.value)}
           >
-            <option value=""></option>
+            <option value="">Pilih Responden</option>
             {researchTickets?.map((item) => (
               <option key={item.id} value={item.respondent?.id || ""}>
                 {item.respondent?.profile?.name || item.respondent?.username}
@@ -235,3 +193,17 @@ export default function TestResultAnalytics(props: {
     </div>
   );
 }
+
+const backgroundColor = [
+  "rgba(255, 85, 85, 0.2)",
+  "rgba(88, 217, 93, 0.2)",
+  "rgba(77, 116, 255, 0.2)",
+  "rgba(255, 184, 0, 0.2)",
+];
+
+const borderColor = [
+  "rgba(255, 85, 85, 1)",
+  "rgba(88, 217, 93, 1)",
+  "rgba(77, 116, 255, 1)",
+  "rgba(255, 184, 0, 1",
+];

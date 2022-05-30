@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateTestResultDto, ListTestResultResponseDto } from "../../../adapter/dto";
+import { CreateTestResultDto, GetAnalyticsResponseDto, ListTestResultResponseDto } from "../../../adapter/dto";
 import { AnswerRecord, ErrorResponse, Result, TestResult } from "../../../domain/model";
 import di from "../../di";
 
@@ -13,6 +13,35 @@ const testResultMiddleware = {
             return serializeDate(item);
           });
           return { testResults: testResults, size: res.size, page: res.page, totalSize: res.totalSize };
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error as ErrorResponse);
+        }
+      }
+    ),
+  getRespondentResults: createAsyncThunk<TestResult[], { respondentId: string, researchId?: string }>
+    ('[Test Result] Get respondent test results',
+      async (arg, thunkApi) => {
+        try {
+          const res = 
+            await di.service.testResultService.getAll(0, 1, { respondentId: arg.respondentId, researchId: arg.researchId });
+          const respondentResults = res.testResults.map((item) => {
+            return serializeDate(item);
+          });
+          return respondentResults;
+        } catch (error: any) {
+          return thunkApi.rejectWithValue(error as ErrorResponse);
+        }
+      }
+    ),
+  getAnalytics: createAsyncThunk<GetAnalyticsResponseDto, { researchId: string }>
+    ('[Test Result] Get Analytics',
+      async (arg, thunkApi) => {
+        try {
+          const res = await di.service.testResultService.getAnalytics(arg.researchId);
+          return {
+            ...res,
+            latestRecord: res.latestRecord?.toLocaleString() || ""
+          };
         } catch (error: any) {
           return thunkApi.rejectWithValue(error as ErrorResponse);
         }

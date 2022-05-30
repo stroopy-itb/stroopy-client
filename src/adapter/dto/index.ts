@@ -16,3 +16,4 @@ export { default as CreateResearchTicketDto } from './CreateResearchTicketDto';
 export { default as ListResearchTicketResponseDto } from './ListResearchTicketResponseDto';
 export { default as CreateTestResultDto } from './CreateTestResultDto';
 export { default as ListTestResultResponseDto } from './ListTestResultResponseDto';
+export { default as GetAnalyticsResponseDto } from './GetAnalyticsResponseDto';

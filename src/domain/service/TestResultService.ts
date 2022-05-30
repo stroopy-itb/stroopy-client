@@ -1,4 +1,4 @@
-import { CreateTestResultDto, ListTestResultResponseDto } from "../../adapter/dto";
+import { CreateTestResultDto, GetAnalyticsResponseDto, ListTestResultResponseDto } from "../../adapter/dto";
 import { ITestResultRepository } from "../../adapter/repository/interface";
 import { TestResult } from "../model";
 import { ITestResultService } from "./interface";
@@ -10,6 +10,9 @@ export default class TestResultService implements ITestResultService {
 
   getAll(size: number, page: number, filter?: Partial<TestResult>): Promise<ListTestResultResponseDto> {
     return this.testResultRepository.getAll(size, page, filter);
+  }
+  getAnalytics(researchId: string): Promise<GetAnalyticsResponseDto> {
+    return this.testResultRepository.getAnalytics(researchId);
   }
   getOne(filter?: Partial<TestResult>): Promise<TestResult> {
     return this.testResultRepository.getOne(filter);

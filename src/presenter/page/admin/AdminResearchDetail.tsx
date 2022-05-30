@@ -21,6 +21,12 @@ export default function AdminResearchDetail(): JSX.Element {
     (state: RootState) => state.researchToken.selectedResearchToken
   );
   const user = useSelector((state: RootState) => state.user.user);
+  const analytics = useSelector(
+    (state: RootState) => state.testResult.analytics
+  );
+  const respondentResults = useSelector(
+    (state: RootState) => state.testResult.respondentResults
+  );
   const testResults = useSelector(
     (state: RootState) => state.testResult.testResults
   );
@@ -53,12 +59,27 @@ export default function AdminResearchDetail(): JSX.Element {
   useEffect(() => {
     dispatch(
       testResultMiddleware.getAll({
-        size: size,
+        size: 0,
         page: page,
         filter: { researchId: id },
       })
     );
+    dispatch(testResultMiddleware.getAnalytics({ researchId: id || "" }));
   }, [id, size, page, dispatch]);
+
+  const updateRespondentResults = useCallback(
+    (respondentId: string) => {
+      if (respondentId !== "") {
+        dispatch(
+          testResultMiddleware.getRespondentResults({
+            respondentId,
+            researchId: id,
+          })
+        );
+      }
+    },
+    [id, dispatch]
+  );
 
   const tokenExpired = useCallback(() => {
     if (research?.researchToken) {
@@ -78,10 +99,12 @@ export default function AdminResearchDetail(): JSX.Element {
       <h1 className="text-center text-4xl font-bold text-gray-100">
         Hasil Tes
       </h1>
-      {!testResultLoading && totalSize ? (
+      {analytics ? (
         <TestResultAnalytics
-          testResults={testResults}
+          analytics={analytics}
+          respondentTestResults={respondentResults}
           researchTickets={research?.researchTickets}
+          onRespondentIdChange={updateRespondentResults}
         />
       ) : (
         ""

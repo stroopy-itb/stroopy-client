@@ -115,3 +115,20 @@ export const countAge = (dob: Date | string | undefined): number => {
 
   return Math.floor((today - birthDate) / (31556952000));
 };
+
+export const translateAgeGroup = (id: string): string => {
+  switch (id) {
+    case "child":
+      return "< 12";
+    case "youth":
+      return "13 - 24"
+    case "adult":
+      return "25 - 40"
+    case "lateAdult":
+      return "40 - 50"
+    case "senior":
+      return "> 50"
+    default:
+      return id;
+  }
+}

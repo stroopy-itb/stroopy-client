@@ -11,7 +11,6 @@ import {
   translateRoomTemperature,
   translateRoomVibration,
 } from "../utils";
-import ExportSpreadsheet from "./ExportSpreadsheet";
 import Paginate from "./Paginate";
 
 export default function TestResultTable(props: {
@@ -26,17 +25,12 @@ export default function TestResultTable(props: {
   return (
     <div className="justify-self-stretch overflow-hidden">
       <div className="flex justify-between mb-5">
-        {testResults && testResults.length > 0 ? (
-          <ExportSpreadsheet data={testResults} />
-        ) : (
-          ""
-        )}
-        <Paginate
+        {/* <Paginate
           size={size}
           page={page}
           totalSize={totalSize}
           changePage={changePage}
-        />
+        /> */}
       </div>
       <div className="bg-gray-100 rounded-2xl overflow-auto md:p-5">
         {testResults ? (

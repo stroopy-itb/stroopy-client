@@ -1,5 +1,5 @@
 import { TestResult } from "../../domain/model";
-import { CreateTestResultDto, ListTestResultResponseDto } from "../dto";
+import { CreateTestResultDto, GetAnalyticsResponseDto, ListTestResultResponseDto } from "../dto";
 import { HttpClient } from "../infrastructure";
 import { queryMaker } from "../utils/queryMaker";
 import { ITestResultRepository } from "./interface";
@@ -13,6 +13,9 @@ export default class TestResultRepository implements ITestResultRepository {
     const query = queryMaker<TestResult>(filter, true);
 
     return this.http.get(`test-result/list?size=${size}&page=${page}${query}`);
+  }
+  public async getAnalytics(researchId: string): Promise<GetAnalyticsResponseDto> {
+    return this.http.get(`test-result/analytics?researchId=${researchId}`);
   }
   public async getOne(filter?: Partial<TestResult>): Promise<TestResult> {
     const query = queryMaker<TestResult>(filter);

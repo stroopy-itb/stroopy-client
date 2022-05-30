@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Gender, InstitutionType, User, UserProfile } from "../../domain/model";
 import { CreateUserProfileDto } from "../../adapter/dto";
-import { translateInstitutionType } from "../utils";
+import { translateGender, translateInstitutionType } from "../utils";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { userMiddleware } from "../redux/middleware";
@@ -183,16 +183,21 @@ export default function UserProfileForm(props: {
             <div>
               <h3 className="py-3 text-lg font-bold">Gender</h3>
               <div className="form-group">
-                <input
+                <select
                   className="form-control"
                   required
-                  type="text"
                   name="gender"
                   id="gender"
                   placeholder="Gender"
                   value={values.gender}
                   onChange={handleChange}
-                />
+                >
+                  {Object.entries(Gender).map((item) => (
+                    <option key={item[1]} value={item[1]}>
+                      {translateGender(item[1])}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div>
