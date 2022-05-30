@@ -18,20 +18,31 @@ code {
 
 @layer components {
   .button {
-    padding: theme(padding.4);
     color: theme(colors.gray.200);
     border-radius: theme(borderRadius.2xl);
     font-weight: theme(fontWeight.bold);
   }
 
   .button-xl {
+    padding: theme(padding.5);
     font-size: theme(fontSize.2xl);
     border-width: theme(borderWidth.2);
   }
 
   .button-lg {
     font-size: theme(fontSize.lg);
-    font-weight: theme(fontWeight.bold);
+  }
+
+  .button-md {
+    border-radius: theme(borderRadius.xl);
+    padding: theme(padding.4);
+    font-size: theme(fontSize.base);
+  }
+
+  .button-sm {
+    border-radius: theme(borderRadius.lg);
+    padding: theme(padding.1);
+    font-size: theme(fontSize.base);
   }
 
   .button-neutral {

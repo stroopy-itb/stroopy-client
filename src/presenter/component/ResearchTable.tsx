@@ -39,9 +39,7 @@ export default function ResearchTable(props: {
             <thead>
               <tr className="font-bold">
                 <td className="py-2 px-5 border-b-2 border-black">NO.</td>
-                <td className="py-2 px-5 border-b-2 border-black">ID</td>
                 <td className="py-2 px-5 border-b-2 border-black">Token</td>
-                <td className="py-2 px-5 border-b-2 border-black">Tanggal Kadaluarsa</td>
                 <td className="py-2 px-5 border-b-2 border-black"></td>
               </tr>
             </thead>
@@ -50,28 +48,23 @@ export default function ResearchTable(props: {
                 return (
                   <tr key={index}>
                     <td className="py-2 px-5">{index + 1}</td>
-                    <td className="py-2 px-5">{row.id}</td>
                     <td className="py-2 px-5">{row.groupToken}</td>
-                    <td className={`py-2 px-5 ${tokenExpired(row) ? 'text-red' : ''}`}>
-                      { row.researchToken ? new Date(row.researchToken?.expiredAt).toLocaleString() : ''}
-                    </td>
                     <td className="py-2 px-5 text-right">
                       {user?.role === UserRole.Respondent ? (
-                      <button
-                        disabled={tokenExpired(row)}
-                        onClick={() => navigate(`/setup/${row.id}`)}
-                        className="button button-md button-blue p-1 px-5 text-base"
-                      >
-                        Kerjakan Tes
-                      </button>
+                        <button
+                          disabled={tokenExpired(row)}
+                          onClick={() => navigate(`/setup/${row.id}`)}
+                          className="button button-sm button-blue p-1 px-5 text-base"
+                        >
+                          Kerjakan Tes
+                        </button>
                       ) : (
-                      <button
-                        disabled={tokenExpired(row)}
-                        onClick={() => navigate(`./${row.id}`)}
-                        className="button button-md button-blue p-1 px-5 text-base"
-                      >
-                        Detail
-                      </button>
+                        <button
+                          onClick={() => navigate(`./${row.id}`)}
+                          className="button button-sm button-blue p-1 px-5 text-base"
+                        >
+                          Detail
+                        </button>
                       )}
                     </td>
                   </tr>

@@ -27,7 +27,7 @@ export default function AdminResearchList(): JSX.Element {
   }, [size, page, dispatch]);
 
   return (
-    <div className="flex-grow p-10 grid grid-flow-row gap-10 justify-items-center content-start">
+    <div className="flex-grow p-4 lg:p-6 grid grid-flow-row gap-4 lg:gap-10 justify-items-center content-start">
       <h1 className="text-4xl font-bold text-gray-100">Penelitian</h1>
       {totalSize ? (
         <ResearchTable
@@ -39,7 +39,7 @@ export default function AdminResearchList(): JSX.Element {
           user={user}
         />
       ) : (
-      <Loading />  
+        <Loading />
       )}
     </div>
   );

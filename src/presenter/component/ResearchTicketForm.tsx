@@ -15,8 +15,7 @@ export default function ResearchTicketForm(props: {
   size: number;
   respondentId?: string;
   afterSubmit?: () => void;
-}
-): JSX.Element {
+}): JSX.Element {
   const { respondentId, page, size, afterSubmit } = props;
 
   const dispatch = useDispatch<AppDispatch>();
@@ -30,10 +29,15 @@ export default function ResearchTicketForm(props: {
           },
         })
       ).then((res: any) => {
-        if (res) {
-          toast.success('Berhasil Mendaftar ke Penelitian!');
+        if (res.meta.requestStatus !== "rejected") {
+          console.log(res);
+          toast.success("Berhasil Mendaftar ke Penelitian!");
           dispatch(
-            researchMiddleware.getAllByTickets({ size: size, page: page, filter: {} })
+            researchMiddleware.getAllByTickets({
+              size: size,
+              page: page,
+              filter: {},
+            })
           );
           if (afterSubmit) afterSubmit();
         }
@@ -53,16 +57,18 @@ export default function ResearchTicketForm(props: {
         onSubmit={handleSubmit}
         validate={async (values) => {
           const errors: FormikErrors<CreateResearchTicketRequest> = {};
-          const existingTicket = (
-            await di.service.researchService.getOne({
-              groupToken: values.groupToken,
-              full: true,
-            })
-          ).researchTickets.find((t) => t.respondentId === respondentId);
-          if (existingTicket) {
-            errors.groupToken = "Anda sudah terdaftar di penelitian ini";
+          const research = await di.service.researchService.getOne({
+            groupToken: values.groupToken,
+            full: true,
+          });
+          if (research.researchTickets) {
+            const existingTicket = research.researchTickets.find(
+              (t) => t.respondentId === respondentId
+            );
+            if (existingTicket) {
+              errors.groupToken = "Anda sudah terdaftar di penelitian ini";
+            }
           }
-
           return errors;
         }}
         validateOnBlur

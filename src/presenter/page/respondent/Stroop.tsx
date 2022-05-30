@@ -181,28 +181,23 @@ export default function Stroop(): JSX.Element {
   return (
     <div className="flex-grow grid grid-flow-row gap-12 justify-items-center content-center">
       <h1
-        className="text-center text-5xl font-bold"
+        className="text-center text-7xl font-bold"
         style={{ color: stroopKey.color }}
       >
-        {stroopKey.text}
+        {stroopKey.text.toUpperCase()}
       </h1>
       {/* <h2 style={{ fontWeight: "bold", color: "white" }}>{promptToString(prompt)}</h2> */}
-      <h2
-        className={`text-center font-bold text-gray-100 ${
-          started === GameState.Started ? "text-2xl" : "text-4xl"
-        }`}
-      >
-        {started === GameState.Started
-          ? (timeleft / 1000).toFixed(2)
-          : (timeleft / 1000).toFixed()}
-      </h2>
+      {started !== GameState.Started ? (
+        <h2 className="text-center font-bold text-gray-100 text-4xl">
+          {(timeleft / 1000).toFixed()}
+        </h2>
+      ) : (
+        ""
+      )}
       {started < GameState.Started ? (
         <div>
           <p className="text-center text-xl text-gray-100">
-            {`${rounds()} pengulangan`}
-          </p>
-          <p className="text-center text-xl text-gray-100">
-            Pilih jawaban sesuai warna
+            Silahkan pilih jawaban sesuai warna yang tampil
           </p>
         </div>
       ) : (
@@ -219,11 +214,11 @@ export default function Stroop(): JSX.Element {
         {pairs.map((pair) => (
           <div key={pair.text}>
             <button
-              className="w-full p-8 md:p-10 lg:p-10 rounded-lg border-2 border-white"
+              className="w-full p-8 md:p-10 rounded-lg border-2 border-white"
               onClick={() => chooseAnswer(pair, timeleft)}
               disabled={started !== GameState.Started}
             >
-              <p className="text-4xl md:text-6xl lg:text-8xl font-bold text-center text-gray-100">
+              <p className="text-5xl md:text-6xl font-bold text-center text-gray-100">
                 {pair.text.charAt(0)}
               </p>
             </button>

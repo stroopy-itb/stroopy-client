@@ -273,7 +273,7 @@ export default function Setup(): JSX.Element {
                     <div className="grid grid-cols-2 gap-5">
                       <div className="form-group">
                         <label htmlFor="preActivityPhysicalBurden">
-                          Beban Fisik
+                          Beban Fisik Sebelum
                         </label>
                         <select
                           className="form-control"
@@ -295,7 +295,7 @@ export default function Setup(): JSX.Element {
                       </div>
                       <div className="form-group">
                         <label htmlFor="preActivityMentalBurden">
-                          Beban Mental
+                          Beban Mental Sebelum
                         </label>
                         <select
                           className="form-control"
@@ -334,7 +334,7 @@ export default function Setup(): JSX.Element {
                     <div className="grid grid-cols-2 gap-5">
                       <div className="form-group">
                         <label htmlFor="postActivityPhysicalBurden">
-                          Beban Fisik
+                          Beban Fisik Sesudah
                         </label>
                         <select
                           className="form-control"
@@ -356,7 +356,7 @@ export default function Setup(): JSX.Element {
                       </div>
                       <div className="form-group">
                         <label htmlFor="postActivityMentalBurden">
-                          Beban Mental
+                          Beban Mental Sesudah
                         </label>
                         <select
                           className="form-control"

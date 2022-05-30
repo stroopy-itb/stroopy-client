@@ -1,4 +1,5 @@
 export { default as Header } from "./Header";
+export { default as Footer } from "./Footer";
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as TokenForm } from "./TokenForm";
 export { default as ResearchForm } from "./ResearchForm";

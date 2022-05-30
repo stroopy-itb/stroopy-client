@@ -88,14 +88,14 @@ export default function ResearchDetail(): JSX.Element {
   }, [research]);
 
   return !researchLoading && research?.id === id ? (
-    <div className="flex-grow p-10 grid grid-flow-row gap-5 justify-items-center content-start">
+    <div className="flex-grow p-4 lg:p-6 grid grid-flow-row gap-4 lg:gap-5 lg:justify-items-center content-start">
       <ResearchHeader
         research={research}
         researchToken={researchToken}
         user={user}
         tokenExpired={tokenExpired()}
       />
-      <h1 className="text-center text-4xl font-bold text-gray-100">
+      <h1 className="text-center text-3xl font-bold text-gray-100">
         Hasil Tes
       </h1>
       {analytics ? (

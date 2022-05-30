@@ -126,7 +126,12 @@ const researchMiddleware = {
             updatedAt: res.updatedAt.toLocaleString(),
           }
         } catch (error: any) {
-          return thunkApi.rejectWithValue(error as ErrorResponse);
+          // TODO: fix error type mismatch 
+          return thunkApi.rejectWithValue(
+            {
+              ...error,
+              message: error.description
+            } as ErrorResponse);
         }
       }
     ),

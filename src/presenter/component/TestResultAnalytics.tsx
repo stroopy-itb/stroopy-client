@@ -118,29 +118,29 @@ export default function TestResultAnalytics(props: {
 
   return (
     <div className="justify-self-stretch overflow-hidden">
-      <div className="grid gap-5 grid-cols-4 mb-5">
+      <div className="grid gap-5 grid-cols-2 lg:grid-cols-4 mb-5">
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="text-3xl font-bold text-green">Jumlah Data</h2>
-          <p className="text-3xl font-bold">{analytics?.recordCount}</p>
+          <h2 className="texl-xl lg:text-2xl font-bold text-green">Jumlah Data</h2>
+          <p className="texl-xl lg:text-2xl font-bold">{analytics?.recordCount}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="text-3xl font-bold text-yellow">Jumlah Responden</h2>
-          <p className="text-3xl font-bold">{analytics?.respondentCount}</p>
+          <h2 className="texl-xl lg:text-2xl font-bold text-yellow">Jumlah Responden</h2>
+          <p className="texl-xl lg:text-2xl font-bold">{analytics?.respondentCount}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="text-3xl font-bold text-red">Rata-Rata RTCA</h2>
-          <p className="text-3xl font-bold">{analytics?.avgRtca}</p>
+          <h2 className="texl-xl lg:text-2xl font-bold text-red">Rata-Rata RTCA</h2>
+          <p className="texl-xl lg:text-2xl font-bold">{analytics?.avgRtca}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="text-3xl font-bold text-blue">Pengujian Terakhir</h2>
-          <p className="text-3xl font-bold">
+          <h2 className="texl-xl lg:text-2xl font-bold text-blue">Pengujian Terakhir</h2>
+          <p className="texl-xl lg:text-2xl font-bold">
             {analytics?.latestRecord
               ? new Date(analytics?.latestRecord || "").toLocaleDateString()
               : ""}
           </p>
         </div>
       </div>
-      <div className="grid gap-5 grid-cols-3 justify-between">
+      <div className="grid gap-5 grid-cols-1 lg:grid-cols-3 justify-between">
         <div className="bg-gray-100 rounded-2xl p-3">
           <Bar
             data={genderRtcaData()}
