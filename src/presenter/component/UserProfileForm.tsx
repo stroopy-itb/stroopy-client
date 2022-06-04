@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Formik, FormikHelpers } from "formik";
+import { Formik, FormikHelpers, FormikErrors } from "formik";
 import { Gender, InstitutionType, User, UserProfile } from "../../domain/model";
 import { CreateUserProfileDto } from "../../adapter/dto";
 import { translateGender, translateInstitutionType } from "../utils";
@@ -38,7 +38,6 @@ export default function UserProfileForm(props: {
       { setSubmitting }: FormikHelpers<CreateUserProfileDto>
     ) => {
       if (profile) {
-        console.log(values);
         dispatch(
           userMiddleware.updateProfile({
             dto: {
@@ -102,8 +101,26 @@ export default function UserProfileForm(props: {
 
   return (
     <div className="grid grid-flow-row gap-5 justify-items-around content-stretch">
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ values, isSubmitting, handleChange, handleSubmit }) => (
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validate={(values) => {
+          let errors: FormikErrors<CreateUserProfileDto> = {};
+          const phoneNo = /^\d{11,13}$/;
+          if (!values.phone.match(phoneNo)) {
+            errors.phone = "No. Telepon tidak valid";
+          }
+          const idNo = /^\d{16}$/;
+          if (!values.identityNumber.match(idNo)) {
+            errors.identityNumber = "No. Identitas tidak valid";
+          }
+
+          return errors;
+        }}
+        validateOnMount
+        validateOnBlur
+      >
+        {({ values, isSubmitting, errors, handleChange, handleSubmit }) => (
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-5">
             <div>
               <h3 className="py-3 text-lg font-bold">Nama</h3>
@@ -118,6 +135,7 @@ export default function UserProfileForm(props: {
                   value={values.name}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.name}</p>}
               </div>
             </div>
             <div>
@@ -127,12 +145,15 @@ export default function UserProfileForm(props: {
                   className="form-control"
                   required
                   type="text"
+                  minLength={16}
+                  maxLength={16}
                   name="identityNumber"
                   id="identityNumber"
                   placeholder="No. Identitas"
                   value={values.identityNumber}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.identityNumber}</p>}
               </div>
             </div>
             <div>
@@ -148,6 +169,7 @@ export default function UserProfileForm(props: {
                   value={values.email}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.email}</p>}
               </div>
             </div>
             <div>
@@ -156,13 +178,16 @@ export default function UserProfileForm(props: {
                 <input
                   className="form-control"
                   required
-                  type="text"
+                  type="tel"
                   name="phone"
                   id="phone"
+                  minLength={11}
+                  maxLength={13}
                   placeholder="No. Telepon"
                   value={values.phone}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.phone}</p>}
               </div>
             </div>
             <div>
@@ -175,9 +200,12 @@ export default function UserProfileForm(props: {
                   name="dateOfBirth"
                   id="dateOfBirth"
                   placeholder="Tanggal Lahir"
-                  value={values.dateOfBirth.toLocaleString()}
+                  value={
+                    new Date(values.dateOfBirth).toISOString().split("T")[0]
+                  }
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.dateOfBirth}</p>}
               </div>
             </div>
             <div>
@@ -198,6 +226,7 @@ export default function UserProfileForm(props: {
                     </option>
                   ))}
                 </select>
+                {<p className="text-red">{errors.gender}</p>}
               </div>
             </div>
             <div>
@@ -213,6 +242,7 @@ export default function UserProfileForm(props: {
                   value={values.ethnicGroup}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.ethnicGroup}</p>}
               </div>
             </div>
             <div>
@@ -228,6 +258,7 @@ export default function UserProfileForm(props: {
                   value={values.job}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.job}</p>}
               </div>
             </div>
             <div>
@@ -248,6 +279,7 @@ export default function UserProfileForm(props: {
                     </option>
                   ))}
                 </select>
+                {<p className="text-red">{errors.institutionType}</p>}
               </div>
             </div>
             <div>
@@ -263,6 +295,7 @@ export default function UserProfileForm(props: {
                   value={values.institution}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.institution}</p>}
               </div>
             </div>
             <div>
@@ -278,6 +311,7 @@ export default function UserProfileForm(props: {
                   value={values.faculty}
                   onChange={handleChange}
                 />
+                {<p className="text-red">{errors.faculty}</p>}
               </div>
             </div>
             <div>
@@ -294,6 +328,7 @@ export default function UserProfileForm(props: {
                   onChange={handleChange}
                 />
               </div>
+              {<p className="text-red">{errors.study}</p>}
             </div>
             <div className="flex flex-col md:flex-row gap-5">
               <button

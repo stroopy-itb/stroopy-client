@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { UserProfileForm, UserProfileInfo } from "../component";
+import { UserPasswordForm, UserProfileForm, UserProfileInfo } from "../component";
 import { RootState } from "../redux/store";
 
 export default function UserProfile(): JSX.Element {
@@ -44,6 +44,10 @@ export default function UserProfile(): JSX.Element {
             Perbarui Profil
           </button>
         )}
+      </div>
+      <h1 className="text-4xl font-bold text-gray-100">Perbarui Password</h1>
+      <div className="justify-self-stretch bg-gray-100 rounded-2xl p-2 md:p-5">
+        <UserPasswordForm user={user} />
       </div>
     </div>
   );

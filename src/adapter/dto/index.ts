@@ -1,6 +1,7 @@
 export { default as LoginDto } from './LoginDto';
 export { default as CreateUserDto } from './CreateUserDto';
 export { default as UpdateUserDto } from './UpdateUserDto';
+export { default as UpdatePasswordDto } from './UpdatePasswordDto';
 export { default as ListUserResponseDto } from './ListUserResponseDto';
 export { default as CreateUserProfileDto } from './CreateUserProfileDto';
 export { default as UpdateUserProfileDto } from './UpdateUserProfileDto';

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateUserDto, CreateUserProfileDto, UpdateUserDto, UpdateUserProfileDto } from "../../../adapter/dto";
+import { CreateUserDto, CreateUserProfileDto, UpdatePasswordDto, UpdateUserDto, UpdateUserProfileDto } from "../../../adapter/dto";
 import { ErrorResponse, User, UserProfile } from "../../../domain/model";
 import di from "../../di";
 
@@ -11,11 +11,11 @@ export const userMiddleware = {
       return thunkApi.rejectWithValue(error as ErrorResponse);
     }
   }),
-  updatePassword: createAsyncThunk<User, { dto: UpdateUserDto }>
-    ('[User] Update',
+  updatePassword: createAsyncThunk<User, { dto: UpdatePasswordDto }>
+    ('[User] Update Password',
       async (arg, thunkApi) => {
         try {
-          const res = await di.service.userService.update(arg.dto);
+          const res = await di.service.userService.updatePassword(arg.dto);
           return {
             ...res,
             createdAt: res.createdAt.toLocaleString(),

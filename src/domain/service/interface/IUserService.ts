@@ -1,4 +1,4 @@
-import { CreateUserDto, ListUserResponseDto, UpdateUserDto } from "../../../adapter/dto";
+import { CreateUserDto, ListUserResponseDto, UpdatePasswordDto, UpdateUserDto } from "../../../adapter/dto";
 import { User } from "../../model";
 
 export default interface IUserService {
@@ -7,4 +7,5 @@ export default interface IUserService {
   getOne(id: string): Promise<User>;
   register(createUserDto: CreateUserDto): Promise<User>;
   update(updateUserDto: UpdateUserDto): Promise<User>;
+  updatePassword(updatePasswordDto: UpdatePasswordDto): Promise<User>;
 }

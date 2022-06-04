@@ -1,5 +1,5 @@
 import { User } from "../../domain/model";
-import { CreateUserDto, ListUserResponseDto, UpdateUserDto } from "../dto";
+import { CreateUserDto, ListUserResponseDto, UpdatePasswordDto, UpdateUserDto } from "../dto";
 import { HttpClient } from "../infrastructure";
 import { queryMaker } from "../utils/queryMaker";
 import { IUserRepository } from "./interface";
@@ -25,5 +25,8 @@ export default class UserRepository implements IUserRepository {
   }
   public async update(updateUserProfileDto: UpdateUserDto): Promise<User> {
     return this.http.put(`users/update/${updateUserProfileDto.id}`, updateUserProfileDto);
+  }
+  public async updatePassword(updatePasswordDto: UpdatePasswordDto): Promise<User> {
+    return this.http.put('users/update-password', updatePasswordDto);
   }
 }
