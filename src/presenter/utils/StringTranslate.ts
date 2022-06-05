@@ -1,4 +1,4 @@
-import { ActivityBurden, BodyCondition, Gender, InstitutionType, RoomCondition, RoomLighting, RoomNoise, RoomTemperature, RoomVibration } from "../../domain/model";
+import { ActivityBurden, BodyCondition, Gender, InstitutionType, KSS, RoomCondition, RoomLighting, RoomNoise, RoomTemperature, RoomVibration } from "../../domain/model";
 
 export const translateBodyCondition = (cond: BodyCondition): string => {
   switch (cond) {
@@ -8,6 +8,30 @@ export const translateBodyCondition = (cond: BodyCondition): string => {
       return "Tidak sehat";
   }
 }
+
+export const translateKSS = (cond: KSS): string => {
+  switch (cond) {
+    case KSS.ExtremelyAlert:
+      return "Sangat-sangat Waspada";
+    case KSS.VeryAlert:
+      return "Sangat Waspada";
+    case KSS.Alert:
+      return "Waspada";
+    case KSS.RatherAlert:
+      return "Sedikit Waspada";
+    case KSS.Neutral:
+      return "Netral";
+    case KSS.RatherSleepy:
+      return "Sedikit Mengantuk";
+    case KSS.Sleepy:
+      return "Mengantuk";
+    case KSS.VerySleepy:
+      return "Sangat Mengantuk";
+    case KSS.ExtremelySleepy:
+      return "Sangat-sangat Mengantuk";
+  }
+}
+
 
 export const translateRoomCondition = (room: RoomCondition): string => {
   switch (room) {
@@ -78,6 +102,19 @@ export const translateActivityBurden = (burden: ActivityBurden): string => {
       return "Sedang";
     case ActivityBurden.Light:
       return "Ringan";
+  }
+}
+
+export const translateActivityBurdenToNumber = (burden?: ActivityBurden): number => {
+  if (!burden) return 0;
+
+  switch (burden) {
+    case ActivityBurden.Heavy:
+      return 100;
+    case ActivityBurden.Medium:
+      return 50;
+    case ActivityBurden.Light:
+      return 0;
   }
 }
 

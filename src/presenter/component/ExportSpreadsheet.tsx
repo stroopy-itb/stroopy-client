@@ -42,25 +42,19 @@ export default function ExportSpreadsheet(props: {
         waktu_tes: entry.createdAt,
         kondisi_ruangan: translateRoomCondition(entry.roomCondition),
         suhu_ruangan: entry.roomTemperature,
-        persepsi_suhu_ruangan: translateRoomTemperature(entry.roomTemperaturePerception),
+        persepsi_suhu_ruangan: translateRoomTemperature(
+          entry.roomTemperaturePerception
+        ),
         pencahayaan_ruangan: translateRoomLighting(entry.roomLighting),
         kebisingan_ruangan: translateRoomNoise(entry.roomNoise),
         getaran_ruangan: translateRoomVibration(entry.roomVibration),
         kondisi_tubuh: translateBodyCondition(entry.bodyCondition),
         aktivitas_sebelum: entry.preActivity,
-        beban_fisik_aktivitas_sebelum: translateActivityBurden(
-          entry.preActivityPhysicalBurden
-        ),
-        beban_mental_aktivitas_sebelum: translateActivityBurden(
-          entry.preActivityMentalBurden
-        ),
+        beban_fisik_aktivitas_sebelum: entry.preActivityPhysicalBurden,
+        beban_mental_aktivitas_sebelum: entry.preActivityMentalBurden,
         aktivitas_sesudah: entry.postActivity,
-        beban_fisik_aktivitas_sesudah: translateActivityBurden(
-          entry.postActivityPhysicalBurden
-        ),
-        beban_mental_aktivitas_sesudah: translateActivityBurden(
-          entry.postActivityMentalBurden
-        ),
+        beban_fisik_aktivitas_sesudah: entry.postActivityPhysicalBurden,
+        beban_mental_aktivitas_sesudah: entry.postActivityMentalBurden,
         benar: entry.correct,
         salah: entry.wrong,
         rtca: entry.rtca,
@@ -90,7 +84,10 @@ export default function ExportSpreadsheet(props: {
   };
 
   return (
-    <button className="button button-md button-blue" onClick={exportSpreadSheet}>
+    <button
+      className="button button-md button-blue"
+      onClick={exportSpreadSheet}
+    >
       Unduh Spreadsheet
     </button>
   );

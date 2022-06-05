@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   ActivityBurden,
   BodyCondition,
+  KSS,
   RoomCondition,
   RoomLighting,
   RoomNoise,
@@ -16,16 +17,20 @@ import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
 import {
   translateActivityBurden,
+  translateActivityBurdenToNumber,
   translateBodyCondition,
+  translateKSS,
   translateRoomCondition,
   translateRoomLighting,
   translateRoomNoise,
   translateRoomTemperature,
   translateRoomVibration,
 } from "../../utils";
+import ReactTooltip from "react-tooltip";
 
 interface CreateTestDataRequest {
   bodyCondition: BodyCondition;
+  kss: KSS;
   roomCondition: RoomCondition;
   roomTemperature: number;
   roomTemperaturePerception: RoomTemperature;
@@ -33,11 +38,15 @@ interface CreateTestDataRequest {
   roomNoise: RoomNoise;
   roomVibration: RoomVibration;
   preActivity: string;
-  preActivityPhysicalBurden: ActivityBurden;
-  preActivityMentalBurden: ActivityBurden;
+  preActivityPhysicalBurdenWeight?: ActivityBurden;
+  preActivityPhysicalBurdenFreq?: ActivityBurden;
+  preActivityMentalBurdenWeight?: ActivityBurden;
+  preActivityMentalBurdenFreq?: ActivityBurden;
   postActivity: string;
-  postActivityPhysicalBurden: ActivityBurden;
-  postActivityMentalBurden: ActivityBurden;
+  postActivityPhysicalBurdenWeight?: ActivityBurden;
+  postActivityPhysicalBurdenFreq?: ActivityBurden;
+  postActivityMentalBurdenWeight?: ActivityBurden;
+  postActivityMentalBurdenFreq?: ActivityBurden;
   testNo: number;
 }
 
@@ -75,6 +84,7 @@ export default function Setup(): JSX.Element {
 
   const initialValues: CreateTestDataRequest = {
     bodyCondition: testData?.bodyCondition || BodyCondition.Healthy,
+    kss: testData?.kss || KSS.Neutral,
     roomCondition: testData?.roomCondition || RoomCondition.Indoor,
     roomTemperature: testData?.roomTemperature || 0,
     roomTemperaturePerception:
@@ -83,15 +93,23 @@ export default function Setup(): JSX.Element {
     roomNoise: testData?.roomNoise || RoomNoise.Normal,
     roomVibration: testData?.roomVibration || RoomVibration.None,
     preActivity: testData?.preActivity || "",
-    preActivityPhysicalBurden:
-      testData?.preActivityPhysicalBurden || ActivityBurden.Light,
-    preActivityMentalBurden:
-      testData?.preActivityMentalBurden || ActivityBurden.Light,
+    preActivityPhysicalBurdenFreq:
+      testData?.preActivityPhysicalBurdenFreq || undefined,
+    preActivityPhysicalBurdenWeight:
+      testData?.preActivityPhysicalBurdenWeight || undefined,
+    preActivityMentalBurdenFreq:
+      testData?.preActivityMentalBurdenFreq || undefined,
+    preActivityMentalBurdenWeight:
+      testData?.preActivityMentalBurdenWeight || undefined,
     postActivity: testData?.postActivity || "",
-    postActivityPhysicalBurden:
-      testData?.postActivityPhysicalBurden || ActivityBurden.Light,
-    postActivityMentalBurden:
-      testData?.postActivityMentalBurden || ActivityBurden.Light,
+    postActivityPhysicalBurdenFreq:
+      testData?.postActivityPhysicalBurdenFreq || undefined,
+    postActivityPhysicalBurdenWeight:
+      testData?.postActivityPhysicalBurdenWeight || undefined,
+    postActivityMentalBurdenFreq:
+      testData?.postActivityMentalBurdenFreq || undefined,
+    postActivityMentalBurdenWeight:
+      testData?.postActivityMentalBurdenWeight || undefined,
     testNo: testNo,
   };
 
@@ -109,6 +127,44 @@ export default function Setup(): JSX.Element {
         id: "",
         researchId: "",
         respondentId: "",
+        preActivityPhysicalBurden:
+          translateActivityBurdenToNumber(
+            values.preActivityPhysicalBurdenFreq
+          ) +
+          translateActivityBurdenToNumber(
+            values.preActivityPhysicalBurdenWeight
+          ),
+        preActivityPhysicalBurdenFreq:
+          values.preActivityPhysicalBurdenFreq || ActivityBurden.Medium,
+        preActivityPhysicalBurdenWeight:
+          values.preActivityPhysicalBurdenWeight || ActivityBurden.Medium,
+        preActivityMentalBurden:
+          translateActivityBurdenToNumber(values.preActivityMentalBurdenFreq) +
+          translateActivityBurdenToNumber(values.preActivityMentalBurdenWeight),
+        preActivityMentalBurdenFreq:
+          values.preActivityMentalBurdenFreq || ActivityBurden.Medium,
+        preActivityMentalBurdenWeight:
+          values.preActivityMentalBurdenWeight || ActivityBurden.Medium,
+        postActivityPhysicalBurden:
+          translateActivityBurdenToNumber(
+            values.postActivityPhysicalBurdenFreq
+          ) +
+          translateActivityBurdenToNumber(
+            values.postActivityPhysicalBurdenWeight
+          ),
+        postActivityPhysicalBurdenWeight:
+          values.postActivityPhysicalBurdenWeight || ActivityBurden.Medium,
+        postActivityMentalBurdenFreq:
+          values.postActivityMentalBurdenFreq || ActivityBurden.Medium,
+        postActivityMentalBurden:
+          translateActivityBurdenToNumber(values.postActivityMentalBurdenFreq) +
+          translateActivityBurdenToNumber(
+            values.postActivityMentalBurdenWeight
+          ),
+        postActivityPhysicalBurdenFreq:
+          values.postActivityPhysicalBurdenFreq || ActivityBurden.Medium,
+        postActivityMentalBurdenWeight:
+          values.postActivityMentalBurdenWeight || ActivityBurden.Medium,
         createdAt: new Date().toLocaleString(),
         updatedAt: new Date().toLocaleString(),
       })
@@ -118,13 +174,13 @@ export default function Setup(): JSX.Element {
   };
 
   return (
-    <div className="flex-grow grid grid-flow-row gap-5 justify-items-stretch lg:justify-items-center content-center">
+    <div className="flex-grow grid grid-flow-row gap-4 justify-items-stretch lg:justify-items-center content-center">
       {testNo > 0 ? (
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ values, isSubmitting, handleChange, handleSubmit }) => (
             <form onSubmit={handleSubmit} className="lg:w-1/2">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
-                <div className="form-group">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <div className="form-group lg:col-span-2">
                   <label htmlFor="testNo">Pengujian ke</label>
                   <input
                     className="form-control"
@@ -153,6 +209,59 @@ export default function Setup(): JSX.Element {
                         {translateBodyCondition(item[1])}
                       </option>
                     ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="bodyCondition">
+                    <p
+                      data-for="kss-tooltip"
+                      data-tip={`Karolinska Sleepiness Scale:
+                      <br />
+                      1 = Sangat-sangat waspada
+                      <br />
+                      2 = Sangat waspada
+                      <br />
+                      3 = Waspada
+                      <br />
+                      4 = Sedikit waspada
+                      <br />
+                      5 = Netral, tidak merasa waspada ataupun mengantuk
+                      <br />
+                      6 = Sedikit mengantuk
+                      <br />
+                      7 = Mengantuk, tapi tidak kesulitan untuk tetap terjaga
+                      <br />
+                      8 = Sangat mengantuk, sedikit kesulitan untuk tetap terjaga
+                      <br />
+                      9 = Sangat-sangat mengantuk, berusaha keras untuk tetap terjaga, melawan kantuk
+                      `}
+                    >
+                      {`KSS (?)`}
+                    </p>
+                  </label>
+                  <ReactTooltip
+                    id="kss-tooltip"
+                    multiline={true}
+                    className="text-left"
+                  />
+                  <select
+                    className="form-control"
+                    required
+                    name="kss"
+                    id="kss"
+                    placeholder="Sleepiness"
+                    value={values.kss}
+                    onChange={handleChange}
+                  >
+                    {Object.entries(KSS).map((item) => {
+                      if (typeof item[1] !== "string") {
+                        return (
+                          <option key={item[0]} value={item[1]}>
+                            {translateKSS(item[1] as KSS)}
+                          </option>
+                        );
+                      }
+                    })}
                   </select>
                 </div>
                 <div className="form-group">
@@ -255,8 +364,8 @@ export default function Setup(): JSX.Element {
                     ))}
                   </select>
                 </div>
-                <div className="col-span-1 lg:col-span-2 grid lg:grid-cols-2 gap-5">
-                  <div className="grid gap-5">
+                <div className="col-span-1 lg:col-span-2 grid lg:grid-cols-2 gap-4">
+                  <div className="grid gap-4">
                     <div className="form-group">
                       <label htmlFor="preActivity">Aktivitas Sebelum</label>
                       <input
@@ -270,54 +379,100 @@ export default function Setup(): JSX.Element {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="form-group">
                         <label htmlFor="preActivityPhysicalBurden">
                           Beban Fisik Sebelum
                         </label>
-                        <select
-                          className="form-control"
-                          required
-                          name="preActivityPhysicalBurden"
-                          id="preActivityPhysicalBurden"
-                          value={values.preActivityPhysicalBurden}
-                          onChange={handleChange}
-                        >
-                          {Object.entries(ActivityBurden).map((item) => (
-                            <option
-                              key={`post-phys-${item[1]}`}
-                              value={item[1]}
-                            >
-                              {translateActivityBurden(item[1])}
+                        <div className="grid gap-3">
+                          <select
+                            className="form-control"
+                            required
+                            name="preActivityPhysicalBurdenFreq"
+                            id="preActivityPhysicalBurdenFreq"
+                            value={values.preActivityPhysicalBurdenFreq}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Frekuensi
                             </option>
-                          ))}
-                        </select>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          <select
+                            className="form-control"
+                            required
+                            name="preActivityPhysicalBurdenWeight"
+                            id="preActivityPhysicalBurdenWeight"
+                            value={values.preActivityPhysicalBurdenWeight}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Beban
+                            </option>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
                       </div>
                       <div className="form-group">
                         <label htmlFor="preActivityMentalBurden">
                           Beban Mental Sebelum
                         </label>
-                        <select
-                          className="form-control"
-                          required
-                          name="preActivityMentalBurden"
-                          id="preActivityMentalBurden"
-                          value={values.preActivityMentalBurden}
-                          onChange={handleChange}
-                        >
-                          {Object.entries(ActivityBurden).map((item) => (
-                            <option
-                              key={`post-phys-${item[1]}`}
-                              value={item[1]}
-                            >
-                              {translateActivityBurden(item[1])}
+                        <div className="grid gap-3">
+                          <select
+                            className="form-control"
+                            required
+                            name="preActivityMentalBurdenFreq"
+                            id="preActivityMentalBurdenFreq"
+                            value={values.preActivityMentalBurdenFreq}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Frekuensi
                             </option>
-                          ))}
-                        </select>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          <select
+                            className="form-control"
+                            required
+                            name="preActivityMentalBurdenWeight"
+                            id="preActivityMentalBurdenWeight"
+                            value={values.preActivityMentalBurdenWeight}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Beban
+                            </option>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="grid gap-5">
+                  <div className="grid gap-4">
                     <div className="form-group">
                       <label htmlFor="postActivity">Aktivitas Sesudah</label>
                       <input
@@ -331,50 +486,96 @@ export default function Setup(): JSX.Element {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="form-group">
                         <label htmlFor="postActivityPhysicalBurden">
                           Beban Fisik Sesudah
                         </label>
-                        <select
-                          className="form-control"
-                          required
-                          name="postActivityPhysicalBurden"
-                          id="postActivityPhysicalBurden"
-                          value={values.postActivityPhysicalBurden}
-                          onChange={handleChange}
-                        >
-                          {Object.entries(ActivityBurden).map((item) => (
-                            <option
-                              key={`post-phys-${item[1]}`}
-                              value={item[1]}
-                            >
-                              {translateActivityBurden(item[1])}
+                        <div className="grid gap-3">
+                          <select
+                            className="form-control"
+                            required
+                            name="postActivityPhysicalBurdenFreq"
+                            id="postActivityPhysicalBurdenFreq"
+                            value={values.postActivityPhysicalBurdenFreq}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Frekuensi
                             </option>
-                          ))}
-                        </select>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          <select
+                            className="form-control"
+                            required
+                            name="postActivityPhysicalBurdenWeight"
+                            id="postActivityPhysicalBurdenWeight"
+                            value={values.postActivityPhysicalBurdenWeight}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Beban
+                            </option>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
                       </div>
                       <div className="form-group">
                         <label htmlFor="postActivityMentalBurden">
                           Beban Mental Sesudah
                         </label>
-                        <select
-                          className="form-control"
-                          required
-                          name="postActivityMentalBurden"
-                          id="postActivityMentalBurden"
-                          value={values.postActivityMentalBurden}
-                          onChange={handleChange}
-                        >
-                          {Object.entries(ActivityBurden).map((item) => (
-                            <option
-                              key={`post-phys-${item[1]}`}
-                              value={item[1]}
-                            >
-                              {translateActivityBurden(item[1])}
+                        <div className="grid gap-3">
+                          <select
+                            className="form-control"
+                            required
+                            name="postActivityMentalBurdenFreq"
+                            id="postActivityMentalBurdenFreq"
+                            value={values.postActivityMentalBurdenFreq}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Frekuensi
                             </option>
-                          ))}
-                        </select>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          <select
+                            className="form-control"
+                            required
+                            name="postActivityMentalBurdenWeight"
+                            id="postActivityMentalBurdenWeight"
+                            value={values.postActivityMentalBurdenWeight}
+                            onChange={handleChange}
+                          >
+                            <option value="" disabled selected>
+                              Beban
+                            </option>
+                            {Object.entries(ActivityBurden).map((item) => {
+                              return (
+                                <option key={`act-${item[1]}`} value={item[1]}>
+                                  {translateActivityBurden(item[1])}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { testResultMiddleware } from "../../redux/middleware";
 import { AppDispatch, RootState } from "../../redux/store";
+import { translateActivityBurdenToNumber } from "../../utils";
 
 export default function Result(): JSX.Element {
   const testData = useSelector((state: RootState) => state.testResult.testData);
@@ -28,11 +29,50 @@ export default function Result(): JSX.Element {
             roomNoise: testData?.roomNoise,
             roomVibration: testData?.roomVibration,
             preActivity: testData?.preActivity,
-            preActivityPhysicalBurden: testData?.preActivityPhysicalBurden,
-            preActivityMentalBurden: testData?.preActivityMentalBurden,
+            preActivityPhysicalBurden:
+              translateActivityBurdenToNumber(
+                testData?.preActivityPhysicalBurdenFreq
+              ) +
+              translateActivityBurdenToNumber(
+                testData?.preActivityPhysicalBurdenWeight
+              ),
+            preActivityPhysicalBurdenFreq:
+              testData?.preActivityPhysicalBurdenFreq,
+            preActivityPhysicalBurdenWeight:
+              testData?.preActivityPhysicalBurdenWeight,
+            preActivityMentalBurden:
+              translateActivityBurdenToNumber(
+                testData?.preActivityMentalBurdenFreq
+              ) +
+              translateActivityBurdenToNumber(
+                testData?.preActivityMentalBurdenWeight
+              ),
+            preActivityMentalBurdenFreq: testData?.preActivityMentalBurdenFreq,
+            preActivityMentalBurdenWeight:
+              testData?.preActivityMentalBurdenWeight,
             postActivity: testData?.postActivity,
-            postActivityPhysicalBurden: testData?.postActivityPhysicalBurden,
-            postActivityMentalBurden: testData?.postActivityMentalBurden,
+            postActivityPhysicalBurden:
+              translateActivityBurdenToNumber(
+                testData?.postActivityPhysicalBurdenFreq
+              ) +
+              translateActivityBurdenToNumber(
+                testData?.postActivityPhysicalBurdenWeight
+              ),
+            postActivityPhysicalBurdenFreq:
+              testData?.postActivityPhysicalBurdenFreq,
+            postActivityPhysicalBurdenWeight:
+              testData?.postActivityPhysicalBurdenWeight,
+            postActivityMentalBurden:
+              translateActivityBurdenToNumber(
+                testData?.postActivityMentalBurdenFreq
+              ) +
+              translateActivityBurdenToNumber(
+                testData?.postActivityMentalBurdenWeight
+              ),
+            postActivityMentalBurdenFreq:
+              testData?.postActivityMentalBurdenFreq,
+            postActivityMentalBurdenWeight:
+              testData?.postActivityMentalBurdenWeight,
             testNo: testData?.testNo,
             correct: result.correct,
             wrong: result.wrong,
@@ -55,8 +95,8 @@ export default function Result(): JSX.Element {
   const returnHome = () => {
     dispatch(testResultMiddleware.removeTestData());
     dispatch(testResultMiddleware.removeResultData());
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   return (
     <div className="flex-grow grid grid-flow-row gap-20 justify-items-center content-center">

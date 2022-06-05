@@ -1,8 +1,16 @@
-import { BaseModel, BodyCondition, RoomCondition, ActivityBurden, Research, User } from ".";
-import { RoomLighting } from "./RoomLighting";
-import { RoomNoise } from "./RoomNoise";
-import { RoomTemperature } from "./RoomTemperature";
-import { RoomVibration } from "./RoomVibration";
+import {
+  BaseModel,
+  BodyCondition,
+  KSS,
+  RoomCondition,
+  RoomLighting,
+  RoomNoise,
+  RoomTemperature,
+  RoomVibration,
+  ActivityBurden,
+  Research,
+  User,
+} from ".";
 
 export default interface TestResult extends BaseModel {
   bodyCondition: BodyCondition;
@@ -12,12 +20,21 @@ export default interface TestResult extends BaseModel {
   roomLighting: RoomLighting;
   roomNoise: RoomNoise;
   roomVibration: RoomVibration;
+  kss: KSS;
   preActivity: string;
-  preActivityPhysicalBurden: ActivityBurden;
-  preActivityMentalBurden: ActivityBurden;
+  preActivityPhysicalBurden: number;
+  preActivityPhysicalBurdenWeight: ActivityBurden;
+  preActivityPhysicalBurdenFreq: ActivityBurden;
+  preActivityMentalBurden: number;
+  preActivityMentalBurdenWeight: ActivityBurden;
+  preActivityMentalBurdenFreq: ActivityBurden;
   postActivity: string;
-  postActivityPhysicalBurden: ActivityBurden;
-  postActivityMentalBurden: ActivityBurden;
+  postActivityPhysicalBurden: number;
+  postActivityPhysicalBurdenWeight: ActivityBurden;
+  postActivityPhysicalBurdenFreq: ActivityBurden;
+  postActivityMentalBurden: number;
+  postActivityMentalBurdenWeight: ActivityBurden;
+  postActivityMentalBurdenFreq: ActivityBurden;
   testNo: number;
   correct: number;
   wrong: number;

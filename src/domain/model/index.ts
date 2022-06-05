@@ -10,6 +10,7 @@ export { RoomLighting } from './RoomLighting';
 export { RoomNoise } from './RoomNoise';
 export { RoomVibration } from './RoomVibration';
 export { Gender } from './Gender';
+export { KSS } from './KSS';
 export type { default as BaseModel } from './BaseModel';
 export type { default as AnswerRecord } from './AnswerRecord';
 export type { default as ColorPair } from './ColorPair';

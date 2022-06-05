@@ -47,8 +47,12 @@ export default function TestResultTable(props: {
                 <td className="py-2 px-5 border-b-2 border-black">Gender</td>
                 <td className="py-2 px-5 border-b-2 border-black">Pekerjaan</td>
                 <td className="py-2 px-5 border-b-2 border-black">Institusi</td>
-                <td className="py-2 px-5 border-b-2 border-black">Divisi/Fakultas</td>
-                <td className="py-2 px-5 border-b-2 border-black">Bagian/Studi</td>
+                <td className="py-2 px-5 border-b-2 border-black">
+                  Divisi/Fakultas
+                </td>
+                <td className="py-2 px-5 border-b-2 border-black">
+                  Bagian/Studi
+                </td>
                 <td className="py-2 px-5 border-b-2 border-black">Tes Ke</td>
                 <td className="py-2 px-5 border-b-2 border-black">Waktu Tes</td>
                 <td className="py-2 px-5 border-b-2 border-black">
@@ -101,14 +105,30 @@ export default function TestResultTable(props: {
                   <tr key={index}>
                     <td className="py-2 px-5">{index + 1}</td>
                     <td className="py-2 px-5">{row.research?.groupToken}</td>
-                    <td className="py-2 px-5">{row.respondent?.profile?.name}</td>
-                    <td className="py-2 px-5">{countAge(row.respondent?.profile?.dateOfBirth)}</td>
-                    <td className="py-2 px-5">{row.respondent?.profile?.ethnicGroup}</td>
-                    <td className="py-2 px-5">{translateGender(row.respondent?.profile?.gender)}</td>
-                    <td className="py-2 px-5">{row.respondent?.profile?.job}</td>
-                    <td className="py-2 px-5">{row.respondent?.profile?.institution}</td>
-                    <td className="py-2 px-5">{row.respondent?.profile?.faculty}</td>
-                    <td className="py-2 px-5">{row.respondent?.profile?.study}</td>
+                    <td className="py-2 px-5">
+                      {row.respondent?.profile?.name}
+                    </td>
+                    <td className="py-2 px-5">
+                      {countAge(row.respondent?.profile?.dateOfBirth)}
+                    </td>
+                    <td className="py-2 px-5">
+                      {row.respondent?.profile?.ethnicGroup}
+                    </td>
+                    <td className="py-2 px-5">
+                      {translateGender(row.respondent?.profile?.gender)}
+                    </td>
+                    <td className="py-2 px-5">
+                      {row.respondent?.profile?.job}
+                    </td>
+                    <td className="py-2 px-5">
+                      {row.respondent?.profile?.institution}
+                    </td>
+                    <td className="py-2 px-5">
+                      {row.respondent?.profile?.faculty}
+                    </td>
+                    <td className="py-2 px-5">
+                      {row.respondent?.profile?.study}
+                    </td>
                     <td className="py-2 px-5">{row.testNo}</td>
                     <td className="py-2 px-5">
                       {new Date(row.createdAt).toLocaleString()}
@@ -117,26 +137,32 @@ export default function TestResultTable(props: {
                       {translateRoomCondition(row.roomCondition)}
                     </td>
                     <td className="py-2 px-5">{row.roomTemperature}</td>
-                    <td className="py-2 px-5">{translateRoomTemperature(row.roomTemperaturePerception)}</td>
-                    <td className="py-2 px-5">{translateRoomLighting(row.roomLighting)}</td>
-                    <td className="py-2 px-5">{translateRoomNoise(row.roomNoise)}</td>
-                    <td className="py-2 px-5">{translateRoomVibration(row.roomVibration)}</td>
+                    <td className="py-2 px-5">
+                      {translateRoomTemperature(row.roomTemperaturePerception)}
+                    </td>
+                    <td className="py-2 px-5">
+                      {translateRoomLighting(row.roomLighting)}
+                    </td>
+                    <td className="py-2 px-5">
+                      {translateRoomNoise(row.roomNoise)}
+                    </td>
+                    <td className="py-2 px-5">
+                      {translateRoomVibration(row.roomVibration)}
+                    </td>
                     <td className="py-2 px-5">
                       {translateBodyCondition(row.bodyCondition)}
                     </td>
                     <td className="py-2 px-5">{row.preActivity}</td>
                     <td className="py-2 px-5">
-                      {translateActivityBurden(row.preActivityPhysicalBurden)}
+                      {row.preActivityPhysicalBurden}
                     </td>
-                    <td className="py-2 px-5">
-                      {translateActivityBurden(row.preActivityMentalBurden)}
-                    </td>
+                    <td className="py-2 px-5">{row.preActivityMentalBurden}</td>
                     <td className="py-2 px-5">{row.postActivity}</td>
                     <td className="py-2 px-5">
-                      {translateActivityBurden(row.postActivityPhysicalBurden)}
+                      {row.postActivityPhysicalBurden}
                     </td>
                     <td className="py-2 px-5">
-                      {translateActivityBurden(row.postActivityMentalBurden)}
+                      {row.postActivityMentalBurden}
                     </td>
                     <td className="py-2 px-5">{row.correct}</td>
                     <td className="py-2 px-5">{row.wrong}</td>
