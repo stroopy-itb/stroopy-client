@@ -5,14 +5,14 @@ export default function Paginate(props: {
   size: number;
   page: number;
   totalSize: number;
+  pageCount: number;
   changePage?: (event: any) => void;
 }): JSX.Element {
   const { totalSize, size, changePage } = props;
 
-  const [pageCount] = useState(Math.ceil(totalSize / size));
   return (
     <ReactPaginate
-      pageCount={pageCount}
+      pageCount={2}
       pageRangeDisplayed={5}
       onPageChange={changePage}
       nextLabel="Next"

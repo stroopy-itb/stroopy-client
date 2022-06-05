@@ -5,6 +5,7 @@ import {
   translateActivityBurden,
   translateBodyCondition,
   translateGender,
+  translateKSS,
   translateRoomCondition,
   translateRoomLighting,
   translateRoomNoise,
@@ -24,14 +25,14 @@ export default function TestResultTable(props: {
 
   return (
     <div className="justify-self-stretch overflow-hidden">
-      <div className="flex justify-between mb-5">
-        {/* <Paginate
+      {/* <div className="flex justify-between mb-5">
+        <Paginate
           size={size}
           page={page}
           totalSize={totalSize}
           changePage={changePage}
-        /> */}
-      </div>
+        />
+      </div> */}
       <div className="bg-gray-100 rounded-2xl overflow-auto md:p-5">
         {testResults ? (
           <table className="table-auto w-full">
@@ -76,6 +77,7 @@ export default function TestResultTable(props: {
                 <td className="py-2 px-5 border-b-2 border-black">
                   Kondisi Tubuh
                 </td>
+                <td className="py-2 px-5 border-b-2 border-black">KSS</td>
                 <td className="py-2 px-5 border-b-2 border-black">
                   Aktivitas Sebelum
                 </td>
@@ -152,6 +154,7 @@ export default function TestResultTable(props: {
                     <td className="py-2 px-5">
                       {translateBodyCondition(row.bodyCondition)}
                     </td>
+                    <td className="py-2 px-5">{translateKSS(row.kss)}</td>
                     <td className="py-2 px-5">{row.preActivity}</td>
                     <td className="py-2 px-5">
                       {row.preActivityPhysicalBurden}

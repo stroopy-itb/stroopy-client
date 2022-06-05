@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
+  ExportSpreadsheet,
   Loading,
+  Paginate,
   ResearchHeader,
   TestResultAnalytics,
   TestResultTable,
@@ -42,12 +44,12 @@ export default function AdminResearchDetail(): JSX.Element {
     (state: RootState) => state.testResult.loading
   );
 
-  const [size] = useState(sizeState);
+  const [size] = useState(10);
   const [page, setPage] = useState(pageState);
+  const [pageCount, setPageCount] = useState(Math.ceil(totalSize / size));
 
   const changePage = (event: any) => {
-    setPage(event.selected + 1);
-    console.log(page);
+    setPage(Number(event.selected + 1));
   };
 
   const dispatch = useDispatch<AppDispatch>();
@@ -59,13 +61,16 @@ export default function AdminResearchDetail(): JSX.Element {
   useEffect(() => {
     dispatch(
       testResultMiddleware.getAll({
-        size: 0,
+        size: size,
         page: page,
         filter: { researchId: id },
       })
     );
     dispatch(testResultMiddleware.getAnalytics({ researchId: id || "" }));
   }, [id, size, page, dispatch]);
+  useEffect(() => {
+    setPageCount(Math.ceil(totalSize / size));
+  }, [totalSize, size]);
 
   const updateRespondentResults = useCallback(
     (respondentId: string) => {
@@ -107,6 +112,24 @@ export default function AdminResearchDetail(): JSX.Element {
           researchTickets={research?.researchTickets}
           onRespondentIdChange={updateRespondentResults}
         />
+      ) : (
+        ""
+      )}
+      {analytics?.recordCount !== 0 ? (
+        <div className="w-full flex justify-between">
+          <ExportSpreadsheet research={research} />
+          {pageCount > 1 ? (
+            <Paginate
+              size={size}
+              page={page}
+              totalSize={totalSize}
+              changePage={changePage}
+              pageCount={pageCount}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       ) : (
         ""
       )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Research, User } from "../../domain/model";
 import { UserRole } from "../../domain/model/UserRole";
@@ -16,6 +16,13 @@ export default function ResearchTable(props: {
 
   const navigate = useNavigate();
 
+  const [pageCount, setPageCount] = useState(Math.ceil(totalSize / size));
+  useEffect(() => {
+    setPageCount(Math.ceil(totalSize / size));
+  }, [totalSize, size]);
+
+  console.log(pageCount);
+
   const tokenExpired = (research: Research) => {
     if (research?.researchToken) {
       return Date.now() > new Date(research.researchToken.expiredAt).valueOf();
@@ -26,12 +33,17 @@ export default function ResearchTable(props: {
   return (
     <div className="justify-self-stretch overflow-hidden">
       <div className="flex justify-between mb-5">
-        <Paginate
-          size={size}
-          page={page}
-          totalSize={totalSize}
-          changePage={changePage}
-        />
+        {pageCount > 1 ? (
+          <Paginate
+            size={size}
+            page={page}
+            totalSize={totalSize}
+            changePage={changePage}
+            pageCount={pageCount}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <div className="bg-gray-100 rounded-2xl overflow-auto md:p-5">
         {researches ? (

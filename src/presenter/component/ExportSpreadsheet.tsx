@@ -1,5 +1,5 @@
-import React from "react";
-import { TestResult } from "../../domain/model";
+import React, { useCallback } from "react";
+import { Research, TestResult } from "../../domain/model";
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import {
@@ -7,23 +7,33 @@ import {
   translateActivityBurden,
   translateBodyCondition,
   translateGender,
+  translateKSS,
   translateRoomCondition,
   translateRoomLighting,
   translateRoomNoise,
   translateRoomTemperature,
   translateRoomVibration,
 } from "../utils";
+import di from "../di";
 
 export default function ExportSpreadsheet(props: {
-  data?: TestResult[];
+  research?: Research;
   filename?: string;
 }) {
-  const { data, filename } = props;
+  const { research, filename } = props;
 
   const exportFilename = filename ? filename : "stroopy_hasil_tes";
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
+
+  const getTestResult = useCallback(async () => {
+    if (research) {
+      return await di.service.testResultService.getAll(0, 1, {
+        researchId: research.id,
+      });
+    }
+  }, [research]);
 
   const flattenData = (input: TestResult[]) => {
     const flatData: any = input.map((entry) => {
@@ -49,6 +59,7 @@ export default function ExportSpreadsheet(props: {
         kebisingan_ruangan: translateRoomNoise(entry.roomNoise),
         getaran_ruangan: translateRoomVibration(entry.roomVibration),
         kondisi_tubuh: translateBodyCondition(entry.bodyCondition),
+        kss: translateKSS(entry.kss),
         aktivitas_sebelum: entry.preActivity,
         beban_fisik_aktivitas_sebelum: entry.preActivityPhysicalBurden,
         beban_mental_aktivitas_sebelum: entry.preActivityMentalBurden,
@@ -62,9 +73,11 @@ export default function ExportSpreadsheet(props: {
     });
     return flatData;
   };
-  const exportSpreadSheet = () => {
-    if (data) {
-      const ws = XLSX.utils.json_to_sheet(flattenData(data));
+  const exportSpreadSheet = async () => {
+    const data = await getTestResult();
+
+    if (data?.testResults) {
+      const ws = XLSX.utils.json_to_sheet(flattenData(data.testResults));
       const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
       const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
       const fileData = new Blob([excelBuffer], { type: fileType });

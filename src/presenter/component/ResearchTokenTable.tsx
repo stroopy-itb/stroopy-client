@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ResearchToken } from "../../domain/model";
 import Paginate from "./Paginate";
 
@@ -12,15 +12,25 @@ export default function ResearchTokenTable(props: {
 }): JSX.Element {
   const { researchTokens, size, page, totalSize, changePage, showModal } = props;
 
+  const [pageCount, setPageCount] = useState(Math.ceil(totalSize / size));
+  useEffect(() => {
+    setPageCount(Math.ceil(totalSize / size));
+  }, [totalSize, size]);
+
   return (
     <div className="justify-self-stretch overflow-hidden">
       <div className="flex justify-between mb-5">
-        <Paginate
-          size={size}
-          page={page}
-          totalSize={totalSize}
-          changePage={changePage}
-        />
+        {pageCount > 1 ? (
+          <Paginate
+            size={size}
+            page={page}
+            totalSize={totalSize}
+            changePage={changePage}
+            pageCount={pageCount}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <div className="bg-gray-100 rounded-2xl overflow-auto md:p-5">
         {researchTokens ? (

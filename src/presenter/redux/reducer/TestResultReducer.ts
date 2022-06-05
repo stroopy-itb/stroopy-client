@@ -10,7 +10,7 @@ export interface TestResultState {
   testResults?: TestResult[];
   size: number;
   page: number;
-  totalSize?: number;
+  totalSize: number;
   selectedTestResult?: TestResult;
   testData?: TestResult;
   resultData?: (Result & {
@@ -25,7 +25,7 @@ const initialState: TestResultState = {
   testResults: undefined,
   size: 10,
   page: 1,
-  totalSize: undefined,
+  totalSize: -1,
   selectedTestResult: undefined,
   testData: undefined,
   resultData: undefined,

@@ -18,7 +18,7 @@ export default function History(): JSX.Element {
   const [page, setPage] = useState(pageState);
 
   const changePage = (event: any) => {
-    setPage(event.selected + 1);
+    setPage(Number(event.selected + 1));
   };
 
   const dispatch = useDispatch<AppDispatch>();
