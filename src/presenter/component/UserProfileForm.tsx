@@ -201,7 +201,9 @@ export default function UserProfileForm(props: {
                   id="dateOfBirth"
                   placeholder="Tanggal Lahir"
                   value={
-                    new Date(values.dateOfBirth).toISOString().split("T")[0]
+                    values.dateOfBirth !== ""
+                      ? new Date(values.dateOfBirth).toISOString().split("T")[0]
+                      : ""
                   }
                   onChange={handleChange}
                 />

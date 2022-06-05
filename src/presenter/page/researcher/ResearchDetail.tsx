@@ -94,6 +94,7 @@ export default function ResearchDetail(): JSX.Element {
         researchToken={researchToken}
         user={user}
         tokenExpired={tokenExpired()}
+        editable={(testResults !== undefined && testResults.length === 0)}
       />
       <h1 className="text-center text-3xl font-bold text-gray-100">
         Hasil Tes

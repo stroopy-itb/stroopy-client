@@ -39,6 +39,7 @@ export default function RespodentResearchDetail(): JSX.Element {
         researchToken={researchToken}
         user={user}
         tokenExpired={tokenExpired()}
+        editable={false}
       />
       {research?.researchSetup && !tokenExpired() ? (
         <button

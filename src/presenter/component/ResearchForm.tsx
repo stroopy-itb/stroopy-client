@@ -13,6 +13,7 @@ interface CreateResearchRequest {
   location: string;
   address: string;
   rounds: number;
+  timeout: number;
 }
 
 export default function ResearchForm(props: {
@@ -57,6 +58,7 @@ export default function ResearchForm(props: {
             address: values.address,
             researchSetup: {
               rounds: values.rounds,
+              timeout: values.timeout,
             },
             researcherId: researcherId || "",
             researchTokenId: researchTokenId || "",
@@ -90,6 +92,7 @@ export default function ResearchForm(props: {
           location: data?.location || "",
           address: data?.address || "",
           rounds: 50,
+          timeout: 2,
         }}
         onSubmit={handleSubmit}
         validate={async (values) => {
@@ -191,6 +194,23 @@ export default function ResearchForm(props: {
                 autoFocus
               />
               {<p className="text-red">{errors.rounds}</p>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="rounds" className="text-black">
+                Waktu Perulangan (Detik)
+              </label>
+              <input
+                className="form-control"
+                type="number"
+                min={1}
+                max={3}
+                step={0.01}
+                name="timeout"
+                id="timeout"
+                placeholder="Token Grup"
+                value={values.timeout}
+                onChange={handleChange}
+              />
             </div>
             <button
               type="submit"

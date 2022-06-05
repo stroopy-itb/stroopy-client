@@ -28,7 +28,9 @@ export default function Stroop(): JSX.Element {
 
   const [pairs] = useState<ColorPair[]>(setup.pairs);
 
-  const [roundTime] = useState(setup.timeLimit * 1000);
+  const [roundTime] = useState(
+    (research?.researchSetup.timeout || setup.timeLimit) * 1000
+  );
 
   const rounds = useCallback(() => {
     return research?.researchSetup.rounds || 50;
@@ -219,7 +221,7 @@ export default function Stroop(): JSX.Element {
               disabled={started !== GameState.Started}
             >
               <p className="text-5xl md:text-6xl font-bold text-center text-gray-100">
-                {pair.text.charAt(0)}
+                {pair.text.charAt(0).toLowerCase()}
               </p>
             </button>
             {started < GameState.Started ? (

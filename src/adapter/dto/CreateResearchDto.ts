@@ -5,6 +5,7 @@ export default class CreateResearchDto {
   public location: string;
   public researchSetup: {
     rounds: number;
+    timeout: number;
   }
   public researchTokenId: string;
   public researcherId: string;

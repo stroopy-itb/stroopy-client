@@ -95,6 +95,7 @@ export default function AdminResearchDetail(): JSX.Element {
         researchToken={researchToken}
         user={user}
         tokenExpired={tokenExpired()}
+        editable={false}
       />
       <h1 className="text-center text-3xl font-bold text-gray-100">
         Hasil Tes

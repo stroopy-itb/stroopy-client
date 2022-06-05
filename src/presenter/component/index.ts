@@ -8,6 +8,7 @@ export { default as ResearchTable } from "./ResearchTable";
 export { default as ResearchTokenTable } from "./ResearchTokenTable";
 export { default as ResearchHeader } from "./ResearchHeader";
 export { default as ResearchSetupInfo } from "./ResearchSetupInfo";
+export { default as ResearchSetupForm } from "./ResearchSetupForm";
 export { default as TestResultTable } from "./TestResultTable";
 export { default as TestResultAnalytics } from "./TestResultAnalytics";
 export { default as ExportSpreadsheet } from "./ExportSpreadsheet";

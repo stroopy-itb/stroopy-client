@@ -8,7 +8,7 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: neutralscale;
 }
 
 code {
@@ -18,7 +18,7 @@ code {
 
 @layer components {
   .button {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     border-radius: theme(borderRadius.2xl);
     font-weight: theme(fontWeight.bold);
   }
@@ -37,6 +37,7 @@ code {
     border-radius: theme(borderRadius.xl);
     padding: theme(padding.4);
     font-size: theme(fontSize.base);
+    border-width: theme(borderWidth.2);
   }
 
   .button-sm {
@@ -46,36 +47,36 @@ code {
   }
 
   .button-neutral {
-    color: theme(colors.gray.200);
-    background-color: theme(colors.gray.100);
-    border-color: theme(colors.gray.100);
+    color: theme(colors.neutral.900);
+    background-color: theme(colors.neutral.100);
+    border-color: theme(colors.neutral.100);
   }
   .button-neutral:hover {
-    background-color: theme(colors.gray.600);
-    border-color: theme(colors.gray.600);
+    background-color: theme(colors.neutral.300);
+    border-color: theme(colors.neutral.300);
   }
   .button-neutral:disabled {
-    color: theme(colors.gray.200);
-    background-color: theme(colors.gray.800);
-    border-color: theme(colors.gray.800);
+    color: theme(colors.neutral.200);
+    background-color: theme(colors.neutral.900);
+    border-color: theme(colors.neutral.900);
   }
 
   .button-neutral-outline {
-    color: theme(colors.gray.200);
-    border-color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
+    border-color: theme(colors.neutral.200);
   }
   .button-neutral-outline:hover {
-    color: theme(colors.gray.900);
-    background-color: theme(colors.gray.200);
-    border-color: theme(colors.gray.200);
+    color: theme(colors.neutral.900);
+    background-color: theme(colors.neutral.200);
+    border-color: theme(colors.neutral.200);
   }
   .button-neutral-outline:disabled {
-    color: theme(colors.gray.800);
-    border-color: theme(colors.gray.800);
+    color: theme(colors.neutral.900);
+    border-color: theme(colors.neutral.900);
   }
 
   .button-blue {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.blue.DEFAULT);
     border-color: theme(colors.blue.DEFAULT);
   }
@@ -84,14 +85,14 @@ code {
     border-color: theme(colors.blue.600);
   }
   .button-blue:disabled {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.blue.800);
     border-color: theme(colors.blue.800);
   }
 
   .button-blue-outline {
     color: theme(colors.blue.DEFAULT);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.blue.DEFAULT);
   }
   .button-blue-outline:hover {
@@ -100,12 +101,12 @@ code {
   }
   .button-blue-outline:disabled {
     color: theme(colors.blue.800);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.blue.800);
   }
 
   .button-red {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.red.DEFAULT);
     border-color: theme(colors.red.DEFAULT);
   }
@@ -114,14 +115,14 @@ code {
     border-color: theme(colors.red.600);
   }
   .button-red:disabled {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.red.800);
     border-color: theme(colors.red.800);
   }
 
   .button-red-outline {
     color: theme(colors.red.DEFAULT);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.red.DEFAULT);
   }
   .button-red-outline:hover {
@@ -130,12 +131,12 @@ code {
   }
   .button-red-outline:disabled {
     color: theme(colors.red.800);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.red.800);
   }
 
   .button-yellow {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.yellow.DEFAULT);
     border-color: theme(colors.yellow.DEFAULT);
   }
@@ -144,14 +145,14 @@ code {
     border-color: theme(colors.yellow.600);
   }
   .button-yellow:disabled {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.yellow.800);
     border-color: theme(colors.yellow.800);
   }
 
   .button-yellow-outline {
     color: theme(colors.yellow.DEFAULT);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.yellow.DEFAULT);
   }
   .button-yellow-outline:hover {
@@ -160,12 +161,12 @@ code {
   }
   .button-yellow-outline:disabled {
     color: theme(colors.yellow.800);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.yellow.800);
   }
 
   .button-green {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.green.DEFAULT);
     border-color: theme(colors.green.DEFAULT);
   }
@@ -174,14 +175,14 @@ code {
     border-color: theme(colors.green.600);
   }
   .button-green:disabled {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     background-color: theme(colors.green.800);
     border-color: theme(colors.green.800);
   }
 
   .button-green-outline {
     color: theme(colors.green.DEFAULT);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.green.DEFAULT);
   }
   .button-green-outline:hover {
@@ -190,7 +191,7 @@ code {
   }
   .button-green-outline:disabled {
     color: theme(colors.green.800);
-    background-color: theme(colors.gray.200);
+    background-color: theme(colors.neutral.200);
     border-color: theme(colors.green.800);
   }
 
@@ -202,7 +203,7 @@ code {
   }
 
   .form-group label {
-    color: theme(colors.gray.200);
+    color: theme(colors.neutral.200);
     font-weight: theme(fontWeight.bold);
   }
 
