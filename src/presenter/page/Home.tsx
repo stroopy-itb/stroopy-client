@@ -27,6 +27,12 @@ export default function Home(): JSX.Element {
           </button>
           <button
             className="w-64 button button-xl button-neutral-outline"
+            onClick={() => navigate("/practice")}
+          >
+            Latihan Tes
+          </button>
+          <button
+            className="w-64 button button-xl button-neutral-outline"
             onClick={() => navigate("/history")}
           >
             Riwayat

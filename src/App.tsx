@@ -23,6 +23,7 @@ import {
 import { History, Setup, Stroop, Result } from "./presenter/page/respondent";
 import { authMiddleware } from "./presenter/redux/middleware";
 import { AppDispatch, RootState } from "./presenter/redux/store";
+import StroopPractice from "./presenter/page/StroopPractice";
 
 function App() {
   const authError = useSelector((state: RootState) => state.auth.error);
@@ -91,6 +92,14 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="/" element={<ProtectedRoute children={<Home />} />} />
+        <Route
+          path="practice"
+          element={<ProtectedRoute children={<StroopPractice />} />}
+        />
+        <Route
+          path="practice/:researchId"
+          element={<ProtectedRoute children={<StroopPractice />} />}
+        />
         <Route
           path="profile"
           element={<ProtectedRoute children={<UserProfile />} />}

@@ -112,8 +112,9 @@ const researchMiddleware = {
     ),
   updateLocalSetup: createAction<{
     pairs: ColorPair[];
-    timeLimit: number;
+    timeout: number;
     answerLimit: number;
+    rounds: number;
   }>('[Research] Update Local Setup'),
   createResearchTicket: createAsyncThunk<ResearchTicket, { dto: CreateResearchTicketDto }>
     ('[Research] Create Research Ticket',

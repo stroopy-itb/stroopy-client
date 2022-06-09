@@ -11,7 +11,8 @@ export interface ResearchState {
   selectedResearch?: Research;
   localSetup: {
     pairs: ColorPair[];
-    timeLimit: number;
+    timeout: number;
+    rounds: number;
   };
   error?: ErrorResponse;
 }
@@ -42,7 +43,8 @@ const initialState: ResearchState = {
         color: "#FFB800",
       },
     ],
-    timeLimit: 3,
+    timeout: 3,
+    rounds: 50,
   },
   error: undefined
 }

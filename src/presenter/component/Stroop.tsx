@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { AnswerRecord, AnswerStatus, Result } from "../../../domain/model";
-import ColorPair from "../../../domain/model/ColorPair";
-import { Prompt } from "../../../domain/model/Prompt";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  researchMiddleware,
-  testResultMiddleware,
-} from "../../redux/middleware";
 import useCountDown from "react-countdown-hook";
+import {
+  AnswerRecord,
+  AnswerStatus,
+  ColorPair,
+  Prompt,
+  Result,
+} from "../../domain/model";
 
 enum GameState {
   Pending,
@@ -18,30 +15,24 @@ enum GameState {
   Ended,
 }
 
-export default function Stroop(): JSX.Element {
-  const setup = useSelector((state: RootState) => state.research.localSetup);
-  const research = useSelector(
-    (state: RootState) => state.research.selectedResearch
-  );
+export default function Stroop(props: {
+  setup: {
+    pairs: ColorPair[];
+    rounds: number;
+    timeout: number;
+  };
+  isPractice: boolean;
+  onFinish?: (results: Result & { answerRecords: AnswerRecord[] }) => void;
+}): JSX.Element {
+  const { setup, onFinish } = props;
 
-  const { researchId } = useParams();
+  const pairs = setup.pairs;
 
-  const [pairs] = useState<ColorPair[]>(setup.pairs);
+  const timeout = setup.timeout * 1000;
 
-  const [roundTime] = useState(setup.timeLimit * 1000);
-
-  const rounds = useCallback(() => {
-    return research?.researchSetup.rounds || 50;
-  }, [research]);
+  const rounds = setup.rounds;
 
   const [started, setStarted] = useState<GameState>(GameState.Pending);
-
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    if (!research || !research.researchSetup || research.id !== researchId) {
-      dispatch(researchMiddleware.getOneById({ id: researchId || "" }));
-    }
-  }, [researchId, research, dispatch]);
 
   const pickRandomPair = useCallback((): ColorPair => {
     const text = pairs[Math.floor(Math.random() * pairs.length)];
@@ -67,7 +58,7 @@ export default function Stroop(): JSX.Element {
 
   const [answerRecords, setAnswerRecords] = useState<AnswerRecord[]>([]);
 
-  const [timeleft, actions] = useCountDown(roundTime, 100);
+  const [timeleft, actions] = useCountDown(timeout, 100);
 
   const chooseAnswer = useCallback(
     (answer: ColorPair | undefined, time: number) => {
@@ -77,7 +68,7 @@ export default function Stroop(): JSX.Element {
         return;
       }
 
-      if (answerRecords.length >= rounds()) {
+      if (answerRecords.length >= rounds) {
         actions.start(5000);
         setStarted(GameState.Ended);
         return;
@@ -85,7 +76,7 @@ export default function Stroop(): JSX.Element {
 
       const newRecord: AnswerRecord = {
         status: AnswerStatus.Unanswered,
-        time: (roundTime - time) / 1000,
+        time: (timeout - time) / 1000,
       };
 
       if (!answer) {
@@ -124,7 +115,7 @@ export default function Stroop(): JSX.Element {
       answerRecords.length,
       pickRandomPair,
       prompt,
-      roundTime,
+      timeout,
       rounds,
       started,
       stroopKey.color,
@@ -132,7 +123,6 @@ export default function Stroop(): JSX.Element {
     ]
   );
 
-  const navigate = useNavigate();
   const countResult = useCallback(() => {
     let result: Result = {
       correct: 0,
@@ -158,9 +148,10 @@ export default function Stroop(): JSX.Element {
 
     result.rtca = result.rtca / result.correct;
 
-    dispatch(testResultMiddleware.setResultData({ ...result, answerRecords }));
-    navigate(`/result/${researchId}`);
-  }, [answerRecords, researchId, dispatch, navigate]);
+    if (onFinish) {
+      onFinish({ ...result, answerRecords });
+    }
+  }, [answerRecords, onFinish]);
 
   useEffect(() => {
     if (timeleft <= 0) {

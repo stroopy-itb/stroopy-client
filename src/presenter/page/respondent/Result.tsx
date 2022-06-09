@@ -18,6 +18,12 @@ export default function Result(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!uploadStatus && result && testData && researchId && respondent) {
+      if (result.correct === 0 && result.wrong === 0) {
+        toast.error(
+          "Hasil Tes tidak disimpan karena anda tidak mengisi dengan benar!"
+        );
+        return setUploadStatus(true);
+      }
       dispatch(
         testResultMiddleware.create({
           dto: {
