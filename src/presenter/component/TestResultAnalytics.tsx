@@ -118,17 +118,9 @@ export default function TestResultAnalytics(props: {
 
   return (
     <div className="justify-self-stretch overflow-hidden">
-      <div className="grid gap-5 grid-cols-2 lg:grid-cols-3 mb-5">
+      <div className="grid gap-5 grid-cols-2 lg:grid-cols-5 mb-5">
         <div className="bg-gray-100 rounded-2xl p-3">
           <h2 className="texl-xl lg:text-2xl font-bold text-green">
-            Jumlah Data
-          </h2>
-          <p className="texl-xl lg:text-2xl font-bold">
-            {analytics?.recordCount}
-          </p>
-        </div>
-        <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-red">
             Jumlah Hari Pengukuran
           </h2>
           <p className="texl-xl lg:text-2xl font-bold">
@@ -152,13 +144,13 @@ export default function TestResultAnalytics(props: {
           </p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-green">
+          <h2 className="texl-xl lg:text-2xl font-bold text-red">
             Rata-Rata RTCA
           </h2>
           <p className="texl-xl lg:text-2xl font-bold">{analytics?.avgRtca}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-red">
+          <h2 className="texl-xl lg:text-2xl font-bold text-green">
             Pengujian Terakhir
           </h2>
           <p className="texl-xl lg:text-2xl font-bold">
