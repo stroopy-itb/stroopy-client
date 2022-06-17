@@ -118,21 +118,49 @@ export default function TestResultAnalytics(props: {
 
   return (
     <div className="justify-self-stretch overflow-hidden">
-      <div className="grid gap-5 grid-cols-2 lg:grid-cols-4 mb-5">
+      <div className="grid gap-5 grid-cols-2 lg:grid-cols-3 mb-5">
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-green">Jumlah Data</h2>
-          <p className="texl-xl lg:text-2xl font-bold">{analytics?.recordCount}</p>
+          <h2 className="texl-xl lg:text-2xl font-bold text-green">
+            Jumlah Data
+          </h2>
+          <p className="texl-xl lg:text-2xl font-bold">
+            {analytics?.recordCount}
+          </p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-yellow">Jumlah Responden</h2>
-          <p className="texl-xl lg:text-2xl font-bold">{analytics?.respondentCount}</p>
+          <h2 className="texl-xl lg:text-2xl font-bold text-red">
+            Jumlah Hari Pengukuran
+          </h2>
+          <p className="texl-xl lg:text-2xl font-bold">
+            {analytics?.daysRecorded}
+          </p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-red">Rata-Rata RTCA</h2>
+          <h2 className="texl-xl lg:text-2xl font-bold text-blue">
+            Jumlah Pengukuran per Hari
+          </h2>
+          <p className="texl-xl lg:text-2xl font-bold">
+            {(analytics?.dailyRecordCount)}
+          </p>
+        </div>
+        <div className="bg-gray-100 rounded-2xl p-3">
+          <h2 className="texl-xl lg:text-2xl font-bold text-yellow">
+            Jumlah Responden
+          </h2>
+          <p className="texl-xl lg:text-2xl font-bold">
+            {analytics?.respondentCount}
+          </p>
+        </div>
+        <div className="bg-gray-100 rounded-2xl p-3">
+          <h2 className="texl-xl lg:text-2xl font-bold text-green">
+            Rata-Rata RTCA
+          </h2>
           <p className="texl-xl lg:text-2xl font-bold">{analytics?.avgRtca}</p>
         </div>
         <div className="bg-gray-100 rounded-2xl p-3">
-          <h2 className="texl-xl lg:text-2xl font-bold text-blue">Pengujian Terakhir</h2>
+          <h2 className="texl-xl lg:text-2xl font-bold text-red">
+            Pengujian Terakhir
+          </h2>
           <p className="texl-xl lg:text-2xl font-bold">
             {analytics?.latestRecord
               ? new Date(analytics?.latestRecord || "").toLocaleDateString()

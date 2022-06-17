@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CreateUserDto, CreateUserProfileDto, UpdatePasswordDto, UpdateUserDto, UpdateUserProfileDto } from "../../../adapter/dto";
+import { CreateUserDto, CreateUserProfileDto, UpdatePasswordDto, UpdateUserProfileDto } from "../../../adapter/dto";
 import { ErrorResponse, User, UserProfile } from "../../../domain/model";
 import di from "../../di";
 
